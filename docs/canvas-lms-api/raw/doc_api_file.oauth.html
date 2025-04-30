@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title>OAuth2
+ - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="current" href="">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div id='filecontents'><h1 id="oauth2">OAuth2</h1>
+
+<p><a name="top"></a></p>
+
+<div class="warning-message"> Developer keys issued after Oct 2015 generate tokens with a 1 hour expiration. Applications must use <a href="file.oauth.html#using-refresh-tokens" target="_blank">refresh tokens</a> to generate new access tokens.</div>
+
+<p><a href="http://oauth.net/2" target="_blank">OAuth2</a> is a protocol designed to let third-party applications
+authenticate to perform actions as a user, without getting the user&#39;s
+password. Canvas uses OAuth2 (specifically <a href="http://tools.ietf.org/html/rfc6749" target="_blank">RFC-6749</a>) 
+for authentication and authorization of the Canvas API. Additionally, Canvas uses OAuth2 for <a href="https://www.imsglobal.org/activity/learning-tools-interoperability" target="_blank">LTI Advantage</a> service authentication (as described in the <a href="https://www.imsglobal.org/spec/security/v1p0/" target="_blank">IMS Security Framework</a>).
+<a name="top"></a></p>
+
+<h3 id="accessing-the-canvas-api"><a href="#accessing-canvas-api">Accessing the Canvas API</a></h3>
+
+<ul>
+<li><a href="#storing-access-tokens">Storing Tokens</a></li>
+<li><a href="#manual-token-generation">Manual Token Generation</a></li>
+<li><a href="#oauth2-flow">Oauth2 Flow</a>
+
+<ul>
+<li><a href="#oauth2-flow-0">Getting OAuth2 Client ID/Secret</a></li>
+<li><a href="#oauth2-flow-1">Step 1: Redirect users to request Canvas access</a></li>
+<li><a href="#oauth2-flow-2">Step 2: Redirect back to the request_uri, or out-of-band redirect</a></li>
+<li><a href="#oauth2-flow-2.1">Note for native apps</a></li>
+<li><a href="#oauth2-flow-3">Step 3: Exchange the code for the final access token</a></li>
+</ul></li>
+<li><a href="#using-access-tokens">Using an Access Token to authenticate requests</a></li>
+<li><a href="#using-refresh-tokens">Using a Refresh Token to get a new Access Token</a></li>
+<li><a href="file.oauth_endpoints.html#delete-login-oauth2-token">Logging Out</a></li>
+<li><a href="file.oauth_endpoints.html">Endpoints</a>
+
+<ul>
+<li><a href="file.oauth_endpoints.html#get-login-oauth2-auth">GET login/oauth2/auth</a></li>
+<li><a href="file.oauth_endpoints.html#post-login-oauth2-token">POST login/oauth2/token</a></li>
+<li><a href="file.oauth_endpoints.html#delete-login-oauth2-token">DELETE login/oauth2/token</a></li>
+<li><a href="file.oauth_endpoints.html#get-login-session-token">GET login/session_token</a></li>
+</ul></li>
+</ul>
+
+<h3 id="accessing-lti-advantage-services"><a href="#accessing-lti-advantage-services-link">Accessing LTI Advantage Services</a></h3>
+
+<ul>
+<li><a href="#developer-key-setup">Step 1: Developer Key Setup</a></li>
+<li><a href="#request-access-token">Step 2: Request an Access Token</a></li>
+<li><a href="#use-access-token">Step 3: Use the access token to access LTI services</a></li>
+</ul>
+
+<h1 id="accessing-the-canvas-api"><a href="#accessing-canvas-api">Accessing the Canvas API</a> <a name="accessing-canvas-api"></a></h1>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<h2 id="storing-tokens"><a href="#storing-access-tokens">Storing Tokens</a> <a name="storing-access-tokens"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>When appropriate, applications should store the token locally, rather
+than requesting a new token for the same user each time the user uses the
+application. If the token is deleted or expires, the application will
+get a 401 Unauthorized error from the API, in which case the application should
+perform the OAuth flow again to receive a new token. You can differentiate this
+401 Unauthorized from other cases where the user simply does not have
+permission to access the resource by checking that the WWW-Authenticate header
+is set.</p>
+
+<p>Storing a token is in many ways equivalent to storing the user&#39;s
+password, so tokens should be stored and used in a secure manner,
+including but not limited to:</p>
+
+<ul>
+<li>Don&#39;t embed tokens in web pages.</li>
+<li>Don&#39;t pass tokens or session IDs around in URLs.</li>
+<li>Properly secure the database or other data store containing the
+tokens.</li>
+<li>For web applications, practice proper techniques to avoid session
+attacks such as cross-site scripting, request forgery, replay
+attacks, etc.</li>
+<li>For native applications, take advantage of user keychain stores and
+other operating system functionality for securely storing passwords.</li>
+</ul>
+
+<h2 id="manual-token-generation"><a href="#manual-token-generation">Manual Token Generation</a><a name="manual-token-generation"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>For testing your application before you&#39;ve implemented OAuth, the
+simplest option is to generate an access token on your user&#39;s profile
+page. Note that asking any other user to manually generate a token and
+enter it into your application is a violation of <a href="https://www.instructure.com/policies/api-policy">Canvas&#39; API Policy</a>. Applications in use by multiple users <b>MUST</b> use OAuth to obtain
+tokens.</p>
+
+<p>To manually generate a token for testing:</p>
+
+<ol>
+<li>Click the &quot;profile&quot; link in the top right menu bar, or navigate to
+<code>/profile</code></li>
+<li>Under the &quot;Approved Integrations&quot; section, click the button to
+generate a new access token.</li>
+<li>Once the token is generated, you cannot view it again, and you&#39;ll
+have to generate a new token if you forget it. Remember that access
+tokens are password equivalent, so keep it secret.</li>
+</ol>
+
+<h2 id="oauth2-flow"><a href="#oauth2-flow">Oauth2 Flow</a> <a name="oauth2-flow"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>Your application can rely on canvas for a user&#39;s identity.  During step 1 of
+the web application flow below, specify the optional scope parameter as
+scope=/auth/userinfo.  When the user is asked to grant your application
+access in step 2 of the web application flow, they will also be given an
+option to remember their authorization.  If they grant access and remember
+the authorization, Canvas will skip step 2 of the request flow for future requests.</p>
+
+<p>Canvas will not give a token back as part of a userinfo request.  It will only
+provide the current user&#39;s name and id.</p>
+
+<h3 id="getting-oauth2-client-id-secret"><a href="#oauth2-flow-0">Getting OAuth2 Client ID/Secret</a> <a name="oauth2-flow-0"></a></h3>
+
+<p>If your application will be used by others, you will need to implement
+the full OAuth2 token request workflow, so that you can request an access
+token for each user of your application.</p>
+
+<p>Performing the OAuth2 token request flow requires an application client
+ID and client secret. To obtain these application credentials, you will
+need to register your application.  The client secret should never be shared.</p>
+
+<p>For Canvas Cloud (hosted by Instructure), developer keys are
+<a href="https://community.canvaslms.com/t5/Admin-Guide/How-do-I-manage-developer-keys-for-an-account/ta-p/249" target="_blank">issued by the admin of the institution</a>.</p>
+
+<p><b>NOTE for LTI providers:</b> Since developer keys are scoped to the institution they are issued
+from, tool providers that serve multiple institutions should store and look up the correct
+developer key based on the launch parameters (eg. custom_canvas_api_domain) sent during the LTI
+launch.</p>
+
+<p>For <a href="https://github.com/instructure/canvas-lms/wiki" target="_blank">open source Canvas users</a>,
+you can <a href="https://community.canvaslms.com/t5/Admin-Guide/How-do-I-manage-developer-keys-for-an-account/ta-p/249" target="_blank">generate a client ID</a>
+and secret in the Site Admin account of your Canvas install.</p>
+
+<h3 id="step-1-redirect-users-to-request-canvas-access"><a href="#oauth2-flow-1">Step 1: Redirect users to request Canvas access</a> <a name="oauth2-flow-1"></a></h3>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>A basic request looks like:</p>
+
+<div class="method_details">
+<h3 class="endpoint">GET https://&lt;canvas-install-url&gt;/login/oauth2/auth?client_id=XXX&response_type=code&state=YYY&redirect_uri=https://example.com/oauth2response</h3>
+</div>
+
+<p>See <a href="file.oauth_endpoints.html#get-login-oauth2-auth">GET login/oauth2/auth</a> for details.</p>
+
+<h3 id="step-2-redirect-back-to-the-request_uri-or-out-of-band-redirect"><a href="#oauth2-flow-2">Step 2: Redirect back to the request_uri, or out-of-band redirect</a> <a name="oauth2-flow-2"></a></h3>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>If the user accepts your request, Canvas redirects back to your
+request_uri with a specific query string, containing the OAuth2
+response:</p>
+
+<div class="method_details">
+<h3 class="endpoint">http://www.example.com/oauth2response?code=XXX&state=YYY</h3>
+</div>
+
+<p>The app can then extract the code, and use it along with the
+client_id and client_secret to obtain the final access_key.</p>
+
+<p>If your application passed a state parameter in step 1, it will be
+returned here in step 2 so that your app can tie the request and
+response together, whether the response was successful or an error
+occurred.</p>
+
+<p>If the user doesn&#39;t accept the request for access, or if another error
+occurs, Canvas redirects back to your request_uri with an <code>error</code>
+parameter, rather than a <code>code</code> parameter, in the query string.</p>
+
+<div class="method_details">
+<h3 class="endpoint">http://www.example.com/oauth2response?error=access_denied&error_description=a_description&state=YYY</h3>
+</div>
+
+<p>A list of possible error codes is found in the <a href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.2.2.1">RFC-7649 spec</a>.</p>
+
+<h3 id="note-for-native-apps"><a href="#oauth2-flow-2.1">Note for native apps</a> <a name="oauth2-flow-2.1"></a></h3>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>Canvas redirects to a page on canvas with a specific query string, containing parameters from the OAuth2 response:</p>
+
+<pre class="code"><code class="">
+/login/oauth2/auth?code=&lt;code&gt;
+</code></pre>
+
+<div class="method_details">
+<h3>/login/oauth2/auth?code=&lt;code&gt;</h3>
+</div>
+
+<p>At this point the app should notice that the URL of the webview has
+changed to contain <code>code=&lt;code&gt;</code> somewhere in the query
+string. The app can then extract the code, and use it along with the
+client_id and client_secret to obtain the final access_key.</p>
+
+<h3 id="step-3-exchange-the-code-for-the-final-access-token"><a href="#oauth2-flow-3">Step 3: Exchange the code for the final access token</a> <a name="oauth2-flow-3"></a></h3>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>To get a new access token and refresh token, send a
+<a href="file.oauth_endpoints.html#post-login-oauth2-token">POST request to login/oauth2/token</a>
+with the following parameters:</p>
+
+<h4>Parameters</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="mono">grant_type</td>
+      <td>authorization_code</td>
+    </tr>
+    <tr>
+      <td class="mono">client_id</td>
+      <td><span class="label">Your client_id</span></td>
+    </tr>
+    <tr>
+      <td class="mono">client_secret</td>
+      <td><span class="label">Your client_secret</span></td>
+    </tr>
+    <tr>
+      <td class="mono">redirect_uri</td>
+      <td>If a redirect_uri was passed to the initial request in
+      step 1, the same redirect_uri must be given here.</td>
+    </tr>
+    <tr>
+      <td class="mono">code</td>
+      <td><span class="label">code from canvas</span></td>
+    </tr>
+    <tr>
+      <td class="mono">replace_tokens</td>
+      <td>(optional) If this option is set to `1`, existing access tokens issued for this developer key/secret will be destroyed and replaced with the new token that is returned from this request</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that the once the code issued in step 2 is used in a POST request
+to this endpoint, it is invalidated and further requests for tokens
+with the same code will fail.</p>
+
+<h2 id="using-an-access-token-to-authenticate-requests"><a href="#using-access-tokens">Using an Access Token to authenticate requests</a> <a name="using-access-tokens"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>Once you have an OAuth access token, you can use it to make API
+requests. If possible, using the HTTP Authorization header is
+recommended.</p>
+
+<p>OAuth2 Token sent in header:</p>
+
+<pre class="code bash"><code class="bash">curl -H &quot;Authorization: Bearer &lt;ACCESS-TOKEN&gt;&quot; &quot;https://canvas.instructure.com/api/v1/courses&quot;
+</code></pre>
+
+<p>Sending the access token in the query string or POST
+parameters is also supported, but discouraged as it increases the
+chances of the token being logged or leaked in transit.</p>
+
+<p>OAuth2 Token sent in query string:</p>
+
+<pre class="code bash"><code class="bash">curl &quot;https://canvas.instructure.com/api/v1/courses?access_token=&lt;ACCESS-TOKEN&gt;&quot;
+</code></pre>
+
+<h2 id="using-a-refresh-token-to-get-a-new-access-token"><a href="#using-refresh-tokens">Using a Refresh Token to get a new Access Token</a> <a name="using-refresh-tokens"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>Access tokens have a 1 hour lifespan. When the refresh flow is taken, Canvas
+will update the access token to a new value, reset the expiration timer, and
+return the new access token as part of the response. When refreshing tokens the
+user will not be asked to authorize the application again.</p>
+
+<p>To refresh the access token, send a
+<a href="file.oauth_endpoints.html#post-login-oauth2-token">POST request to login/oauth2/token</a>
+with the following parameters:</p>
+
+<h4>Parameters</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="mono">grant_type</td>
+      <td>refresh_token</td>
+    </tr>
+    <tr>
+      <td class="mono">client_id</td>
+      <td><span class="label">Your client_id</span></td>
+    </tr>
+    <tr>
+      <td class="mono">client_secret</td>
+      <td><span class="label">Your client_secret</span></td>
+    </tr>
+    <tr>
+      <td class="mono">refresh_token</td>
+      <td><span class="label">refresh_token from initial access_token request</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The response to this request will not contain a new refresh token; the same
+refresh token is to be reused.</p>
+
+<h2 id="logging-out"><a href="file.oauth_endpoints.html#delete-login-oauth2-token">Logging Out</a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>To logout, simply send a <a href="file.oauth_endpoints.html#delete-login-oauth2-token">DELETE request to login/oauth2/token</a></p>
+
+<h1 id="accessing-lti-advantage-services"><a href="#accessing-lti-advantage-services">Accessing LTI Advantage Services</a> <a name="accessing-lti-advantage-services-link"></a></h1>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>LTI Advantage services, such as <a href="https://www.imsglobal.org/spec/lti-nrps/v2p0" target="_blank">Names and Role Provisioning Services</a> and <a href="https://www.imsglobal.org/spec/lti-ags/v2p0/" target="_blank">Assignment and Grade Services</a>, require use of a client credentials grant flow for request authentication. This workflow is best summarized on the IMS Security Framework (specifically <a href="https://www.imsglobal.org/spec/security/v1p0/#using-oauth-2-0-client-credentials-grant" target="_blank">Section 4</a>).</p> Our goal here is to highlight some nuances that might help you access these services in Canvas, rather than describing the specification in detail.</p>
+
+<h2 id="step-1-developer-key-setup"><a href="#developer-key-setup">Step 1: Developer Key Setup</a> <a name="developer-key-setup"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>Before the client_credentials grant flow can be achieved, an <a href="https://community.canvaslms.com/t5/Admin-Guide/How-do-I-configure-an-LTI-key-for-an-account/ta-p/140" target="_blank">LTI developer key must be created</a>. During developer key configuration, a public JWK can either be configured statically or can be dynamically rotated by providing JWKs by a URL that Canvas can reach. Tools may also use a previously issued client_credentials token to <a href="public_jwk.html" target="_blank">retroactively rotate the public JWK via an API request</a>. The JWK <b>must</b> include an alg and use.</p>
+
+<h4>Example JWK</h4>
+
+<p><pre class="code"><code class="">
+   &quot;public_jwk&quot;: {
+      &quot;kty&quot;:&quot;RSA&quot;,
+      &quot;alg&quot;:&quot;RS256&quot;,
+      &quot;e&quot;:&quot;AQAB&quot;,
+      &quot;kid&quot;:&quot;8f796179-7ac4-48a3-a202-fc4f3d814fcd&quot;,
+      &quot;n&quot;:&quot;nZA7QWcIwj-3N_RZ1qJjX6CdibU87y2l02yMay4KunambalP9g0fU9yILwLX9WYJINcXZDUf6QeZ-SSbblET-h8Q4OvfSQ7iuu0WqcvBGy8M0qoZ7I-NiChw8dyybMJHgpiP_AyxpCQnp3bQ6829kb3fopbb4cAkOilwVRBYPhRLboXma0cwcllJHPLvMp1oGa7Ad8osmmJhXhN9qdFFASg_OCQdPnYVzp8gOFeOGwlXfSFEgt5vgeU25E-ycUOREcnP7BnMUk7wpwYqlE537LWGOV5z_1Dqcqc9LmN-z4HmNV7b23QZW4_mzKIOY4IqjmnUGgLU9ycFj5YGDCts7Q&quot;,
+      &quot;use&quot;:&quot;sig&quot;
+   }
+  </code></pre></p>
+
+<h2 id="step-2-request-an-access-token"><a href="#request-access-token">Step 2: Request an access token</a> <a name="request-access-token"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>Once the developer key is configured and turned on, your tool can  <a href="file.oauth_endpoints.html#post-login-oauth2-token" target="_blank">request an LTI access token using the client_credentials grant</a>. This request must be signed by an RSA256 private key with a public key that is configured on the developer key as described in <a href=#developer-key-setup>Step 1: Developer Key Setup</a>.</p>
+
+<h2 id="step-3-use-the-access-token-to-access-lti-services"><a href="#use-access-token">Step 3: Use the access token to access LTI services</a> <a name="use-access-token"></a></h2>
+
+<p><small><a href="#top">Back to Top</a></small></p>
+
+<p>Once you have an access token, you can use it to make LTI service requests. The access token must be included as a Bearer token in the Authorization header:</p>
+
+<pre class="code bash"><code class="bash">curl -H &quot;Authorization: Bearer &lt;ACCESS-TOKEN&gt;&quot; &quot;https://&lt;canvas_domain&gt;/api/lti/courses/:course_id/names_and_roles&quot;
+</code></pre>
+
+<p>Access tokens only work in the context of where a tool has been deployed. Tools can only access line items that are associated with their tool.</p>
+
+<p>The following endpoints are currently supported:</p>
+
+<h3 id="names-and-role-provisioning-services">Names and Role Provisioning Services</h3>
+
+<ul>
+<li><a href="names_and_role.html" target="_blank">Names and Role API</a></li>
+</ul>
+
+<h3 id="assignment-and-grade-services">Assignment and Grade Services</h3>
+
+<ul>
+<li><a href="line_items.html" target="_blank">Line Items</a></li>
+<li><a href="score.html" target="_blank">Score</a></li>
+<li><a href="result.html" target="_blank">Result</a></li>
+</ul>
+</div></div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:39 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Quiz Submission Events API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/submissions/{id}/events:
+    post:
+      summary: Store a set of events captured during a quiz taking session
+      description: On success, returns 204 No Content with an empty body.
+      tags:
+        - Quiz Submission Events
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: Submission ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quiz_submission_events
+              properties:
+                quiz_submission_events:
+                  type: array
+                  description: The submission events to be recorded
+                  items:
+                    type: object
+                    required:
+                      - client_timestamp
+                      - event_type
+                    properties:
+                      client_timestamp:
+                        type: string
+                        format: date-time
+                      event_type:
+                        type: string
+                      event_data:
+                        type: object
+            examples:
+              example:
+                value:
+                  quiz_submission_events:
+                    - client_timestamp: "2014-10-08T19:29:58Z"
+                      event_type: "question_answered"
+                      event_data:
+                        answer: "42"
+                    - client_timestamp: "2014-10-08T19:30:17Z"
+                      event_type: "question_flagged"
+                      event_data:
+                        question_id: "1"
+                        flagged: true
+      responses:
+        '204':
+          description: No Content
+    get:
+      summary: Retrieve the set of events captured during a specific submission attempt
+      description: If `attempt` is unspecified, the latest attempt will be used.
+      tags:
+        - Quiz Submission Events
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: Submission ID
+          required: true
+          schema:
+            type: integer
+        - name: attempt
+          in: query
+          description: The specific submission attempt to look up the events for.
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - quiz_submission_events
+                properties:
+                  quiz_submission_events:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - event_type
+                        - created_at
+                      properties:
+                        id:
+                          type: string
+                        event_type:
+                          type: string
+                        event_data:
+                          type: object
+                          nullable: true
+                        created_at:
+                          type: string
+                          format: date-time
+              examples:
+                example:
+                  value:
+                    quiz_submission_events:
+                      - id: "3409"
+                        event_type: "page_blurred"
+                        event_data: null
+                        created_at: "2014-11-16T13:37:21Z"
+                      - id: "3410"
+                        event_type: "page_focused"
+                        event_data: null
+                        created_at: "2014-11-16T13:37:27Z"

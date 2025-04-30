@@ -1,0 +1,100 @@
+/api/v1/courses/{course_id}/quiz_extensions:
+  post:
+    summary: Set extensions for student quiz submissions
+    tags:
+      - Course Quiz Extensions
+    parameters:
+      - name: course_id
+        in: path
+        description: ID of the course.
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - quiz_extensions
+            properties:
+              quiz_extensions:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - user_id
+                  properties:
+                    user_id:
+                      type: integer
+                      description: The ID of the user we want to add quiz extensions for.
+                    extra_attempts:
+                      type: integer
+                      description: Number of times the student is allowed to re-take the quiz over the multiple-attempt limit (max 1000).
+                    extra_time:
+                      type: integer
+                      description: Extra minutes to allow for all attempts (adds to existing time limit; max 10080).
+                    manually_unlocked:
+                      type: boolean
+                      description: Allow the student to take the quiz even if it’s locked for everyone else.
+                    extend_from_now:
+                      type: integer
+                      description: Minutes to extend the quiz from the current time (mutually exclusive with extend_from_end_at; max 1440).
+                    extend_from_end_at:
+                      type: integer
+                      description: Minutes to extend the quiz beyond its current ending time (mutually exclusive with extend_from_now; max 1440).
+          examples:
+            multiple_extensions:
+              summary: Multiple quiz extensions
+              value:
+                quiz_extensions:
+                  - user_id: 3
+                    extra_attempts: 2
+                    extra_time: 20
+                    manually_unlocked: true
+                  - user_id: 2
+                    extra_attempts: 2
+                    extra_time: 20
+                    manually_unlocked: false
+            extend_from_now_only:
+              summary: Extend from now
+              value:
+                quiz_extensions:
+                  - user_id: 3
+                    extend_from_now: 20
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz_extensions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      user_id:
+                        type: integer
+                      extra_attempts:
+                        type: integer
+                      extra_time:
+                        type: integer
+                      manually_unlocked:
+                        type: boolean
+                      end_at:
+                        type: string
+                        format: date-time
+            examples:
+              example:
+                value:
+                  quiz_extensions:
+                    - user_id: 3
+                      extra_attempts: 1
+                      extra_time: 60
+                      manually_unlocked: true
+                      end_at: "2013-11-07T13:16:18Z"
+      '403':
+        description: Forbidden – you are not allowed to extend quizzes for this course.

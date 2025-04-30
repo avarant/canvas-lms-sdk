@@ -1,0 +1,184 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS PollChoices API
+  version: "1.0.0"
+paths:
+  /api/v1/polls/{poll_id}/poll_choices:
+    get:
+      summary: List poll choices in a poll
+      description: Returns the paginated list of PollChoices in this poll.
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of poll choices.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_choices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollChoice'
+    post:
+      summary: Create a single poll choice
+      description: Create a new poll choice for this poll.
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                poll_choices:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - text
+                    properties:
+                      text:
+                        type: string
+                        description: The descriptive text of the poll choice.
+                      is_correct:
+                        type: boolean
+                        description: Whether this poll choice is considered correct or not. Defaults to false.
+                      position:
+                        type: integer
+                        description: The order this poll choice should be returned in the context of its sibling poll choices.
+      responses:
+        '200':
+          description: The newly created poll choice(s).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_choices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollChoice'
+  /api/v1/polls/{poll_id}/poll_choices/{id}:
+    get:
+      summary: Get a single poll choice
+      description: Returns the poll choice with the given id.
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single poll choice.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_choices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollChoice'
+    put:
+      summary: Update a single poll choice
+      description: Update an existing poll choice for this poll.
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                poll_choices:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - text
+                    properties:
+                      text:
+                        type: string
+                        description: The descriptive text of the poll choice.
+                      is_correct:
+                        type: boolean
+                        description: Whether this poll choice is considered correct or not. Defaults to false.
+                      position:
+                        type: integer
+                        description: The order this poll choice should be returned in the context of its sibling poll choices.
+      responses:
+        '200':
+          description: The updated poll choice(s).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_choices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollChoice'
+    delete:
+      summary: Delete a poll choice
+      description: Deletes a poll choice. Returns 204 if successful.
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    PollChoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the poll choice.
+        poll_id:
+          type: integer
+          description: The id of the poll this poll choice belongs to.
+        is_correct:
+          type: boolean
+          description: Specifies whether or not this poll choice is a 'correct' choice.
+        text:
+          type: string
+          description: The text of the poll choice.
+        position:
+          type: integer
+          description: The order of the poll choice in relation to its sibling poll choices.

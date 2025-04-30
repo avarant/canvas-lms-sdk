@@ -1,0 +1,110 @@
+openapi: 3.0.0
+paths:
+  /api/v1/accounts/{account_id}/outcome_groups/{id}:
+    put:
+      summary: Update an outcome group
+      description: >
+        Modify an existing outcome group. Fields not provided are left as is;
+        unrecognized fields are ignored. When changing the parent outcome group,
+        the new parent must belong to the same context and must not be a
+        descendant of this outcome group (no cycles allowed).
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: The ID of the account context.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: The ID of the outcome group to update.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Fields for the outcome group to update. Omitted fields are unchanged.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The new outcome group title.
+                description:
+                  type: string
+                  description: The new outcome group description.
+                vendor_guid:
+                  type: string
+                  description: A custom GUID for the learning standard.
+                parent_outcome_group_id:
+                  type: integer
+                  description: The ID of the new parent outcome group.
+      responses:
+        '200':
+          description: The updated OutcomeGroup object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeGroup'
+        '400':
+          description: Bad request, e.g., invalid parameters or cycle detected
+        '401':
+          description: Unauthorized – invalid or missing authentication token
+        '403':
+          description: Forbidden – insufficient permissions to update this group
+        '404':
+          description: OutcomeGroup not found
+        '422':
+          description: Validation error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    OutcomeGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the outcome group.
+        url:
+          type: string
+          description: The opaque API URL for this outcome group.
+        parent_outcome_group:
+          description: Abbreviated parent OutcomeGroup object, if any.
+          oneOf:
+            - $ref: '#/components/schemas/OutcomeGroup'
+            - type: 'null'
+        context_id:
+          type: integer
+          description: The ID of the owning context, or null for global groups.
+        context_type:
+          type: string
+          description: The type of the owning context (e.g., "Account" or "Course").
+        title:
+          type: string
+          description: The title of the outcome group.
+        description:
+          type: string
+          description: The description of the outcome group.
+        vendor_guid:
+          type: string
+          description: A custom GUID for the learning standard.
+        subgroups_url:
+          type: string
+          description: The opaque API URL for listing/creating subgroups.
+        outcomes_url:
+          type: string
+          description: The opaque API URL for listing/creating outcome links.
+        import_url:
+          type: string
+          description: The opaque API URL for importing another group.
+        can_edit:
+          type: boolean
+          description: Whether the current user can update the outcome group.

@@ -1,0 +1,64 @@
+openapi: 3.0.0
+paths:
+  /api/graphql:
+    post:
+      summary: Execute a GraphQL query
+      description: All GraphQL queries are posted to this endpoint. Permissions mirror REST API permissions; include a valid Bearer token in the Authorization header.
+      tags:
+        - GraphQL
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: The GraphQL query to execute
+                variables:
+                  type: object
+                  description: Variable values as required by the supplied query
+            example:
+              query: |
+                query courseInfo($courseId: ID!) {
+                  course(id: $courseId) {
+                    id
+                    _id
+                    name
+                  }
+                }
+              variables:
+                courseId: 1
+      responses:
+        '200':
+          description: Successful GraphQL response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+              example:
+                data:
+                  course:
+                    id: "Q291cnNlLTE="
+                    _id: "1"
+                    name: "Mr. Ratburn's Class"
+        '400':
+          description: Bad Request – malformed query or variables
+        '401':
+          description: Unauthorized – missing or invalid access token
+        '500':
+          description: Internal Server Error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

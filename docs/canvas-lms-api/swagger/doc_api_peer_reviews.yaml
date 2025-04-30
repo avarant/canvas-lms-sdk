@@ -1,0 +1,410 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LMS Peer Reviews API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/peer_reviews:
+    get:
+      summary: Get all Peer Reviews
+      description: Get a list of all Peer Reviews for this assignment
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the peer review.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - submission_comments
+                - user
+      responses:
+        "200":
+          description: A list of PeerReview objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+  /api/v1/sections/{section_id}/assignments/{assignment_id}/peer_reviews:
+    get:
+      summary: Get all Peer Reviews
+      description: Get a list of all Peer Reviews for this assignment
+      parameters:
+        - name: section_id
+          in: path
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the peer review.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - submission_comments
+                - user
+      responses:
+        "200":
+          description: A list of PeerReview objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions/{submission_id}/peer_reviews:
+    get:
+      summary: Get all Peer Reviews
+      description: Get a list of all Peer Reviews for this submission
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          description: ID of the submission
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the peer review.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - submission_comments
+                - user
+      responses:
+        "200":
+          description: A list of PeerReview objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+    post:
+      summary: Create Peer Review
+      description: Create a peer review for the submission
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          description: ID of the submission
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: User ID to assign as reviewer
+              required:
+                - user_id
+      responses:
+        "200":
+          description: The created PeerReview object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+    delete:
+      summary: Delete Peer Review
+      description: Delete a peer review for the submission
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          description: ID of the submission
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: User ID of the reviewer to remove
+              required:
+                - user_id
+      responses:
+        "200":
+          description: The deleted PeerReview object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+  /api/v1/sections/{section_id}/assignments/{assignment_id}/submissions/{submission_id}/peer_reviews:
+    get:
+      summary: Get all Peer Reviews
+      description: Get a list of all Peer Reviews for this submission
+      parameters:
+        - name: section_id
+          in: path
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          description: ID of the submission
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the peer review.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - submission_comments
+                - user
+      responses:
+        "200":
+          description: A list of PeerReview objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+    post:
+      summary: Create Peer Review
+      description: Create a peer review for the submission
+      parameters:
+        - name: section_id
+          in: path
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          description: ID of the submission
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: User ID to assign as reviewer
+              required:
+                - user_id
+      responses:
+        "200":
+          description: The created PeerReview object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+    delete:
+      summary: Delete Peer Review
+      description: Delete a peer review for the submission
+      parameters:
+        - name: section_id
+          in: path
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          description: ID of the submission
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: User ID of the reviewer to remove
+              required:
+                - user_id
+      responses:
+        "200":
+          description: The deleted PeerReview object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerReview"
+        "4XX":
+          description: Client error
+        "5XX":
+          description: Server error
+
+components:
+  schemas:
+    PeerReview:
+      type: object
+      properties:
+        id:
+          type: integer
+        assessor_id:
+          type: integer
+        asset_id:
+          type: integer
+        asset_type:
+          type: string
+        user_id:
+          type: integer
+        workflow_state:
+          type: string
+          description: State of the peer review, either "assigned" or "completed"
+        user:
+          $ref: "#/components/schemas/User"
+        assessor:
+          $ref: "#/components/schemas/User"
+        submission_comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubmissionComment"
+      required:
+        - id
+        - assessor_id
+        - asset_id
+        - asset_type
+        - user_id
+        - workflow_state
+
+    User:
+      type: object
+      description: A Canvas User object
+
+    SubmissionComment:
+      type: object
+      description: A Canvas SubmissionComment object

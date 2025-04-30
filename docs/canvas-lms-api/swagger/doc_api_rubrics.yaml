@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Rubrics API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/rubrics:
+    post:
+      summary: Create a single rubric
+      description: |
+        Returns a hash containing a Rubric and a RubricAssociation object.
+        Note: This endpoint does not return a standard Rubric object,
+        but rather:
+          {
+            "rubric": Rubric,
+            "rubric_association": RubricAssociation
+          }
+      tags:
+        - Rubrics
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: The id of the rubric
+                rubric_association_id:
+                  type: integer
+                  description: >
+                    The id of the rubric association object (join table record).
+                    Can be used instead of specifying rubric_association fields.
+                rubric:
+                  type: object
+                  description: Rubric properties
+                  properties:
+                    title:
+                      type: string
+                      description: The title of the rubric
+                    free_form_criterion_comments:
+                      type: boolean
+                      description: Allow writing custom comments in the ratings field
+                    criteria:
+                      type: object
+                      description: >
+                        An indexed hash of RubricCriterion objects where keys are
+                        integer ids and values are the criterion objects
+                  required:
+                    - title
+                rubric_association:
+                  type: object
+                  description: RubricAssociation properties
+                  properties:
+                    association_id:
+                      type: integer
+                      description: The id of the object this rubric is associated with
+                    association_type:
+                      type: string
+                      description: The type of object this rubric is associated with
+                      enum:
+                        - Assignment
+                        - Course
+                        - Account
+                    use_for_grading:
+                      type: boolean
+                      description: Whether the rubric is used for grade calculation
+                    hide_score_total:
+                      type: boolean
+                      description: >
+                        Hide the score total in the rubric. Only valid if not used for grading.
+                    purpose:
+                      type: string
+                      description: >
+                        The purpose of the association: 'grading' or 'bookmark'
+                  required:
+                    - association_id
+                    - association_type
+      responses:
+        '200':
+          description: Successful creation returns rubric and rubric_association
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rubric:
+                    $ref: '#/components/schemas/Rubric'
+                  rubric_association:
+                    $ref: '#/components/schemas/RubricAssociation'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Rubric:
+      type: object
+      description: A rubric definition
+      # Further properties as defined in the Rubric object documentation
+    RubricAssociation:
+      type: object
+      description: An association between a rubric and a canvas object
+      # Further properties as defined in the RubricAssociation object documentation
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message

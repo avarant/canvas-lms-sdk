@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Admins API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/{account_id}/admins:
+    post:
+      summary: Make an account admin
+      description: Flag an existing user as an admin within the account.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: The id of the user to promote.
+                role:
+                  type: string
+                  description: DEPRECATED. Created with the given role. Defaults to 'AccountAdmin'.
+                role_id:
+                  type: integer
+                  description: The user's admin relationship will be created with the given role. Defaults to the built-in 'AccountAdmin' role.
+                send_confirmation:
+                  type: boolean
+                  description: Send a notification email to the new admin if true. Default is true.
+              required:
+                - user_id
+      responses:
+        '200':
+          description: An Admin object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+    get:
+      summary: List account admins
+      description: A paginated list of the admins in the account.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the account.
+        - name: user_id[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Scope results to those with user IDs equal to any specified here.
+      responses:
+        '200':
+          description: A list of Admin objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin'
+
+  /api/v1/accounts/{account_id}/admins/{user_id}:
+    delete:
+      summary: Remove account admin
+      description: Remove the rights associated with an account admin role from a user.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the account.
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the user to demote.
+        - name: role_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The id of the role representing the user's admin relationship with the account.
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+          description: DEPRECATED. Account role to remove from the user.
+      responses:
+        '200':
+          description: An Admin object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+
+  /api/v1/accounts/{account_id}/admins/self:
+    get:
+      summary: List my admin roles
+      description: >
+        A paginated list of the current user’s roles in the account.
+        Same results as List account admins with user_id=self, except the “Admins - Add / Remove” permission is not required.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the account.
+      responses:
+        '200':
+          description: A list of Admin objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin'
+
+components:
+  schemas:
+    Admin:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the account role/user assignment.
+        role:
+          type: string
+          description: >
+            The account role assigned. This can be 'AccountAdmin'
+            or a user-defined role created by the Roles API.
+        user:
+          type: object
+          nullable: true
+          description: The user the role is assigned to. See the Users API for details.
+        workflow_state:
+          type: string
+          description: The status of the account role/user assignment.
+      required:
+        - id
+        - role
+        - workflow_state

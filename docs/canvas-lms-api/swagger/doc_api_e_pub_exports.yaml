@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS ePub Exports API
+  version: "1.0.0"
+paths:
+  /api/v1/epub_exports:
+    get:
+      summary: List courses with their latest ePub export
+      description: >
+        A paginated list of all courses a user is actively participating in, and the latest ePub export
+        associated with the user and course.
+      tags:
+        - ePub Exports
+      responses:
+        '200':
+          description: A list of CourseEpubExport objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseEpubExport'
+  /api/v1/courses/{course_id}/epub_exports:
+    post:
+      summary: Create ePub Export
+      description: >
+        Begin an ePub export for a course. Use the Progress API to track the progress of the export.
+        When the export completes, use the Show ePub export endpoint to retrieve a download URL.
+      tags:
+        - ePub Exports
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An EpubExport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpubExport'
+  /api/v1/courses/{course_id}/epub_exports/{id}:
+    get:
+      summary: Show ePub export
+      description: Get information about a single ePub export.
+      tags:
+        - ePub Exports
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: The ID of the ePub export
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An EpubExport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpubExport'
+components:
+  schemas:
+    CourseEpubExport:
+      type: object
+      description: Combination of a Course and its latest ePub export
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the course
+        name:
+          type: string
+          description: The name of the course
+        epub_export:
+          $ref: '#/components/schemas/EpubExport'
+          nullable: true
+      required:
+        - id
+        - name
+    EpubExport:
+      type: object
+      description: Details of an ePub export operation
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the export
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time this export was requested
+        attachment:
+          type: object
+          description: Attachment object for the exported ePub (not present until export completes)
+          properties:
+            url:
+              type: string
+              format: uri
+              description: Download URL for the exported ePub
+          required:
+            - url
+        progress_url:
+          type: string
+          format: uri
+          description: URL for polling the current progress
+        user_id:
+          type: integer
+          description: ID of the user who started the export
+        workflow_state:
+          type: string
+          description: Current state of the ePub export
+          enum:
+            - created
+            - exporting
+            - exported
+            - generating
+            - generated
+            - failed
+      required:
+        - id
+        - created_at
+        - progress_url
+        - user_id
+        - workflow_state

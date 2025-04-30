@@ -1,0 +1,570 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Calendar Events API
+  version: 1.0.0
+paths:
+  /api/v1/calendar_events:
+    get:
+      summary: Retrieve the paginated list of calendar events or assignments for the current user
+      description: |
+        Retrieve the paginated list of calendar events or assignments for the current user.
+      parameters:
+        - name: type
+          in: query
+          description: Defaults to “event”. Allowed values: event, assignment, sub_assignment.
+          required: false
+          schema:
+            type: string
+            enum: [event, assignment, sub_assignment]
+        - name: start_date
+          in: query
+          description: |
+            Only return events since the start_date (inclusive). Defaults to today.
+            Format: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
+          required: false
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: |
+            Only return events before the end_date (inclusive). Defaults to start_date.
+            Format: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
+          required: false
+          schema:
+            type: string
+        - name: undated
+          in: query
+          description: Defaults to false. If true, only return undated events.
+          required: false
+          schema:
+            type: boolean
+        - name: all_events
+          in: query
+          description: Defaults to false. If true, return all events, ignoring date criteria.
+          required: false
+          schema:
+            type: boolean
+        - name: context_codes[]
+          in: query
+          description: |
+            List of context codes (e.g. course_42) to filter by. Max 10.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: excludes[]
+          in: query
+          description: Attributes to exclude. Possible values: description, child_events, assignment.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: includes[]
+          in: query
+          description: Optional attributes to include. Possible values: web_conference, series_natural_language.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: important_dates
+          in: query
+          description: Defaults to false. If true, only return events with important_dates = true.
+          required: false
+          schema:
+            type: boolean
+        - name: blackout_date
+          in: query
+          description: Defaults to false. If true, only return events with blackout_date = true.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of CalendarEvent objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarEvent'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    post:
+      summary: Create and return a new calendar event
+      description: Create a new calendar event.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                calendar_event:
+                  type: object
+                  required: [context_code]
+                  properties:
+                    context_code:
+                      type: string
+                      description: Context code of the calendar (course, group, user, account).
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    start_at:
+                      type: string
+                      format: date-time
+                    end_at:
+                      type: string
+                      format: date-time
+                    location_name:
+                      type: string
+                    location_address:
+                      type: string
+                    time_zone_edited:
+                      type: string
+                    all_day:
+                      type: boolean
+                    child_event_data:
+                      type: object
+                      additionalProperties:
+                        type: object
+                        properties:
+                          start_at:
+                            type: string
+                            format: date-time
+                          end_at:
+                            type: string
+                            format: date-time
+                          context_code:
+                            type: string
+                    duplicate:
+                      type: object
+                      properties:
+                        count:
+                          type: integer
+                        interval:
+                          type: integer
+                        frequency:
+                          type: string
+                          enum: [daily, weekly, monthly]
+                        append_iterator:
+                          type: boolean
+                    rrule:
+                      type: string
+                    blackout_date:
+                      type: boolean
+      responses:
+        '201':
+          description: The newly created CalendarEvent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarEvent'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+  /api/v1/users/{user_id}/calendar_events:
+    get:
+      summary: Retrieve the paginated list of calendar events or assignments for the specified user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+        # same query parameters as GET /calendar_events...
+      responses:
+        '200':
+          description: A list of CalendarEvent objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarEvent'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /api/v1/calendar_events/{id}:
+    get:
+      summary: Get a single calendar event or assignment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A CalendarEvent object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarEvent'
+        '404':
+          description: Not Found
+    put:
+      summary: Update and return a calendar event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                calendar_event:
+                  type: object
+                  properties:
+                    context_code:
+                      type: string
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    start_at:
+                      type: string
+                      format: date-time
+                    end_at:
+                      type: string
+                      format: date-time
+                    location_name:
+                      type: string
+                    location_address:
+                      type: string
+                    time_zone_edited:
+                      type: string
+                    all_day:
+                      type: boolean
+                    child_event_data:
+                      type: object
+                      additionalProperties:
+                        type: object
+                        properties:
+                          start_at:
+                            type: string
+                          end_at:
+                            type: string
+                          context_code:
+                            type: string
+                    rrule:
+                      type: string
+                    blackout_date:
+                      type: boolean
+                which:
+                  type: string
+                  enum: [one, all, following]
+      responses:
+        '200':
+          description: The updated CalendarEvent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarEvent'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+    delete:
+      summary: Delete an event from the calendar and return the deleted event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                cancel_reason:
+                  type: string
+                which:
+                  type: string
+                  enum: [one, all, following]
+      responses:
+        '200':
+          description: The deleted CalendarEvent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarEvent'
+        '401':
+          description: Unauthorized
+  /api/v1/calendar_events/{id}/reservations:
+    post:
+      summary: Reserve a time slot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                participant_id:
+                  type: string
+                comments:
+                  type: string
+                cancel_existing:
+                  type: boolean
+      responses:
+        '200':
+          description: The new reservation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarEvent'
+  /api/v1/calendar_events/{id}/reservations/{participant_id}:
+    post:
+      summary: Reserve a time slot for a specific participant
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: participant_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                comments:
+                  type: string
+                cancel_existing:
+                  type: boolean
+      responses:
+        '200':
+          description: The new reservation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarEvent'
+  /api/v1/calendar_events/save_enabled_account_calendars:
+    post:
+      summary: Save enabled account calendars preference
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                mark_feature_as_seen:
+                  type: boolean
+                enabled_account_calendars:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Preferences saved
+  /api/v1/courses/{course_id}/calendar_events/timetable:
+    post:
+      summary: Create and update “timetable” events for a course
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                timetables:
+                  type: object
+                  additionalProperties:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        weekdays:
+                          type: string
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        location_name:
+                          type: string
+      responses:
+        '200':
+          description: Timetable events created/updated
+  /api/v1/courses/{course_id}/calendar_events/timetable:
+    get:
+      summary: Get course timetable
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The last timetable set for the course
+  /api/v1/courses/{course_id}/calendar_events/timetable_events:
+    post:
+      summary: Create or update events directly for a course timetable
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                course_section_id:
+                  type: string
+                events:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      start_at:
+                        type: string
+                        format: date-time
+                      end_at:
+                        type: string
+                        format: date-time
+                      location_name:
+                        type: string
+                      code:
+                        type: string
+                      title:
+                        type: string
+      responses:
+        '200':
+          description: Timetable events created/updated
+components:
+  schemas:
+    CalendarEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        description:
+          type: string
+        location_name:
+          type: string
+        location_address:
+          type: string
+        context_code:
+          type: string
+        effective_context_code:
+          type: string
+          nullable: true
+        context_name:
+          type: string
+        all_context_codes:
+          type: string
+        workflow_state:
+          type: string
+        hidden:
+          type: boolean
+        parent_event_id:
+          type: integer
+          nullable: true
+        child_events_count:
+          type: integer
+        child_events:
+          type: array
+          items:
+            $ref: '#/components/schemas/CalendarEvent'
+          nullable: true
+        url:
+          type: string
+          format: uri
+        html_url:
+          type: string
+          format: uri
+        all_day_date:
+          type: string
+          format: date
+        all_day:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        appointment_group_id:
+          type: integer
+          nullable: true
+        appointment_group_url:
+          type: string
+          format: uri
+          nullable: true
+        own_reservation:
+          type: boolean
+        reserve_url:
+          type: string
+          format: uri
+          nullable: true
+        reserved:
+          type: boolean
+        participant_type:
+          type: string
+        participants_per_appointment:
+          type: integer
+          nullable: true
+        available_slots:
+          type: integer
+          nullable: true
+        user:
+          type: object
+          nullable: true
+        group:
+          type: object
+          nullable: true
+        important_dates:
+          type: boolean
+        series_uuid:
+          type: string
+          nullable: true
+        rrule:
+          type: string
+          nullable: true
+        series_head:
+          type: boolean
+          nullable: true
+        series_natural_language:
+          type: string
+        blackout_date:
+          type: boolean

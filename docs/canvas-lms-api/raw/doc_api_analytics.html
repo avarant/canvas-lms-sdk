@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title>Analytics - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="current" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div class="service">
+  
+    <h1>Analytics API</h1>
+  
+  
+  <table id='quicklinks'>
+  </table>
+  <p>API for retrieving the data exposed in Canvas Analytics</p>
+
+
+
+<div id="Services" class="method_details_list">
+
+  <div class="method_details first">
+  <h2 class='api_method_name' name='method.analytics_api.department_participation' data-subtopic='Analytics'>
+    <a name='method.analytics_api.department_participation' href='#method.analytics_api.department_participation'>
+      Get department-level participation data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/terms/:term_id/activity
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/terms/:term_id/activity</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/current/activity
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/current/activity</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/completed/activity
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/completed/activity</code>
+  </div>
+
+
+<p>Returns page view hits summed across all courses in the department. Two groupings of these counts are returned; one by day (<code>by_date</code>), the other by category (<code>by_category</code>). The possible categories are announcements, assignments, collaborations, conferences, discussions, files, general, grades, groups, modules, other, pages, and quizzes.</p>
+
+<p>This and the other department-level endpoints have three variations which all return the same style of data but for different subsets of courses. All share the prefix /api/v1/accounts/&lt;account_id&gt;/analytics. The possible suffixes are:</p>
+
+<pre class="code ruby"><code class="ruby">* /current: includes all available courses in the default term
+* /completed: includes all concluded courses in the default term
+* /terms/&lt;term_id&gt;: includes all available or concluded courses in the
+  given term.
+</code></pre>
+
+<p>Courses not yet offered or which have been deleted are never included.</p>
+
+<p>/current and /completed are intended for use when the account has only one term. /terms/&lt;term_id&gt; is intended for use when the account has multiple terms.</p>
+
+<p>The action follows the suffix.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/current/activity \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/completed/activity \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/terms/&lt;term_id&gt;/activity \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{
+  &quot;by_date&quot;: {
+    &quot;2012-01-24&quot;: 1240,
+    &quot;2012-01-27&quot;: 912,
+  },
+  &quot;by_category&quot;: {
+    &quot;announcements&quot;: 54,
+    &quot;assignments&quot;: 256,
+    &quot;collaborations&quot;: 18,
+    &quot;conferences&quot;: 26,
+    &quot;discussions&quot;: 354,
+    &quot;files&quot;: 132,
+    &quot;general&quot;: 59,
+    &quot;grades&quot;: 177,
+    &quot;groups&quot;: 132,
+    &quot;modules&quot;: 71,
+    &quot;other&quot;: 412,
+    &quot;pages&quot;: 105,
+    &quot;quizzes&quot;: 356
+  },
+}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.department_grades' data-subtopic='Analytics'>
+    <a name='method.analytics_api.department_grades' href='#method.analytics_api.department_grades'>
+      Get department-level grade data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/terms/:term_id/grades
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/terms/:term_id/grades</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/current/grades
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/current/grades</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/completed/grades
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/completed/grades</code>
+  </div>
+
+
+<p>Returns the distribution of grades for students in courses in the department.  Each data point is one studentâs current grade in one course; if a student is in multiple courses, he contributes one value per course, but if heâs enrolled multiple times in the same course (e.g. a lecture section and a lab section), he only constributes on value for that course.</p>
+
+<p>Grades are binned to the nearest integer score; anomalous grades outside the 0 to 100 range are ignored. The raw counts are returned, not yet normalized by the total count.</p>
+
+<p>Shares the same variations on endpoint as the participation data.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/current/grades \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/completed/grades \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/terms/&lt;term_id&gt;/grades \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{
+  &quot;0&quot;: 95,
+  &quot;1&quot;: 1,
+  &quot;2&quot;: 0,
+  &quot;3&quot;: 0,
+  ...
+  &quot;93&quot;: 125,
+  &quot;94&quot;: 110,
+  &quot;95&quot;: 142,
+  &quot;96&quot;: 157,
+  &quot;97&quot;: 116,
+  &quot;98&quot;: 85,
+  &quot;99&quot;: 63,
+  &quot;100&quot;: 190
+}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.department_statistics' data-subtopic='Analytics'>
+    <a name='method.analytics_api.department_statistics' href='#method.analytics_api.department_statistics'>
+      Get department-level statistics
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/terms/:term_id/statistics
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/terms/:term_id/statistics</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/current/statistics
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/current/statistics</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/completed/statistics
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/completed/statistics</code>
+  </div>
+
+
+<p>Returns numeric statistics about the department and term (or filter).</p>
+
+<p>Shares the same variations on endpoint as the participation data.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/current/statistics \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/completed/statistics \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/terms/&lt;term_id&gt;/statistics \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{
+  &quot;courses&quot;: 27,
+  &quot;subaccounts&quot;: 3,
+  &quot;teachers&quot;: 36,
+  &quot;students&quot;: 418,
+  &quot;discussion_topics&quot;: 77,
+  &quot;media_objects&quot;: 219,
+  &quot;attachments&quot;: 1268,
+  &quot;assignments&quot;: 290,
+}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.department_statistics_by_subaccount' data-subtopic='Analytics'>
+    <a name='method.analytics_api.department_statistics_by_subaccount' href='#method.analytics_api.department_statistics_by_subaccount'>
+      Get department-level statistics, broken down by subaccount
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/terms/:term_id/statistics_by_subaccount
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/terms/:term_id/statistics_by_subaccount</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/current/statistics_by_subaccount
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/current/statistics_by_subaccount</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/analytics/completed/statistics_by_subaccount
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/analytics/completed/statistics_by_subaccount</code>
+  </div>
+
+
+<p>Returns numeric statistics about the department subaccounts and term (or filter).</p>
+
+<p>Shares the same variations on endpoint as the participation data.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/current/statistics_by_subaccount \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/completed/statistics_by_subaccount \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;
+
+curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/analytics/terms/&lt;term_id&gt;/statistics_by_subaccount \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{&quot;accounts&quot;: [
+  {
+    &quot;name&quot;: &quot;some string&quot;,
+    &quot;id&quot;: 188,
+    &quot;courses&quot;: 27,
+    &quot;teachers&quot;: 36,
+    &quot;students&quot;: 418,
+    &quot;discussion_topics&quot;: 77,
+    &quot;media_objects&quot;: 219,
+    &quot;attachments&quot;: 1268,
+    &quot;assignments&quot;: 290,
+  }
+]}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.course_participation' data-subtopic='Analytics'>
+    <a name='method.analytics_api.course_participation' href='#method.analytics_api.course_participation'>
+      Get course-level participation data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/analytics/activity
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/analytics/activity</code>
+  </div>
+
+
+<p>Returns page view hits and participation numbers grouped by day through the entire history of the course. Page views is returned as a hash, where the hash keys are dates in the format âYYYY-MM-DDâ. The page_views result set includes page views broken out by access category. Participations is returned as an array of dates in the format âYYYY-MM-DDâ.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/courses/&lt;course_id&gt;/analytics/activity \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">[
+  {
+    &quot;date&quot;: &quot;2012-01-24&quot;,
+    &quot;participations&quot;: 3,
+    &quot;views&quot;: 10
+  }
+]</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.course_assignments' data-subtopic='Analytics'>
+    <a name='method.analytics_api.course_assignments' href='#method.analytics_api.course_assignments'>
+      Get course-level assignment data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/analytics/assignments
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/analytics/assignments</code>
+  </div>
+
+
+<p>Returns a list of assignments for the course sorted by due date. For each assignment returns basic assignment information, the grade breakdown, and a breakdown of on-time/late status of homework submissions.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>async</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If async is true, then the course_assignments call can happen asynch- ronously and MAY return a response containing a progress_url key instead of an assignments array. If it does, then it is the callerâs responsibility to poll the API again to see if the progress is complete. If the data is ready (possibly even on the first async call) then it will be passed back normally, as documented in the example response.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/courses/&lt;course_id&gt;/analytics/assignments \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">[
+  {
+    &quot;assignment_id&quot;: 1234,
+    &quot;title&quot;: &quot;Assignment 1&quot;,
+    &quot;points_possible&quot;: 10,
+    &quot;due_at&quot;: &quot;2012-01-25T22:00:00-07:00&quot;,
+    &quot;unlock_at&quot;: &quot;2012-01-20T22:00:00-07:00&quot;,
+    &quot;muted&quot;: false,
+    &quot;min_score&quot;: 2,
+    &quot;max_score&quot;: 10,
+    &quot;median&quot;: 7,
+    &quot;first_quartile&quot;: 4,
+    &quot;third_quartile&quot;: 8,
+    &quot;tardiness_breakdown&quot;: {
+      &quot;on_time&quot;: 0.75,
+      &quot;missing&quot;: 0.1,
+      &quot;late&quot;: 0.15
+    }
+  },
+  {
+    &quot;assignment_id&quot;: 1235,
+    &quot;title&quot;: &quot;Assignment 2&quot;,
+    &quot;points_possible&quot;: 15,
+    &quot;due_at&quot;: &quot;2012-01-26T22:00:00-07:00&quot;,
+    &quot;unlock_at&quot;: null,
+    &quot;muted&quot;: true,
+    &quot;min_score&quot;: 8,
+    &quot;max_score&quot;: 8,
+    &quot;median&quot;: 8,
+    &quot;first_quartile&quot;: 8,
+    &quot;third_quartile&quot;: 8,
+    &quot;tardiness_breakdown&quot;: {
+      &quot;on_time&quot;: 0.65,
+      &quot;missing&quot;: 0.12,
+      &quot;late&quot;: 0.23
+      &quot;total&quot;: 275
+    }
+  }
+]</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.course_student_summaries' data-subtopic='Analytics'>
+    <a name='method.analytics_api.course_student_summaries' href='#method.analytics_api.course_student_summaries'>
+      Get course-level student summary data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/analytics/student_summaries
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/analytics/student_summaries</code>
+  </div>
+
+
+<p>Returns a summary of per-user access information for all students in a course. This includes total page views, total participations, and a breakdown of on-time/late status for all homework submissions in the course.</p>
+
+<p>Each studentâs summary also includes the maximum number of page views and participations by any student in the course, which may be useful for some visualizations (since determining maximums client side can be tricky with pagination).</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>sort_column</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The order results in which results are returned.  Defaults to ânameâ.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>name</code>, <code class=enum>name_descending</code>, <code class=enum>score</code>, <code class=enum>score_descending</code>, <code class=enum>participations</code>, <code class=enum>participations_descending</code>, <code class=enum>page_views</code>, <code class=enum>page_views_descending</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>student_id</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If set, returns only the specified student.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/courses/&lt;course_id&gt;/analytics/student_summaries \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">[
+  {
+    &quot;id&quot;: 2346,
+    &quot;page_views&quot;: 351,
+    &quot;page_views_level&quot;: &quot;1&quot;
+    &quot;max_page_view&quot;: 415,
+    &quot;participations&quot;: 1,
+    &quot;participations_level&quot;: &quot;3&quot;,
+    &quot;max_participations&quot;: 10,
+    &quot;tardiness_breakdown&quot;: {
+      &quot;total&quot;: 5,
+      &quot;on_time&quot;: 3,
+      &quot;late&quot;: 0,
+      &quot;missing&quot;: 2,
+      &quot;floating&quot;: 0
+    }
+  },
+  {
+    &quot;id&quot;: 2345,
+    &quot;page_views&quot;: 124,
+    &quot;participations&quot;: 15,
+    &quot;tardiness_breakdown&quot;: {
+      &quot;total&quot;: 5,
+      &quot;on_time&quot;: 1,
+      &quot;late&quot;: 2,
+      &quot;missing&quot;: 3,
+      &quot;floating&quot;: 0
+    }
+  }
+]</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.student_in_course_participation' data-subtopic='Analytics'>
+    <a name='method.analytics_api.student_in_course_participation' href='#method.analytics_api.student_in_course_participation'>
+      Get user-in-a-course-level participation data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/analytics/users/:student_id/activity
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/analytics/users/:student_id/activity</code>
+  </div>
+
+
+<p>Returns page view hits grouped by hour, and participation details through the entire history of the course.</p>
+
+<p>âpage_views` are returned as a hash, where the keys are iso8601 dates, bucketed by the hour. `participations` are returned as an array of hashes, sorted oldest to newest.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/courses/&lt;course_id&gt;/analytics/users/&lt;user_id&gt;/activity \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{
+  &quot;page_views&quot;: {
+    &quot;2012-01-24T13:00:00-00:00&quot;: 19,
+    &quot;2012-01-24T14:00:00-00:00&quot;: 13,
+    &quot;2012-01-27T09:00:00-00:00&quot;: 23
+  },
+  &quot;participations&quot;: [
+    {
+      &quot;created_at&quot;: &quot;2012-01-21T22:00:00-06:00&quot;,
+      &quot;url&quot;: &quot;https://canvas.example.com/path/to/canvas&quot;,
+    },
+    {
+      &quot;created_at&quot;: &quot;2012-01-27T22:00:00-06:00&quot;,
+      &quot;url&quot;: &quot;https://canvas.example.com/path/to/canvas&quot;,
+    }
+  ]
+}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.student_in_course_assignments' data-subtopic='Analytics'>
+    <a name='method.analytics_api.student_in_course_assignments' href='#method.analytics_api.student_in_course_assignments'>
+      Get user-in-a-course-level assignment data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/analytics/users/:student_id/assignments
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/analytics/users/:student_id/assignments</code>
+  </div>
+
+
+<p>Returns a list of assignments for the course sorted by due date. For each assignment returns basic assignment information, the grade breakdown (including the studentâs actual grade), and the basic submission information for the studentâs submission if it exists.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/courses/&lt;course_id&gt;/analytics/users/&lt;user_id&gt;/assignments \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">[
+  {
+    &quot;assignment_id&quot;: 1234,
+    &quot;title&quot;: &quot;Assignment 1&quot;,
+    &quot;points_possible&quot;: 10,
+    &quot;due_at&quot;: &quot;2012-01-25T22:00:00-07:00&quot;,
+    &quot;unlock_at&quot;: &quot;2012-01-20T22:00:00-07:00&quot;,
+    &quot;muted&quot;: false,
+    &quot;min_score&quot;: 2,
+    &quot;max_score&quot;: 10,
+    &quot;median&quot;: 7,
+    &quot;first_quartile&quot;: 4,
+    &quot;third_quartile&quot;: 8,
+    &quot;module_ids&quot;: [
+        1,
+        2
+    ],
+    &quot;submission&quot;: {
+      &quot;posted_at&quot;: &quot;2012-01-23T20:00:00-07:00&quot;,
+      &quot;submitted_at&quot;: &quot;2012-01-22T22:00:00-07:00&quot;,
+      &quot;score&quot;: 10
+    }
+  },
+  {
+    &quot;assignment_id&quot;: 1235,
+    &quot;title&quot;: &quot;Assignment 2&quot;,
+    &quot;points_possible&quot;: 15,
+    &quot;due_at&quot;: &quot;2012-01-26T22:00:00-07:00&quot;,
+    &quot;unlock_at&quot;: null,
+    &quot;muted&quot;: true,
+    &quot;min_score&quot;: 8,
+    &quot;max_score&quot;: 8,
+    &quot;median&quot;: 8,
+    &quot;first_quartile&quot;: 8,
+    &quot;third_quartile&quot;: 8,
+    &quot;module_ids&quot;: [
+        1
+    ],
+    &quot;submission&quot;: {
+      &quot;posted_at&quot;: null,
+      &quot;submitted_at&quot;: &quot;2012-01-22T22:00:00-07:00&quot;
+    }
+  }
+]</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.analytics_api.student_in_course_messaging' data-subtopic='Analytics'>
+    <a name='method.analytics_api.student_in_course_messaging' href='#method.analytics_api.student_in_course_messaging'>
+      Get user-in-a-course-level messaging data
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/analytics/users/:student_id/communication
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/analytics/users/:student_id/communication</code>
+  </div>
+
+
+<p>Returns messaging âhitsâ grouped by day through the entire history of the course. Returns a hash containing the number of instructor-to-student messages, and student-to-instructor messages, where the hash keys are dates in the format âYYYY-MM-DDâ. Message hits include Conversation messages and comments on homework submissions.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/courses/&lt;course_id&gt;/analytics/users/&lt;user_id&gt;/communication \
+    -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{
+  &quot;2012-01-24&quot;:{
+    &quot;instructorMessages&quot;:1,
+    &quot;studentMessages&quot;:2
+  },
+  &quot;2012-01-27&quot;:{
+    &quot;studentMessages&quot;:1
+  }
+}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:45 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

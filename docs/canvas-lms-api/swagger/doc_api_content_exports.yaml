@@ -1,0 +1,312 @@
+openapi: 3.0.0
+info:
+  title: Content Exports API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/content_exports:
+    get:
+      summary: List content exports
+      description: A paginated list of the past and pending content export jobs for a course. Exports are returned newest first.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of ContentExport objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentExport'
+    post:
+      summary: Export content
+      description: Begin a content export job for a course. Use the progress_url in the response to track progress, then retrieve a download URL via the Show content export endpoint.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - export_type
+              properties:
+                export_type:
+                  type: string
+                  description: The type of content migration
+                  enum:
+                    - common_cartridge
+                    - qti
+                    - zip
+                skip_notifications:
+                  type: boolean
+                  description: Don't send notifications about the export to the user. Default: false
+                select:
+                  type: object
+                  description: |
+                    Specify subsets of objects to export. Keys are object types (e.g., files, pages); values are arrays of IDs.
+                  additionalProperties:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: integer
+                        - type: string
+      responses:
+        '200':
+          description: Content export job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentExport'
+  /api/v1/courses/{course_id}/content_exports/{id}:
+    get:
+      summary: Show content export
+      description: Retrieve information about a single content export for a course.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the content export job
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A ContentExport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentExport'
+  /api/v1/groups/{group_id}/content_exports:
+    get:
+      summary: List content exports
+      description: A paginated list of the past and pending content export jobs for a group. Exports are returned newest first.
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of ContentExport objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentExport'
+    post:
+      summary: Export content
+      description: Begin a content export job for a group.
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - export_type
+              properties:
+                export_type:
+                  type: string
+                  enum:
+                    - common_cartridge
+                    - qti
+                    - zip
+                skip_notifications:
+                  type: boolean
+                select:
+                  type: object
+                  additionalProperties:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: integer
+                        - type: string
+      responses:
+        '200':
+          description: Content export job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentExport'
+  /api/v1/groups/{group_id}/content_exports/{id}:
+    get:
+      summary: Show content export
+      description: Retrieve information about a single content export for a group.
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the content export job
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A ContentExport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentExport'
+  /api/v1/users/{user_id}/content_exports:
+    get:
+      summary: List content exports
+      description: A paginated list of the past and pending content export jobs for a user. Exports are returned newest first.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of ContentExport objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentExport'
+    post:
+      summary: Export content
+      description: Begin a content export job for a user.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - export_type
+              properties:
+                export_type:
+                  type: string
+                  enum:
+                    - common_cartridge
+                    - qti
+                    - zip
+                skip_notifications:
+                  type: boolean
+                select:
+                  type: object
+                  additionalProperties:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: integer
+                        - type: string
+      responses:
+        '200':
+          description: Content export job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentExport'
+  /api/v1/users/{user_id}/content_exports/{id}:
+    get:
+      summary: Show content export
+      description: Retrieve information about a single content export for a user.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the content export job
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A ContentExport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentExport'
+components:
+  schemas:
+    ContentExport:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the export
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time this export was requested
+        export_type:
+          type: string
+          description: The type of content migration
+          enum:
+            - common_cartridge
+            - qti
+            - zip
+        attachment:
+          type: object
+          description: Attachment API object for the export package (not present before completion)
+          properties:
+            url:
+              type: string
+              format: uri
+        progress_url:
+          type: string
+          format: uri
+          description: The API endpoint for polling the current progress
+        user_id:
+          type: integer
+          description: The ID of the user who started the export
+        workflow_state:
+          type: string
+          description: Current state of the content migration
+          enum:
+            - created
+            - exporting
+            - exported
+            - failed
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

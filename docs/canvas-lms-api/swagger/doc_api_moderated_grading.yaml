@@ -1,0 +1,255 @@
+paths:
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/moderated_students:
+    get:
+      summary: Returns a paginated list of students selected for moderation
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of users selected for moderation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Select students for moderation
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                student_ids:
+                  type: array
+                  description: user ids for students to select for moderation
+                  items:
+                    type: integer
+              required:
+                - student_ids
+      responses:
+        '200':
+          description: A list of users that were selected for moderation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas\User'
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/provisional_grades/bulk_select:
+    put:
+      summary: Bulk select provisional grades
+      description: >-
+        Choose which provisional grades will be received by associated students for
+        an assignment. The caller must be the final grader for the assignment or
+        an admin with :select_final_grade rights.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Selected provisional grades
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    assignment_id:
+                      type: integer
+                    student_id:
+                      type: integer
+                    selected_provisional_grade_id:
+                      type: integer
+                  required:
+                    - assignment_id
+                    - student_id
+                    - selected_provisional_grade_id
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/provisional_grades/status:
+    get:
+      summary: Show provisional grade status for a student
+      description: Tell whether the student’s submission needs one or more provisional grades.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: student_id
+          in: query
+          description: The id of the student to show the status for
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Provisional grade status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  needs_provisional_grade:
+                    type: boolean
+                required:
+                  - needs_provisional_grade
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/provisional_grades/{provisional_grade_id}/select:
+    put:
+      summary: Select provisional grade
+      description: >-
+        Choose which provisional grade the student should receive for a submission.
+        The caller must be the final grader for the assignment or an admin with
+        :select_final_grade rights.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: provisional_grade_id
+          in: path
+          description: ID of the provisional grade
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Selected provisional grade info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  assignment_id:
+                    type: integer
+                  student_id:
+                    type: integer
+                  selected_provisional_grade_id:
+                    type: integer
+                required:
+                  - assignment_id
+                  - student_id
+                  - selected_provisional_grade_id
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/provisional_grades/publish:
+    post:
+      summary: Publish provisional grades for an assignment
+      description: >-
+        Publish the selected provisional grade for all submissions to an
+        assignment. Use the “Select provisional grade” endpoint to choose which
+        provisional grade to publish for a particular submission. Students not in
+        the moderation set will have their one and only provisional grade
+        published. WARNING: This is irreversible. This will overwrite existing
+        grades in the gradebook.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Provisional grades published successfully
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/anonymous_provisional_grades/status:
+    get:
+      summary: Show provisional grade status for an anonymous student
+      description: Determine whether or not the student’s submission needs one or more provisional grades.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: integer
+        - name: anonymous_id
+          in: query
+          description: The id of the student to show the status for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Anonymous provisional grade status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  needs_provisional_grade:
+                    type: boolean
+                required:
+                  - needs_provisional_grade
+
+components:
+  schemas:
+    User:
+      type: object
+      description: A User object (see Users API for schema)

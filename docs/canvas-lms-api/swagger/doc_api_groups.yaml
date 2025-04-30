@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Groups API
+  version: 1.0.0
+paths:
+  /api/v1/users/self/groups:
+    get:
+      summary: List your groups
+      description: Returns a paginated list of active groups for the current user.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: context_type
+          in: query
+          description: Only include groups that are in this type of context.
+          required: false
+          schema:
+            type: string
+            enum:
+              - Account
+              - Course
+        - name: include
+          in: query
+          description: |
+            Include additional resources:
+            - "tabs": Include the list of tabs configured for each group.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - tabs
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: A list of Group objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        '401':
+          description: Unauthorized – the caller doesn’t have rights to see groups
+        '500':
+          description: Internal Server Error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Group:
+      type: object
+      description: A Canvas group
+      properties:
+        id:
+          type: integer
+          description: The ID of the group.
+        name:
+          type: string
+          description: The display name of the group.
+        description:
+          type: string
+          nullable: true
+          description: A description of the group.
+        is_public:
+          type: boolean
+          description: Whether or not the group is public.
+        followed_by_user:
+          type: boolean
+          description: Whether or not the current user is following this group.
+        join_level:
+          type: string
+          enum:
+            - parent_context_auto_join
+            - parent_context_request
+            - invitation_only
+          description: How people are allowed to join the group.
+        members_count:
+          type: integer
+          description: The number of members currently in the group.
+        avatar_url:
+          type: string
+          description: The URL of the group’s avatar.
+        context_type:
+          type: string
+          description: The context type (Course or Account).
+        context_name:
+          type: string
+          description: The name of the context (course or account).
+        course_id:
+          type: integer
+          description: The course ID if context_type is Course.
+        group_category_id:
+          type: integer
+          description: The ID of the group’s category.
+        sis_group_id:
+          type: string
+          nullable: true
+          description: The SIS ID of the group.
+        sis_import_id:
+          type: integer
+          nullable: true
+          description: The SIS import ID if created through SIS.
+        storage_quota_mb:
+          type: integer
+          description: The storage quota for the group in megabytes.
+        non_collaborative:
+          type: boolean
+          nullable: true
+          description: Whether this group category is non-collaborative.
+        permissions:
+          type: object
+          nullable: true
+          description: Permissions the user has for the group.
+        users:
+          type: array
+          nullable: true
+          description: A list of users that are members in the group.
+          items:
+            $ref: '#/components/schemas/User'
+      required:
+        - id
+        - name
+    User:
+      type: object
+      description: A Canvas user (simplified)
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        sortable_name:
+          type: string
+        avatar_url:
+          type: string
+      required:
+        - id
+        - name

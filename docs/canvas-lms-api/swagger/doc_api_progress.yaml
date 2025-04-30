@@ -1,0 +1,141 @@
+openapi: 3.0.0
+info:
+  title: Progress API
+  version: "1.0.0"
+paths:
+  /api/v1/progress/{id}:
+    get:
+      summary: Return completion and status information about an asynchronous job
+      description: |
+        Scope: url:GET|/api/v1/progress/:id
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Progress object
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A Progress object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Progress"
+  /api/v1/progress/{id}/cancel:
+    post:
+      summary: Cancel an asynchronous job associated with a Progress object
+      description: |
+        Scope: url:POST|/api/v1/progress/:id/cancel
+        If you include "message" in the POSTed data, it will be set on the Progress and returned. This is handy to distinguish between cancel and fail for a workflow_state of "failed".
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Progress object
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Optional message to set on the Progress
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Optional details about the cancellation or failure
+      responses:
+        "200":
+          description: A Progress object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Progress"
+  /api/lti/courses/{course_id}/progress/{id}:
+    get:
+      summary: Return completion and status information about an asynchronous job
+      description: |
+        Scope: url:GET|/api/lti/courses/:course_id/progress/:id
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the Progress object
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A Progress object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Progress"
+components:
+  schemas:
+    Progress:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the Progress object
+        context_id:
+          type: integer
+          description: The context owning the job
+        context_type:
+          type: string
+          description: The context type (e.g., "Account")
+        user_id:
+          type: integer
+          description: The ID of the user who started the job
+        tag:
+          type: string
+          description: The type of operation
+        completion:
+          type: integer
+          description: Percent completed
+        workflow_state:
+          type: string
+          description: The state of the job
+          enum:
+            - queued
+            - running
+            - completed
+            - failed
+        created_at:
+          type: string
+          format: date-time
+          description: The time the job was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The time the job was last updated
+        message:
+          type: string
+          description: Optional details about the job
+        results:
+          type: object
+          description: Optional results of the job (omitted when pending)
+          additionalProperties: true
+        url:
+          type: string
+          format: uri
+          description: URL where a progress update can be retrieved
+      required:
+        - id
+        - context_id
+        - context_type
+        - user_id
+        - tag
+        - completion
+        - workflow_state
+        - created_at
+        - updated_at
+        - url

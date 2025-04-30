@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Content Migrations API
+  version: '1.0'
+paths:
+  /api/v1/courses/{course_id}/content_migrations/{content_migration_id}/migration_issues:
+    get:
+      summary: List migration issues
+      description: Returns paginated migration issues
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: string
+        - name: content_migration_id
+          in: path
+          description: ID of the content migration
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of MigrationIssue objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MigrationIssue'
+        '401':
+          description: Unauthorized – invalid or missing authentication
+        '404':
+          description: Course or content migration not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    MigrationIssue:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the issue
+        content_migration_url:
+          type: string
+          format: uri
+          description: API URL to the content migration
+        description:
+          type: string
+          description: Description of the issue for the end-user
+        workflow_state:
+          type: string
+          description: Current state of the issue
+          enum:
+            - active
+            - resolved
+        fix_issue_html_url:
+          type: string
+          format: uri
+          description: HTML URL to the Canvas page to investigate the issue
+        issue_type:
+          type: string
+          description: Severity of the issue
+          enum:
+            - todo
+            - warning
+            - error
+        error_report_html_url:
+          type: string
+          format: uri
+          description: Link to a Canvas error report if present
+        error_message:
+          type: string
+          description: Site administrator error message
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the issue was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the issue was last updated
+      required:
+        - id
+        - content_migration_url
+        - description
+        - workflow_state
+        - issue_type

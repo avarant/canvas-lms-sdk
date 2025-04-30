@@ -1,0 +1,617 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Blueprint Courses API
+  version: 1.0.0
+servers:
+  - url: https://{canvas}/api/v1
+    variables:
+      canvas:
+        default: canvas.example.com
+paths:
+  /courses/{course_id}/blueprint_templates/{template_id}:
+    get:
+      summary: Get blueprint information
+      description: >
+        Using ‘default’ as the template_id should suffice for the current implementation
+        (as there should be only one template per course). However, using specific
+        template ids may become necessary in the future.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          description: ID of the blueprint template (use "default" for the current template)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A BlueprintTemplate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlueprintTemplate'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_templates/{template_id}/associated_courses:
+    get:
+      summary: Get associated course information
+      description: Returns a list of courses that are configured to receive updates from this blueprint.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          description: ID of the blueprint template (use "default")
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of Course objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_templates/{template_id}/update_associations:
+    put:
+      summary: Update associated courses
+      description: >
+        Send a list of course ids to add or remove associations for the template.
+        Cannot add courses outside the blueprint course’s account or courses already
+        subscribed to another blueprint.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                course_ids_to_add:
+                  type: array
+                  items:
+                    type: integer
+                  description: Courses to add as associated courses
+                course_ids_to_remove:
+                  type: array
+                  items:
+                    type: integer
+                  description: Courses to remove as associated courses
+      responses:
+        '200':
+          description: Associations updated
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_templates/{template_id}/migrations:
+    post:
+      summary: Begin a migration to push to associated courses
+      description: >
+        Begins a migration to push recently updated content to all associated courses.
+        Only one migration can be running at a time.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  description: Optional comment for the sync history
+                send_notification:
+                  type: boolean
+                  description: Notify the calling user when the sync completes
+                copy_settings:
+                  type: boolean
+                  description: Whether course settings should be copied over
+                send_item_notifications:
+                  type: boolean
+                  description: >
+                    If set, notifications for new items in associated courses will be sent.
+                publish_after_initial_sync:
+                  type: boolean
+                  description: Automatically publish newly associated courses after sync
+      responses:
+        '201':
+          description: A BlueprintMigration object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlueprintMigration'
+        default:
+          description: Error response
+    get:
+      summary: List blueprint migrations
+      description: >
+        Shows a paginated list of migrations for the template, starting with the most recent.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of BlueprintMigration objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlueprintMigration'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_templates/{template_id}/migrations/{id}:
+    get:
+      summary: Show a blueprint migration
+      description: Shows the status of a migration on the blueprint course side.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Migration ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A BlueprintMigration object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlueprintMigration'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_templates/{template_id}/migrations/{id}/details:
+    get:
+      summary: Get migration details
+      description: Show the changes that were propagated in a blueprint migration.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of ChangeRecord objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChangeRecord'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_templates/{template_id}/restrict_item:
+    put:
+      summary: Set or remove restrictions on a blueprint course object
+      description: If a blueprint course object is restricted, editing will be limited for copies in associated courses.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content_type:
+                  type: string
+                  description: >
+                    One of "assignment", "attachment", "discussion_topic", "external_tool",
+                    "lti-quiz", "quiz", "wiki_page"
+                content_id:
+                  type: integer
+                  description: ID of the object
+                restricted:
+                  type: boolean
+                  description: Whether to apply restrictions
+                restrictions:
+                  $ref: '#/components/schemas/BlueprintRestriction'
+      responses:
+        '200':
+          description: Restrictions updated
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_templates/{template_id}/unsynced_changes:
+    get:
+      summary: Get unsynced changes
+      description: >
+        Retrieve a list of learning objects that have changed since the last blueprint sync.
+        If no syncs have been completed, an initial_sync ChangeRecord is returned.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of ChangeRecord objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChangeRecord'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_subscriptions:
+    get:
+      summary: List blueprint subscriptions
+      description: Returns a list of blueprint subscriptions for the given course.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of BlueprintSubscription objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlueprintSubscription'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_subscriptions/{subscription_id}/migrations:
+    get:
+      summary: List blueprint imports
+      description: >
+        Shows a paginated list of migrations imported into a course associated with a blueprint.
+        Use "default" as the subscription_id for the active subscription.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: subscription_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of BlueprintMigration objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlueprintMigration'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_subscriptions/{subscription_id}/migrations/{id}:
+    get:
+      summary: Show a blueprint import
+      description: Shows the status of an import into a course associated with a blueprint.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: subscription_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A BlueprintMigration object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlueprintMigration'
+        default:
+          description: Error response
+  /courses/{course_id}/blueprint_subscriptions/{subscription_id}/migrations/{id}/details:
+    get:
+      summary: Get import details
+      description: Show the changes that were propagated to a course associated with a blueprint.
+      tags:
+        - Blueprint Courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: subscription_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of ChangeRecord objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChangeRecord'
+        default:
+          description: Error response
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    BlueprintTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+        course_id:
+          type: integer
+        last_export_completed_at:
+          type: string
+          format: date-time
+        associated_course_count:
+          type: integer
+        latest_migration:
+          nullable: true
+          $ref: '#/components/schemas/BlueprintMigration'
+    BlueprintMigration:
+      type: object
+      properties:
+        id:
+          type: integer
+        template_id:
+          type: integer
+        subscription_id:
+          type: integer
+        user_id:
+          type: integer
+        workflow_state:
+          type: string
+          enum:
+            - queued
+            - exporting
+            - imports_queued
+            - completed
+            - exports_failed
+            - imports_failed
+        created_at:
+          type: string
+          format: date-time
+        exports_started_at:
+          type: string
+          format: date-time
+        imports_queued_at:
+          type: string
+          format: date-time
+        imports_completed_at:
+          type: string
+          format: date-time
+        comment:
+          type: string
+    BlueprintRestriction:
+      type: object
+      properties:
+        content:
+          type: boolean
+        points:
+          type: boolean
+        due_dates:
+          type: boolean
+        availability_dates:
+          type: boolean
+    ChangeRecord:
+      type: object
+      properties:
+        asset_id:
+          type: integer
+        asset_type:
+          type: string
+          enum:
+            - assignment
+            - attachment
+            - discussion_topic
+            - external_tool
+            - quiz
+            - wiki_page
+            - syllabus
+            - settings
+        asset_name:
+          type: string
+        change_type:
+          type: string
+          enum:
+            - created
+            - updated
+            - deleted
+            - initial_sync
+        html_url:
+          type: string
+          format: uri
+        locked:
+          type: boolean
+        exceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExceptionRecord'
+    ExceptionRecord:
+      type: object
+      properties:
+        course_id:
+          type: integer
+        conflicting_changes:
+          type: array
+          items:
+            type: string
+    BlueprintSubscription:
+      type: object
+      properties:
+        id:
+          type: integer
+        template_id:
+          type: integer
+        blueprint_course:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            course_code:
+              type: string
+            term_name:
+              type: string
+    Course:
+      type: object
+      description: Canvas Course (partial representation)
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        course_code:
+          type: string
+        term:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string

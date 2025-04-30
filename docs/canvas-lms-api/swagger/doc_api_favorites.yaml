@@ -1,0 +1,152 @@
+openapi: "3.0.0"
+info:
+  title: "Favorites API"
+  version: "1.0.0"
+paths:
+  /api/v1/users/self/favorites/courses:
+    get:
+      summary: "Retrieve the paginated list of favorite courses for the current user. If the user has not chosen any favorites, then a selection of currently enrolled courses will be returned."
+      parameters:
+        - name: exclude_blueprint_courses
+          in: query
+          description: "When set, only return courses that are not configured as blueprint courses."
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: "A list of Course objects"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+      security:
+        - bearerAuth: []
+    delete:
+      summary: "Reset the current user’s course favorites to the default automatically generated list of enrolled courses."
+      responses:
+        "204":
+          description: "Favorites reset successfully. No content."
+      security:
+        - bearerAuth: []
+  /api/v1/users/self/favorites/groups:
+    get:
+      summary: "Retrieve the paginated list of favorite groups for the current user. If the user has not chosen any favorites, then a selection of groups that the user is a member of will be returned."
+      responses:
+        "200":
+          description: "A list of Group objects"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Group"
+      security:
+        - bearerAuth: []
+    delete:
+      summary: "Reset the current user’s group favorites to the default automatically generated list of enrolled groups."
+      responses:
+        "204":
+          description: "Favorites reset successfully. No content."
+      security:
+        - bearerAuth: []
+  /api/v1/users/self/favorites/courses/{id}:
+    post:
+      summary: "Add a course to the current user’s favorites. If the course is already in the user’s favorites, nothing happens."
+      parameters:
+        - name: id
+          in: path
+          description: "The ID or SIS ID of the course to add. The current user must be registered in the course."
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Favorite object"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Favorite"
+      security:
+        - bearerAuth: []
+    delete:
+      summary: "Remove a course from the current user’s favorites."
+      parameters:
+        - name: id
+          in: path
+          description: "The ID or SIS ID of the course to remove."
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Favorite object"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Favorite"
+      security:
+        - bearerAuth: []
+  /api/v1/users/self/favorites/groups/{id}:
+    post:
+      summary: "Add a group to the current user’s favorites. If the group is already in the user’s favorites, nothing happens."
+      parameters:
+        - name: id
+          in: path
+          description: "The ID or SIS ID of the group to add. The current user must be a member of the group."
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Favorite object"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Favorite"
+      security:
+        - bearerAuth: []
+    delete:
+      summary: "Remove a group from the current user’s favorites."
+      parameters:
+        - name: id
+          in: path
+          description: "The ID or SIS ID of the group to remove."
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Favorite object"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Favorite"
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Favorite:
+      type: object
+      properties:
+        context_id:
+          type: integer
+          description: "The ID of the object the Favorite refers to."
+        context_type:
+          type: string
+          description: "The type of the object the Favorite refers to."
+      required:
+        - context_id
+        - context_type
+    Course:
+      type: object
+      description: "Course object (see Courses API for schema details)."
+    Group:
+      type: object
+      description: "Group object (see Groups API for schema details)."

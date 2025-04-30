@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Quiz Reports API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/reports:
+    get:
+      summary: Retrieve all quiz reports
+      description: Returns a list of all available reports.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the quiz
+        - name: includes_all_versions
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Whether to retrieve reports that consider all submissions; defaults to false, ignored for item_analysis reports.
+      responses:
+        '200':
+          description: A list of QuizReport objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuizReport'
+    post:
+      summary: Create a quiz report
+      description: |
+        Create and return a new report for this quiz. If a previously generated
+        report matches the arguments and is still current, it will be returned.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the quiz
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                "quiz_report[report_type]":
+                  type: string
+                  description: The type of report to be generated.
+                  enum:
+                    - student_analysis
+                    - item_analysis
+                "quiz_report[includes_all_versions]":
+                  type: boolean
+                  description: Whether the report should consider all submissions or only the most recent. Defaults to false, ignored for item_analysis.
+                include:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - file
+                      - progress
+                  description: Whether to include documents for the file and/or progress objects associated with this report. (JSON-API only)
+              required:
+                - "quiz_report[report_type]"
+      responses:
+        '200':
+          description: A QuizReport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizReport'
+        '400':
+          description: Bad Request – invalid report type
+        '409':
+          description: Conflict – a report of the specified type is already being generated
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/reports/{id}:
+    get:
+      summary: Get a quiz report
+      description: Returns the data for a single quiz report.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the quiz
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the quiz report
+        - name: include
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - file
+                - progress
+          description: Whether to include documents for the file and/or progress objects associated with this report. (JSON-API only)
+      responses:
+        '200':
+          description: A QuizReport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizReport'
+    delete:
+      summary: Abort the generation of a report, or remove a previously generated one
+      description: |
+        Cancel a previous request for a report to be generated, or remove an already
+        generated report to allow regeneration with updated parameters.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the quiz
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the quiz report
+      responses:
+        '204':
+          description: No Content – request accepted
+        '422':
+          description: Unprocessable Entity – the report is not being generated or cannot be aborted at this stage
+components:
+  schemas:
+    QuizReport:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the quiz report
+        quiz_id:
+          type: integer
+          description: The ID of the quiz
+        report_type:
+          type: string
+          description: Which type of report this is
+          enum:
+            - student_analysis
+            - item_analysis
+        readable_type:
+          type: string
+          description: A human-readable (and localized) version of the report_type
+        includes_all_versions:
+          type: boolean
+          description: Whether the report represents all submissions or only the most recent ones
+        anonymous:
+          type: boolean
+          description: Whether the report is for an anonymous survey
+        generatable:
+          type: boolean
+          description: Whether the report can be generated
+        created_at:
+          type: string
+          format: date-time
+          description: When the report was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the report was last updated
+        url:
+          type: string
+          description: The API endpoint URL for this report
+        file:
+          type: object
+          nullable: true
+          description: File object representing the generated report (null if not finished)
+        progress_url:
+          type: string
+          nullable: true
+          description: URL to retrieve progress information (not in JSON-API)
+        progress:
+          type: object
+          nullable: true
+          description: Progress object representing report generation status (JSON-API only)

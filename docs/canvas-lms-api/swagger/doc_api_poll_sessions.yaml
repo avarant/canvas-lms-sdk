@@ -1,0 +1,284 @@
+openapi: "3.0.0"
+info:
+  title: "Canvas LMS Poll Sessions API"
+  version: "1.0.0"
+paths:
+  /api/v1/polls/{poll_id}/poll_sessions:
+    get:
+      tags:
+        - "Poll Sessions"
+      summary: "List poll sessions for a poll"
+      description: "Returns the paginated list of PollSessions in this poll."
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "A list of poll sessions"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSession'
+    post:
+      tags:
+        - "Poll Sessions"
+      summary: "Create a single poll session"
+      description: "Create a new poll session for this poll."
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                poll_sessions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      course_id:
+                        type: integer
+                        description: "The id of the course this session is associated with."
+                      course_section_id:
+                        type: integer
+                        description: "The id of the course section this session is associated with."
+                      has_public_results:
+                        type: boolean
+                        description: "Whether or not results are viewable by students."
+                    required:
+                      - course_id
+      responses:
+        '200':
+          description: "The created poll session"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSession'
+  /api/v1/polls/{poll_id}/poll_sessions/{id}:
+    get:
+      tags:
+        - "Poll Sessions"
+      summary: "Get the results for a single poll session"
+      description: "Returns the poll session with the given id."
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "A poll session"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSession'
+    put:
+      tags:
+        - "Poll Sessions"
+      summary: "Update a single poll session"
+      description: "Update an existing poll session for this poll."
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                poll_sessions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      course_id:
+                        type: integer
+                        description: "The id of the course this session is associated with."
+                      course_section_id:
+                        type: integer
+                        description: "The id of the course section this session is associated with."
+                      has_public_results:
+                        type: boolean
+                        description: "Whether or not results are viewable by students."
+      responses:
+        '200':
+          description: "The updated poll session"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSession'
+    delete:
+      tags:
+        - "Poll Sessions"
+      summary: "Delete a poll session"
+      description: "Deletes the specified poll session."
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: "No Content"
+  /api/v1/polls/{poll_id}/poll_sessions/{id}/open:
+    get:
+      tags:
+        - "Poll Sessions"
+      summary: "Open a poll session"
+      description: "Marks the specified poll session as open."
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Poll session opened"
+  /api/v1/polls/{poll_id}/poll_sessions/{id}/close:
+    get:
+      tags:
+        - "Poll Sessions"
+      summary: "Close an opened poll session"
+      description: "Marks the specified poll session as closed."
+      parameters:
+        - name: poll_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Poll session closed"
+  /api/v1/poll_sessions/opened:
+    get:
+      tags:
+        - "Poll Sessions"
+      summary: "List opened poll sessions"
+      description: "A paginated list of all opened poll sessions available to the current user."
+      responses:
+        '200':
+          description: "A list of opened poll sessions"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSession'
+  /api/v1/poll_sessions/closed:
+    get:
+      tags:
+        - "Poll Sessions"
+      summary: "List closed poll sessions"
+      description: "A paginated list of all closed poll sessions available to the current user."
+      responses:
+        '200':
+          description: "A list of closed poll sessions"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_sessions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSession'
+components:
+  schemas:
+    PollSession:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "The unique identifier for the poll session."
+        poll_id:
+          type: integer
+          description: "The id of the Poll this poll session is associated with."
+        course_id:
+          type: integer
+          description: "The id of the Course this poll session is associated with."
+        course_section_id:
+          type: integer
+          description: "The id of the Course Section this poll session is associated with."
+        is_published:
+          type: boolean
+          description: "Specifies whether or not this poll session has been published for students to participate in."
+        has_public_results:
+          type: boolean
+          description: "Specifies whether the results are viewable by students."
+        created_at:
+          type: string
+          format: date-time
+          description: "The time at which the poll session was created."
+        results:
+          type: object
+          additionalProperties:
+            type: integer
+          description: "The results of the submissions of the poll."
+        poll_submissions:
+          type: array
+          description: "An array of submissions, subject to visibility rules."
+          items: {}

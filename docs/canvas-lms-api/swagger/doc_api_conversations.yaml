@@ -1,0 +1,229 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Conversations API
+  version: "1.0.0"
+  description: API for creating, accessing and updating user conversations.
+servers:
+  - url: https://{canvas_host}
+    variables:
+      canvas_host:
+        default: canvas.instructure.com
+paths:
+  /api/v1/conversations:
+    get:
+      summary: List conversations
+      description: Returns the paginated list of conversations for the current user, most recent ones first.
+      tags:
+        - Conversations
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: scope
+          in: query
+          description: >
+            When set, only return conversations of the specified type.
+            For example, set to “unread” to return only conversations that haven’t been read.
+            The default behavior is to return all non-archived conversations (i.e. read and unread).
+          required: false
+          schema:
+            type: string
+            enum:
+              - unread
+              - starred
+              - archived
+              - sent
+        - name: filter[]
+          in: query
+          description: >
+            When set, only return conversations for the specified courses, groups or users.
+            The id should be prefixed with its type, e.g. “user_123” or “course_456”.
+            Can be an array (by setting “filter[]”) or single value (by setting “filter”).
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_mode
+          in: query
+          description: >
+            When filter[] contains multiple filters, combine them with this mode,
+            filtering conversations that have at least all of the contexts (“and”)
+            or at least one of the contexts (“or”).
+          required: false
+          schema:
+            type: string
+            enum:
+              - and
+              - or
+              - default or
+        - name: interleave_submissions
+          in: query
+          description: "(Obsolete) Submissions are no longer linked to conversations. This parameter is ignored."
+          required: false
+          schema:
+            type: boolean
+        - name: include_all_conversation_ids
+          in: query
+          description: >
+            Default is false. If true, the top-level element of the response will be an object
+            rather than an array, and will have the keys “conversations” which will contain
+            the paged conversation data, and “conversation_ids” which will contain the ids
+            of all conversations under this scope/filter in the same order.
+          required: false
+          schema:
+            type: boolean
+        - name: include[]
+          in: query
+          description: >
+            Optionally include an “avatar_url” key for each user participating in the conversation.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - participant_avatars
+      responses:
+        '200':
+          description: A list of Conversation objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Conversation'
+              examples:
+                example:
+                  summary: Sample response
+                  value:
+                    - id: 2
+                      subject: "conversations api example"
+                      workflow_state: "unread"
+                      last_message: "sure thing, here's the file"
+                      last_message_at: "2011-09-02T12:00:00Z"
+                      message_count: 2
+                      subscribed: true
+                      private: true
+                      starred: false
+                      properties:
+                        - attachments
+                      audience:
+                        - 2
+                      audience_contexts:
+                        courses:
+                          "1":
+                            - StudentEnrollment
+                        groups: {}
+                      avatar_url: "https://canvas.instructure.com/images/messages/avatar-group-50.png"
+                      participants:
+                        - id: 1
+                          name: "Joe"
+                          full_name: "Joe TA"
+                        - id: 2
+                          name: "Jane"
+                          full_name: "Jane Teacher"
+                      visible: true
+                      context_name: "Canvas 101"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+  schemas:
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the conversation.
+        subject:
+          type: string
+          description: The subject of the conversation.
+        workflow_state:
+          type: string
+          description: The current state of the conversation (read, unread or archived).
+        last_message:
+          type: string
+          description: A <=100 character preview from the most recent message.
+        last_message_at:
+          type: string
+          format: date-time
+          description: The timestamp of the latest message.
+        message_count:
+          type: integer
+          description: The number of messages in this conversation.
+        subscribed:
+          type: boolean
+          description: Indicates whether the user is actively subscribed to the conversation.
+        private:
+          type: boolean
+          description: Indicates whether this is a private conversation (i.e. audience of one).
+        starred:
+          type: boolean
+          description: Whether the conversation is starred.
+        properties:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: >
+            Additional conversation flags (last_author, attachments, media_objects).
+            Each listed property means the flag is set to true.
+        audience:
+          type: array
+          items:
+            type: integer
+          nullable: true
+          description: >
+            Array of user ids involved in the conversation, ordered by participation level.
+        audience_contexts:
+          type: object
+          description: Shared contexts between current user and participants.
+          properties:
+            courses:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+            groups:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+        avatar_url:
+          type: string
+          format: uri
+          description: URL to appropriate icon for this conversation.
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConversationParticipant'
+          description: >
+            Array of users participating in the conversation.
+        visible:
+          type: boolean
+          description: >
+            Indicates whether the conversation is visible under the current scope and filter.
+        context_name:
+          type: string
+          description: Name of the course or group in which the conversation is occurring.
+    ConversationParticipant:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user ID for the participant.
+        name:
+          type: string
+          description: A short name the user has selected.
+        full_name:
+          type: string
+          description: The full name of the user.
+        avatar_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to retrieve the user's avatar (if requested).

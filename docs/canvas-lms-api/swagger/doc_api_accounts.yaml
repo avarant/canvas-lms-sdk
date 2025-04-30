@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Accounts API
+  version: "1.0.0"
+paths:
+  /api/v1/accounts:
+    get:
+      summary: List accounts
+      description: >
+        A paginated list of accounts that the current user can view or manage.
+        Typically, students and even teachers will get an empty list in response;
+        only account admins can view the accounts that they are in.
+      parameters:
+        - name: include
+          in: query
+          description: |
+            Array of additional information to include.
+            Allowed values:
+              - lti_guid: the ‘tool_consumer_instance_guid’ that will be sent for this account on LTI launches
+              - registration_settings: returns info about the privacy policy and terms of use
+              - services: returns services and whether they are enabled (requires account management permissions)
+              - course_count: returns the number of courses directly under each account
+              - sub_account_count: returns the number of sub-accounts directly under each account
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - lti_guid
+                - registration_settings
+                - services
+                - course_count
+                - sub_account_count
+      responses:
+        '200':
+          description: A JSON array of Account objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the Account object
+        name:
+          type: string
+          description: The display name of the account
+        uuid:
+          type: string
+          description: The UUID of the account
+        parent_account_id:
+          type: integer
+          nullable: true
+          description: The account's parent ID, or null if this is the root account
+        root_account_id:
+          type: integer
+          nullable: true
+          description: The ID of the root account, or null if this is the root account
+        default_storage_quota_mb:
+          type: integer
+          description: The storage quota for the account in megabytes, if not otherwise specified
+        default_user_storage_quota_mb:
+          type: integer
+          description: The storage quota for a user in the account in megabytes, if not otherwise specified
+        default_group_storage_quota_mb:
+          type: integer
+          description: The storage quota for a group in the account in megabytes, if not otherwise specified
+        default_time_zone:
+          type: string
+          description: |
+            The default time zone of the account. Allowed time zones are IANA time zones
+            or Ruby on Rails time zones.
+        sis_account_id:
+          type: string
+          description: The account's identifier in the Student Information System (requires permission)
+        integration_id:
+          type: string
+          description: The account's integration identifier in the Student Information System (requires permission)
+        sis_import_id:
+          type: integer
+          description: The ID of the SIS import if created through SIS (requires permission)
+        course_count:
+          type: integer
+          description: The number of courses directly under the account
+        sub_account_count:
+          type: integer
+          description: The number of sub-accounts directly under the account
+        lti_guid:
+          type: string
+          description: The account's identifier sent as context_id in LTI launches
+        workflow_state:
+          type: string
+          description: The state of the account. Can be 'active' or 'deleted'.
+      example:
+        id: 2
+        name: "Canvas Account"
+        uuid: "WvAHhY5FINzq5IyRIJybGeiXyFkG3SqHUPb7jZY5"
+        parent_account_id: 1
+        root_account_id: 1
+        default_storage_quota_mb: 500
+        default_user_storage_quota_mb: 50
+        default_group_storage_quota_mb: 50
+        default_time_zone: "America/Denver"
+        sis_account_id: "123xyz"
+        integration_id: "123xyz"
+        sis_import_id: 12
+        course_count: 10
+        sub_account_count: 10
+        lti_guid: "123xyz"
+        workflow_state: "active"
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A description of the error that occurred.

@@ -1,0 +1,87 @@
+openapi: "3.0.0"
+info:
+  title: Developer Key Account Bindings API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/{account_id}/developer_keys/{developer_key_id}/developer_key_account_bindings:
+    post:
+      summary: Create a Developer Key Account Binding
+      description: |
+        Create a new Developer Key Account Binding. The developer key specified in the request URL
+        must be available in the requested account or the requested account’s account chain. If the
+        binding already exists for the specified account/key combination it will be updated.
+      tags:
+        - Developer Key Account Bindings
+      parameters:
+        - name: account_id
+          in: path
+          description: The global Canvas ID of the account in the binding
+          required: true
+          schema:
+            type: integer
+        - name: developer_key_id
+          in: path
+          description: The global Canvas ID of the developer key in the binding
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Optional parameters for creating or updating the binding
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workflow_state:
+                  type: string
+                  description: |
+                    The workflow state for the binding. Must be one of "on", "off", or "allow".
+                    Defaults to "off".
+                  enum:
+                    - on
+                    - off
+                    - allow
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                workflow_state:
+                  type: string
+                  description: |
+                    The workflow state for the binding. Must be one of "on", "off", or "allow".
+                    Defaults to "off".
+                  enum:
+                    - on
+                    - off
+                    - allow
+      responses:
+        '200':
+          description: A DeveloperKeyAccountBinding object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeveloperKeyAccountBinding'
+components:
+  schemas:
+    DeveloperKeyAccountBinding:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The Canvas ID of the binding
+        account_id:
+          type: integer
+          description: The global Canvas ID of the account in the binding
+        developer_key_id:
+          type: integer
+          description: The global Canvas ID of the developer key in the binding
+        workflow_state:
+          type: string
+          description: The workflow state of the binding. Will be one of 'on', 'off', or 'allow.'
+          enum:
+            - on
+            - off
+            - allow
+        account_owns_binding:
+          type: boolean
+          description: True if the requested context owns the binding

@@ -1,0 +1,317 @@
+openapi: 3.0.0
+info:
+  title: Canvas Logins API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/{account_id}/logins:
+    get:
+      tags:
+        - Logins
+      summary: List user logins for an account
+      description: Given an account ID, return a paginated list of that account’s user logins.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of user login objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Login'
+              example:
+                - account_id: 1
+                  id: 2
+                  sis_user_id: null
+                  integration_id: null
+                  unique_id: "belieber@example.com"
+                  user_id: 2
+                  authentication_provider_id: 1
+                  authentication_provider_type: "facebook"
+                  workflow_state: "active"
+                  declared_user_type: null
+    post:
+      tags:
+        - Logins
+      summary: Create a user login
+      description: Create a new login for an existing user in the given account.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: The ID of the user to create the login for.
+                    existing_user_id:
+                      type: string
+                      description: A Canvas User ID to identify a user in a trusted account.
+                    existing_integration_id:
+                      type: string
+                      description: An Integration ID to identify a user in a trusted account.
+                    existing_sis_user_id:
+                      type: string
+                      description: An SIS User ID to identify a user in a trusted account.
+                    trusted_account:
+                      type: string
+                      description: The domain of the account to search for the user.
+                  required:
+                    - id
+                login:
+                  type: object
+                  properties:
+                    unique_id:
+                      type: string
+                      description: The unique ID for the new login.
+                    password:
+                      type: string
+                      description: The new login’s password.
+                    sis_user_id:
+                      type: string
+                      description: SIS ID for the login.
+                    integration_id:
+                      type: string
+                      description: Integration ID for the login.
+                    authentication_provider_id:
+                      type: string
+                      description: The authentication provider this login is associated with.
+                    declared_user_type:
+                      type: string
+                      description: Declared intention of the user type (administrative, observer, staff, student, student_other, teacher).
+                  required:
+                    - unique_id
+      responses:
+        '200':
+          description: The created login object
+  /api/v1/accounts/{account_id}/logins/{id}:
+    put:
+      tags:
+        - Logins
+      summary: Edit a user login
+      description: Update an existing login for a user in the given account.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: object
+                  properties:
+                    unique_id:
+                      type: string
+                      description: The new unique ID for the login.
+                    password:
+                      type: string
+                      description: The new password for the login.
+                    old_password:
+                      type: string
+                      description: The prior password for the login.
+                    sis_user_id:
+                      type: string
+                      description: SIS ID for the login.
+                    integration_id:
+                      type: string
+                      description: Integration ID for the login.
+                    authentication_provider_id:
+                      type: string
+                      description: The authentication provider this login is associated with.
+                    workflow_state:
+                      type: string
+                      description: Used to suspend or re-activate a login.
+                      enum:
+                        - active
+                        - suspended
+                    declared_user_type:
+                      type: string
+                      description: Declared intention of the user type.
+                    override_sis_stickiness:
+                      type: boolean
+                      description: If false, “sticky” SIS fields will not be updated.
+      responses:
+        '200':
+          description: The updated login object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+              example:
+                id: 1
+                user_id: 2
+                account_id: 3
+                unique_id: "bieber@example.com"
+                created_at: "2020-01-29T19:33:35Z"
+                sis_user_id: null
+                integration_id: null
+                authentication_provider_id: null
+                workflow_state: "active"
+                declared_user_type: "teacher"
+  /api/v1/users/{user_id}/logins:
+    get:
+      tags:
+        - Logins
+      summary: List user logins for a user
+      description: Given a user ID, return a paginated list of that user’s logins.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of user login objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Login'
+              example:
+                - account_id: 1
+                  id: 2
+                  sis_user_id: null
+                  integration_id: null
+                  unique_id: "belieber@example.com"
+                  user_id: 2
+                  authentication_provider_id: 1
+                  authentication_provider_type: "facebook"
+                  workflow_state: "active"
+                  declared_user_type: null
+  /api/v1/users/{user_id}/logins/{id}:
+    delete:
+      tags:
+        - Logins
+      summary: Delete a user login
+      description: Delete an existing login.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: The deleted login object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unique_id:
+                    type: string
+                  sis_user_id:
+                    type: string
+                    nullable: true
+                  account_id:
+                    type: integer
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+              example:
+                unique_id: "bieber@example.com"
+                sis_user_id: null
+                account_id: 1
+                id: 12345
+                user_id: 2
+  /api/v1/users/reset_password:
+    post:
+      tags:
+        - Logins
+      summary: Kickoff password recovery flow
+      description: Given a user email, generate a nonce and email it to the user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Recovery request status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requested:
+                    type: boolean
+                required:
+                  - requested
+              example:
+                requested: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Login:
+      type: object
+      properties:
+        account_id:
+          type: integer
+        id:
+          type: integer
+        sis_user_id:
+          type: string
+          nullable: true
+        integration_id:
+          type: string
+          nullable: true
+        unique_id:
+          type: string
+        user_id:
+          type: integer
+        authentication_provider_id:
+          type: integer
+          nullable: true
+        authentication_provider_type:
+          type: string
+          nullable: true
+        workflow_state:
+          type: string
+        declared_user_type:
+          type: string
+          nullable: true

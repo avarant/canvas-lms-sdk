@@ -1,0 +1,284 @@
+openapi: "3.0.0"
+info:
+  title: "Canvas LMS Account Calendars API"
+  version: "1.0.0"
+servers:
+  - url: https://{canvas_host}
+    variables:
+      canvas_host:
+        default: api.example.com
+paths:
+  /api/v1/account_calendars:
+    get:
+      summary: "List available account calendars"
+      description: |
+        Returns a paginated list of account calendars available to the current user.
+        Includes visible account calendars where the user has an account association.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: search_term
+          in: query
+          description: "When included, searches available account calendars for the term. Returns matching results. Term must be at least 2 characters."
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "A list of AccountCalendar objects"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountCalendar'
+        default:
+          description: "Unexpected error"
+  /api/v1/account_calendars/{account_id}:
+    get:
+      summary: "Get a single account calendar"
+      description: "Get details about a specific account calendar."
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account calendar"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "An AccountCalendar object"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCalendar'
+        default:
+          description: "Unexpected error"
+    put:
+      summary: "Update a calendar"
+      description: |
+        Set an account calendar’s visibility and auto_subscribe values.
+        Requires the `manage_account_calendar_visibility` permission on the account.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account calendar"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                visible:
+                  type: boolean
+                  description: "Allow administrators with `manage_account_calendar_events` permission to create events on this calendar, and allow users to view this calendar and its events."
+                auto_subscribe:
+                  type: boolean
+                  description: "When true, users will automatically see events from this account in their calendar, even if they haven’t manually added that calendar."
+      responses:
+        "200":
+          description: "An updated AccountCalendar object"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCalendar'
+        default:
+          description: "Unexpected error"
+  /api/v1/accounts/{account_id}/account_calendars:
+    get:
+      summary: "List all account calendars"
+      description: |
+        Returns a paginated list of account calendars for the provided account and its first level of sub-accounts.
+        Includes hidden calendars in the response. Requires the `manage_account_calendar_visibility` permission.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the parent account"
+          required: true
+          schema:
+            type: integer
+        - name: search_term
+          in: query
+          description: "When included, searches all descendent accounts of provided account for the term. Term must be at least 2 characters."
+          required: false
+          schema:
+            type: string
+        - name: filter
+          in: query
+          description: "When included, only returns calendars that are either visible or hidden."
+          required: false
+          schema:
+            type: string
+            enum:
+              - visible
+              - hidden
+      responses:
+        "200":
+          description: "A list of AccountCalendar objects"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountCalendar'
+        default:
+          description: "Unexpected error"
+    put:
+      summary: "Update several calendars"
+      description: |
+        Set visibility and/or auto_subscribe on many calendars simultaneously.
+        Requires the `manage_account_calendar_visibility` permission on the account.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the parent account"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+                    description: "The account’s id"
+                  visible:
+                    type: boolean
+                    description: "Whether the account calendar is visible"
+                  auto_subscribe:
+                    type: boolean
+                    description: "Whether users should see these events without manually subscribing"
+            example:
+              - id: 1
+                visible: true
+                auto_subscribe: false
+              - id: 13
+                visible: false
+                auto_subscribe: true
+      responses:
+        "200":
+          description: "The count of updated accounts"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: integer
+                    description: "Number of accounts updated"
+              example:
+                updated: 2
+        default:
+          description: "Unexpected error"
+  /api/v1/accounts/{account_id}/visible_calendars_count:
+    get:
+      summary: "Count of all visible account calendars"
+      description: "Returns the number of visible account calendars."
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the parent account"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Number of visible calendars"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: "The count of visible calendars"
+              example:
+                count: 5
+        default:
+          description: "Unexpected error"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AccountCalendar:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "The ID of the account associated with this calendar"
+        name:
+          type: string
+          description: "The name of the account associated with this calendar"
+        parent_account_id:
+          type: integer
+          nullable: true
+          description: "The account's parent ID, or null if this is the root account"
+        root_account_id:
+          type: integer
+          nullable: true
+          description: "The ID of the root account, or null if this is the root account"
+        visible:
+          type: boolean
+          description: "Whether this calendar is visible to users"
+        auto_subscribe:
+          type: boolean
+          description: "Whether users see this calendar's events without needing to manually add it"
+        sub_account_count:
+          type: integer
+          description: "Number of this account's direct sub-accounts"
+        asset_string:
+          type: string
+          description: "Asset string of the account"
+        type:
+          type: string
+          description: "Object type"
+        calendar_event_url:
+          type: string
+          description: "URL to get full detailed events"
+        can_create_calendar_events:
+          type: boolean
+          description: "Whether the user can create calendar events"
+        create_calendar_event_url:
+          type: string
+          description: "API path to create events for the account"
+        new_calendar_event_url:
+          type: string
+          description: "URL to open the more options event editor"
+      required:
+        - id
+        - name
+        - visible
+        - auto_subscribe
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string

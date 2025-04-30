@@ -1,0 +1,122 @@
+openapi: "3.0.0"
+info:
+  title: BlockEditorTemplate API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/block_editor_templates:
+    get:
+      summary: List block templates
+      description: A list of the block templates available to the current user.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: ID of the course
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          required: false
+          description: Sort results by this field.
+          schema:
+            type: string
+            enum:
+              - name
+              - created_at
+              - updated_at
+        - name: order
+          in: query
+          required: false
+          description: The sorting order. Defaults to 'asc'.
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+        - name: drafts
+          in: query
+          required: false
+          description: If true, include draft templates. If false or omitted only published templates will be returned.
+          schema:
+            type: boolean
+        - name: type[]
+          in: query
+          required: false
+          description: What type of templates should be returned.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - page
+                - section
+                - block
+        - name: include[]
+          in: query
+          required: false
+          description: no description
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - node_tree
+                - thumbnail
+      responses:
+        '200':
+          description: A list of BlockEditorTemplate objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlockEditorTemplate'
+        default:
+          description: Unexpected error
+components:
+  schemas:
+    BlockEditorTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: the ID of the page
+        name:
+          type: string
+          description: name of the template
+        description:
+          type: string
+          description: description of the template
+        created_at:
+          type: string
+          format: date-time
+          description: the creation date for the template
+        updated_at:
+          type: string
+          format: date-time
+          description: the date the template was last updated
+        node_tree:
+          type: object
+          nullable: true
+          description: The JSON data that is the template
+        editor_version:
+          type: string
+          description: The version of the editor that created the template
+        template_type:
+          type: string
+          enum:
+            - block
+            - section
+            - page
+          description: The type of template.
+        workflow_state:
+          type: string
+          description: String indicating what state this assignment is in.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

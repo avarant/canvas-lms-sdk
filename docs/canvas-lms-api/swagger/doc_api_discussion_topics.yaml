@@ -1,0 +1,325 @@
+paths:
+  /api/v1/courses/{course_id}/discussion_topics:
+    get:
+      summary: Returns the paginated list of discussion topics for a course.
+      description: Returns the paginated list of discussion topics for this course.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the course.
+        - name: include[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - all_dates
+                - sections
+                - sections_user_count
+                - overrides
+          description: >
+            If “all_dates” is passed, all dates associated with graded discussions’ assignments will be included.
+            If “sections” is passed, includes the course sections that are associated with the topic.
+            If “sections_user_count” is passed, then either (a) if sections were asked for *and* the topic is specific to certain
+            course sections, includes the number of users in each section; or (b) includes at the root level the total number
+            of users in the topic's context. If “overrides” is passed, the overrides for the assignment will be included.
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - position
+              - recent_activity
+              - title
+          description: Determines the order of the discussion topic list. Defaults to “position”.
+        - name: scope
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - locked
+              - unlocked
+              - pinned
+              - unpinned
+          description: >
+            Only return discussion topics in the given state(s). Defaults to including all topics.
+            Filtering is done after pagination.
+        - name: only_announcements
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Return announcements instead of discussion topics. Defaults to false.
+        - name: filter_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - all
+              - unread
+          description: The state of the discussion topic to return. Currently only supports “unread”.
+        - name: search_term
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The partial title of the discussion topics to match and return.
+        - name: exclude_context_module_locked_topics
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: For students, exclude topics that are locked by module progression. Defaults to false.
+      responses:
+        '200':
+          description: A list of DiscussionTopic objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscussionTopic'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+
+  /api/v1/groups/{group_id}/discussion_topics:
+    get:
+      summary: Returns the paginated list of discussion topics for a group.
+      description: Returns the paginated list of discussion topics for this group.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: group_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the group.
+        - name: include[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - all_dates
+                - sections
+                - sections_user_count
+                - overrides
+          description: >
+            If “all_dates” is passed, all dates associated with graded discussions’ assignments will be included.
+            If “sections” is passed, includes the course sections that are associated with the topic.
+            If “sections_user_count” is passed, then either (a) if sections were asked for *and* the topic is specific to certain
+            course sections, includes the number of users in each section; or (b) includes at the root level the total number
+            of users in the topic's context. If “overrides” is passed, the overrides for the assignment will be included.
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - position
+              - recent_activity
+              - title
+          description: Determines the order of the discussion topic list. Defaults to “position”.
+        - name: scope
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - locked
+              - unlocked
+              - pinned
+              - unpinned
+          description: >
+            Only return discussion topics in the given state(s). Defaults to including all topics.
+            Filtering is done after pagination.
+        - name: only_announcements
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Return announcements instead of discussion topics. Defaults to false.
+        - name: filter_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - all
+              - unread
+          description: The state of the discussion topic to return. Currently only supports “unread”.
+        - name: search_term
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The partial title of the discussion topics to match and return.
+        - name: exclude_context_module_locked_topics
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: For students, exclude topics that are locked by module progression. Defaults to false.
+      responses:
+        '200':
+          description: A list of DiscussionTopic objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscussionTopic'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    DiscussionTopic:
+      type: object
+      description: A discussion topic object.
+      properties:
+        id:
+          type: integer
+          description: The ID of this topic.
+        title:
+          type: string
+          description: The topic title.
+        message:
+          type: string
+          description: The HTML content of the message body.
+        html_url:
+          type: string
+          format: uri
+          description: The URL to the discussion topic in Canvas.
+        posted_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The datetime the topic was posted.
+        last_reply_at:
+          type: string
+          format: date-time
+          description: The datetime for when the last reply was in the topic.
+        require_initial_post:
+          type: boolean
+          description: Whether a user may not respond until making an initial reply.
+        user_can_see_posts:
+          type: boolean
+        discussion_subentry_count:
+          type: integer
+        read_state:
+          type: string
+          enum: [read, unread]
+        unread_count:
+          type: integer
+        subscribed:
+          type: boolean
+        subscription_hold:
+          type: string
+          nullable: true
+        assignment_id:
+          type: integer
+          nullable: true
+        delayed_post_at:
+          type: string
+          format: date-time
+          nullable: true
+        published:
+          type: boolean
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+        locked:
+          type: boolean
+        pinned:
+          type: boolean
+        locked_for_user:
+          type: boolean
+        lock_info:
+          type: object
+          nullable: true
+        lock_explanation:
+          type: string
+          nullable: true
+        user_name:
+          type: string
+        group_topic_children:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              group_id:
+                type: integer
+        podcast_url:
+          type: string
+        discussion_type:
+          type: string
+          enum: [side_comment, not_threaded, threaded]
+        group_category_id:
+          type: integer
+          nullable: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileAttachment'
+        permissions:
+          type: object
+        allow_rating:
+          type: boolean
+        only_graders_can_rate:
+          type: boolean
+        sort_order:
+          type: string
+          enum: [asc, desc]
+        sort_order_locked:
+          type: boolean
+        expand:
+          type: boolean
+        expand_locked:
+          type: boolean
+    FileAttachment:
+      type: object
+      properties:
+        content-type:
+          type: string
+        url:
+          type: string
+          format: uri
+        filename:
+          type: string
+        display_name:
+          type: string
+      description: A file attachment object.

@@ -1,0 +1,173 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS REST API - Grading Period Sets
+  version: 1.0.0
+servers:
+  - url: https://canvas.instructure.com
+paths:
+  /api/v1/accounts/{account_id}/grading_period_sets:
+    get:
+      summary: Returns the paginated list of grading period sets
+      tags:
+        - Grading Period Sets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of grading period sets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_period_set:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriodSet'
+    post:
+      summary: Create and return a new grading period set
+      tags:
+        - Grading Period Sets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enrollment_term_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: A list of associated term ids for the grading period set
+                grading_period_set:
+                  type: object
+                  required:
+                    - title
+                  properties:
+                    title:
+                      type: string
+                      description: The title of the grading period set
+                    weighted:
+                      type: boolean
+                      description: Whether the grading periods in the set are weighted
+                    display_totals_for_all_grading_periods:
+                      type: boolean
+                      description: Whether the totals for all grading periods in the set are displayed
+      responses:
+        '200':
+          description: The created grading period set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_period_set:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriodSet'
+  /api/v1/accounts/{account_id}/grading_period_sets/{id}:
+    patch:
+      summary: Update an existing grading period set
+      tags:
+        - Grading Period Sets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the grading period set
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enrollment_term_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: A list of associated term ids for the grading period set
+                grading_period_set:
+                  type: object
+                  required:
+                    - title
+                  properties:
+                    title:
+                      type: string
+                    weighted:
+                      type: boolean
+                    display_totals_for_all_grading_periods:
+                      type: boolean
+      responses:
+        '204':
+          description: No Content. The grading period set was updated successfully.
+    delete:
+      summary: Delete a grading period set
+      tags:
+        - Grading Period Sets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the grading period set
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content. The grading period set was deleted successfully.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+  schemas:
+    GradingPeriodSet:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: The title of the grading period set
+        weighted:
+          type: boolean
+          description: If true, the grading periods in the set are weighted
+        display_totals_for_all_grading_periods:
+          type: boolean
+          description: If true, the totals for all grading periods in the set are displayed

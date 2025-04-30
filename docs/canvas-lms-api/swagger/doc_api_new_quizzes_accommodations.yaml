@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: New Quizzes Accommodations API
+  version: 1.0.0
+paths:
+  /api/quiz/v1/courses/{course_id}/quizzes/{assignment_id}/accommodations:
+    post:
+      summary: Set Quiz-Level Accommodations
+      description: Apply accommodations at the quiz level for students in a specific assignment.
+      tags:
+        - New Quizzes Accommodations
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course where the quiz is located.
+          required: true
+          schema:
+            type: string
+        - name: assignment_id
+          in: path
+          description: The ID of the assignment/quiz that needs accommodations.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: An array of quiz-level accommodation requests.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuizAccommodationRequest'
+            example:
+              - user_id: 3
+                extra_time: 60
+                extra_attempts: 1
+                reduce_choices_enabled: true
+      responses:
+        '200':
+          description: Accommodations were processed with some successes and failures.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccommodationResponse'
+        '400':
+          description: Validation error (e.g., invalid JSON, missing user IDs).
+        '401':
+          description: User does not have permission to update accommodations.
+        '404':
+          description: The course or assignment was not found.
+  /api/quiz/v1/courses/{course_id}/accommodations:
+    post:
+      summary: Set Course-Level Accommodations
+      description: Apply accommodations at the course level for students enrolled in a given course.
+      tags:
+        - New Quizzes Accommodations
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course where accommodations should be applied.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: An array of course-level accommodation requests.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CourseAccommodationRequest'
+            example:
+              - user_id: 3
+                extra_time: 60
+                apply_to_in_progress_quiz_sessions: true
+                reduce_choices_enabled: true
+      responses:
+        '200':
+          description: Accommodations were processed with some successes and failures.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccommodationResponse'
+        '400':
+          description: Validation error (e.g., invalid JSON, missing user IDs).
+        '401':
+          description: User does not have permission to update accommodations.
+        '404':
+          description: The course was not found.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    QuizAccommodationRequest:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: integer
+          description: The Canvas user ID of the student receiving accommodations.
+        extra_time:
+          type: integer
+          description: Amount of extra time in minutes granted for quiz submission. Allowed range: 0 to 10080 minutes (168 hours).
+        extra_attempts:
+          type: integer
+          description: Number of times the student is allowed to re-take the quiz beyond the multiple-attempt limit.
+        reduce_choices_enabled:
+          type: boolean
+          description: If true, removes one incorrect answer from multiple-choice questions with four or more options.
+    CourseAccommodationRequest:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: integer
+          description: The Canvas user ID of the student receiving accommodations.
+        extra_time:
+          type: integer
+          description: Amount of extra time in minutes granted for quiz submission. Allowed range: 0 to 10080 minutes (168 hours).
+        apply_to_in_progress_quiz_sessions:
+          type: boolean
+          description: If true, applies the accommodation to currently in-progress quiz sessions.
+        reduce_choices_enabled:
+          type: boolean
+          description: If true, removes one incorrect answer from multiple-choice questions with four or more options.
+    AccommodationResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Processing result message.
+        successful:
+          type: array
+          description: List of successfully processed accommodations.
+          items:
+            type: object
+            properties:
+              user_id:
+                type: integer
+        failed:
+          type: array
+          description: List of accommodations that failed to process.
+          items:
+            type: object
+            properties:
+              user_id:
+                type: integer
+              error:
+                type: string
+                description: Error message for the failed accommodation.

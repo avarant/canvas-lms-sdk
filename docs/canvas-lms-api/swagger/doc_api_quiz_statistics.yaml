@@ -1,0 +1,174 @@
+openapi: 3.0.0
+info:
+  title: Quiz Statistics API
+  version: "1.0"
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/statistics:
+    get:
+      summary: Fetching the latest quiz statistics
+      description: >
+        This endpoint provides statistics for all quiz versions, or for a specific quiz version,
+        in which case the output is guaranteed to represent the latest and most current version of the quiz.
+      parameters:
+        - name: course_id
+          in: path
+          description: Canvas Course ID
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: Quiz ID
+          required: true
+          schema:
+            type: integer
+        - name: all_versions
+          in: query
+          description: Whether the statistics report should include all submission attempts.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful response with quiz statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_statistics:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuizStatistics"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+  schemas:
+    QuizStatistics:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the quiz statistics report.
+        quiz_id:
+          type: integer
+          description: The ID of the Quiz the statistics report is for (only in non-JSON-API requests).
+        multiple_attempts_exist:
+          type: boolean
+          description: Whether there are any students that have made multiple submissions for this quiz.
+        includes_all_versions:
+          type: boolean
+          description: In the presence of multiple attempts, whether the statistics describe all submission attempts, not only the latest.
+        generated_at:
+          type: string
+          format: date-time
+          description: The time at which the statistics were generated.
+        url:
+          type: string
+          format: uri
+          description: The API URL to this quiz statistics.
+        html_url:
+          type: string
+          format: uri
+          description: The URL to the page where the statistics can be seen visually.
+        question_statistics:
+          type: array
+          nullable: true
+          description: Question-specific statistics for each question and its answers.
+          items:
+            $ref: "#/components/schemas/QuizStatisticsQuestionStatistics"
+        submission_statistics:
+          nullable: true
+          description: Generic statistics for all submissions for a quiz.
+          $ref: "#/components/schemas/QuizStatisticsSubmissionStatistics"
+        links:
+          nullable: true
+          description: Links to related resources.
+          $ref: "#/components/schemas/QuizStatisticsLinks"
+      required:
+        - id
+        - multiple_attempts_exist
+        - includes_all_versions
+        - generated_at
+        - url
+        - html_url
+    QuizStatisticsLinks:
+      type: object
+      properties:
+        quiz:
+          type: string
+          format: uri
+          description: API URL to the quiz this statistics describe.
+    QuizStatisticsQuestionStatistics:
+      type: object
+      properties:
+        responses:
+          type: integer
+          description: Number of students who have provided an answer to this question.
+        answers:
+          type: array
+          description: Statistics related to each individual pre-defined answer.
+          items:
+            $ref: "#/components/schemas/QuizStatisticsAnswerStatistics"
+    QuizStatisticsAnswerStatistics:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the answer.
+        text:
+          type: string
+          description: The text attached to the answer.
+        weight:
+          type: integer
+          description: An integer to determine correctness (0 for incorrect, 100 for correct).
+        responses:
+          type: integer
+          description: Number of students who have chosen this answer.
+    QuizStatisticsSubmissionStatistics:
+      type: object
+      properties:
+        unique_count:
+          type: integer
+          description: The number of students who have taken the quiz.
+        score_average:
+          type: number
+          description: The mean of the student submission scores.
+        score_high:
+          type: number
+          description: The highest submission score.
+        score_low:
+          type: number
+          description: The lowest submission score.
+        score_stdev:
+          type: number
+          description: Standard deviation of the submission scores.
+        scores:
+          type: object
+          description: A percentile distribution of the student scores.
+          additionalProperties:
+            type: integer
+        correct_count_average:
+          type: number
+          description: The mean number of questions answered correctly per student.
+        incorrect_count_average:
+          type: number
+          description: The mean number of questions answered incorrectly per student.
+        duration_average:
+          type: number
+          description: The average time spent by students while taking the quiz.

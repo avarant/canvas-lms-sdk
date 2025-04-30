@@ -1,0 +1,296 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Content Shares API
+  version: '1.0.0'
+paths:
+  /api/v1/users/{user_id}/content_shares:
+    post:
+      summary: Share content directly between two or more users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - receiver_ids
+                - content_type
+                - content_id
+              properties:
+                receiver_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of users to share the content with.
+                content_type:
+                  type: string
+                  enum:
+                    - assignment
+                    - discussion_topic
+                    - page
+                    - quiz
+                    - module
+                    - module_item
+                  description: Type of content you are sharing.
+                content_id:
+                  type: integer
+                  description: The id of the content that you are sharing.
+      responses:
+        '200':
+          description: A ContentShare object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentShare'
+      security:
+        - bearerAuth: []
+  /api/v1/users/{user_id}/content_shares/sent:
+    get:
+      summary: List content shares sent by a user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of ContentShare objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentShare'
+      security:
+        - bearerAuth: []
+  /api/v1/users/{user_id}/content_shares/received:
+    get:
+      summary: List content shares received by a user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of ContentShare objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentShare'
+      security:
+        - bearerAuth: []
+  /api/v1/users/{user_id}/content_shares/unread_count:
+    get:
+      summary: Get the number of unread content shares received by a user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Number of unread content shares
+          content:
+            application/json:
+              schema:
+                type: integer
+      security:
+        - bearerAuth: []
+  /api/v1/users/{user_id}/content_shares/{id}:
+    get:
+      summary: Get a content share
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          description: The ID of the content share
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A ContentShare object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentShare'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Remove a content share from your list
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          description: The ID of the content share
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Content share removed
+      security:
+        - bearerAuth: []
+    put:
+      summary: Mark a content share read or unread
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          description: The ID of the content share
+          schema:
+            type: integer
+        - name: read_state
+          in: query
+          description: Read state for the content share
+          schema:
+            type: string
+            enum:
+              - read
+              - unread
+      responses:
+        '200':
+          description: A ContentShare object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentShare'
+      security:
+        - bearerAuth: []
+  /api/v1/users/{user_id}/content_shares/{id}/add_users:
+    post:
+      summary: Send a previously created content share to additional users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user or "self"
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          description: The ID of the content share
+          schema:
+            type: integer
+        - name: receiver_ids
+          in: query
+          description: IDs of users to share the content with.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: A ContentShare object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentShare'
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    ContentShare:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        content_type:
+          type: string
+          enum:
+            - assignment
+            - discussion_topic
+            - page
+            - quiz
+            - module
+            - module_item
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        user_id:
+          type: integer
+        sender:
+          type: object
+          properties:
+            id:
+              type: integer
+            display_name:
+              type: string
+            avatar_image_url:
+              type: string
+            html_url:
+              type: string
+        receivers:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              display_name:
+                type: string
+              avatar_image_url:
+                type: string
+              html_url:
+                type: string
+        source_course:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        read_state:
+          type: string
+          enum:
+            - read
+            - unread
+        content_export:
+          type: object
+          properties:
+            id:
+              type: integer

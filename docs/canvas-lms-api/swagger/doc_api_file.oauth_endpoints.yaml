@@ -1,0 +1,208 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LMS OAuth2 Endpoints
+  version: "2025-04-29"
+servers:
+  - url: https://{canvasInstallUrl}
+    description: Canvas instance base URL
+    variables:
+      canvasInstallUrl:
+        default: canvas.instructure.com
+paths:
+  /login/oauth2/auth:
+    get:
+      summary: Initiate OAuth2 authorization
+      description: Redirects the user to Canvas to authorize and obtain an authorization code.
+      parameters:
+        - name: client_id
+          in: query
+          description: The client id for your registered application.
+          required: true
+          schema:
+            type: string
+        - name: response_type
+          in: query
+          description: The type of OAuth2 response requested. The only supported value is "code".
+          required: true
+          schema:
+            type: string
+            enum:
+              - code
+        - name: redirect_uri
+          in: query
+          description: >
+            The URL where the user will be redirected after authorization.
+            The domain must match the developer key settings, or be a subdomain.
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: >
+            Arbitrary state passed back to the application for CSRF protection.
+          required: false
+          schema:
+            type: string
+        - name: scope
+          in: query
+          description: Space-delimited list of scopes to request.
+          required: false
+          schema:
+            type: string
+        - name: purpose
+          in: query
+          description: Helps the user identify which instance of an application this token is for.
+          required: false
+          schema:
+            type: string
+        - name: force_login
+          in: query
+          description: Set to '1' to force reauthentication even if already logged in.
+          required: false
+          schema:
+            type: string
+        - name: unique_id
+          in: query
+          description: Prefills the login form with this username.
+          required: false
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          description: >
+            If 'none', Canvas will immediately redirect with a code or error.
+          required: false
+          schema:
+            type: string
+            enum:
+              - none
+      responses:
+        "302":
+          description: Redirect to the redirect_uri including authorization code or error.
+          headers:
+            Location:
+              description: Redirect URL containing authorization code or error.
+              schema:
+                type: string
+
+  /login/oauth2/token:
+    post:
+      summary: Obtain OAuth2 access token
+      description: Exchange an authorization code, refresh token, or client credentials for an access token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - authorization_code
+                    - refresh_token
+                    - client_credentials
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                redirect_uri:
+                  type: string
+                code:
+                  type: string
+                refresh_token:
+                  type: string
+                client_assertion_type:
+                  type: string
+                  enum:
+                    - urn:ietf:params:oauth:client-assertion-type:jwt-bearer
+                client_assertion:
+                  type: string
+                scope:
+                  type: string
+              required:
+                - grant_type
+      responses:
+        "200":
+          description: Successful token response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                  refresh_token:
+                    type: string
+                  expires_in:
+                    type: integer
+                  canvas_region:
+                    type: string
+        "400":
+          description: Invalid request or grant
+
+    delete:
+      summary: Revoke an access token
+      description: >
+        Revoke the current access token. Optionally expire all web sessions.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: expire_sessions
+          in: query
+          description: Set to '1' to end all of the user's Canvas web sessions.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Token revoked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  forward_url:
+                    type: string
+                    description: URL to redirect the user for SLO if supported
+
+  /login/session_token:
+    get:
+      summary: Obtain a Canvas session URL
+      description: >
+        Use an API access token to get a time-limited URL to begin a Canvas web session.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: return_to
+          in: query
+          description: URL to begin the web session at (defaults to dashboard).
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session URL generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session_url:
+                    type: string
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2

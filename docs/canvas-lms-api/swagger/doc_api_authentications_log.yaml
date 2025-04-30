@@ -1,0 +1,203 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LMS Authentications Log API
+  version: "1.0"
+paths:
+  /api/v1/audit/authentication/logins/{login_id}:
+    get:
+      summary: List authentication events for a given login
+      description: |
+        List authentication events (login and logout) for a specific login (pseudonym). 
+        Returns a compound document with paginated primary event objects and related logins, accounts, page views, and users.
+      tags:
+        - Authentications Log
+      parameters:
+        - name: login_id
+          in: path
+          description: ID of the login (pseudonym) to query events for
+          required: true
+          schema:
+            type: integer
+        - name: start_time
+          in: query
+          description: The beginning of the time range from which you want events. Events are stored for one year.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: The end of the time range from which you want events
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A paginated list of authentication events with related resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationEventsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+  /api/v1/audit/authentication/accounts/{account_id}:
+    get:
+      summary: List authentication events for a given account
+      description: |
+        List authentication events (login and logout) for a specific account. 
+        Returns a compound document with paginated primary event objects and related logins, accounts, page views, and users.
+      tags:
+        - Authentications Log
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account to query events for
+          required: true
+          schema:
+            type: integer
+        - name: start_time
+          in: query
+          description: The beginning of the time range from which you want events. Events are stored for one year.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: The end of the time range from which you want events
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A paginated list of authentication events with related resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationEventsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+  /api/v1/audit/authentication/users/{user_id}:
+    get:
+      summary: List authentication events for a given user
+      description: |
+        List authentication events (login and logout) for a specific user. 
+        Returns a compound document with paginated primary event objects and related logins, accounts, page views, and users.
+      tags:
+        - Authentications Log
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user to query events for
+          required: true
+          schema:
+            type: integer
+        - name: start_time
+          in: query
+          description: The beginning of the time range from which you want events. Events are stored for one year.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: The end of the time range from which you want events
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A paginated list of authentication events with related resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationEventsResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+components:
+  schemas:
+    AuthenticationEvent:
+      type: object
+      description: Details of a single authentication event
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the event
+        event_type:
+          type: string
+          description: Authentication event type ('login' or 'logout')
+          enum:
+            - login
+            - logout
+        pseudonym_id:
+          type: integer
+          description: ID of the pseudonym (login) associated with the event
+        account_id:
+          type: integer
+          description: ID of the account associated with the event. Matches the account_id in the associated pseudonym
+        user_id:
+          type: integer
+          description: ID of the user associated with the event. Matches the user_id in the associated pseudonym
+      required:
+        - created_at
+        - event_type
+        - pseudonym_id
+        - account_id
+        - user_id
+      example:
+        created_at: "2012-07-19T15:00:00-06:00"
+        event_type: "login"
+        pseudonym_id: 9478
+        account_id: 2319
+        user_id: 362
+
+    AuthenticationEventsResponse:
+      type: object
+      description: Compound document containing authentication events and related resources
+      properties:
+        authentication_events:
+          type: array
+          description: Primary collection of authentication event objects (paginated)
+          items:
+            $ref: '#/components/schemas/AuthenticationEvent'
+        logins:
+          type: array
+          description: Related login resources
+          items:
+            type: object
+        accounts:
+          type: array
+          description: Related account resources
+          items:
+            type: object
+        page_views:
+          type: array
+          description: Related page view resources
+          items:
+            type: object
+        users:
+          type: array
+          description: Related user resources
+          items:
+            type: object
+      required:
+        - authentication_events

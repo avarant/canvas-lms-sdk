@@ -1,0 +1,290 @@
+openapi: 3.0.0
+info:
+  title: Course Pace API
+  version: "1.0"
+  description: API for accessing and building Course Paces.
+servers:
+  - url: https://{canvasHost}
+    variables:
+      canvasHost:
+        default: api.canvas.example.edu
+paths:
+  /api/v1/courses/{course_id}/course_pacing/{id}:
+    get:
+      summary: Show a Course pace
+      description: Returns a course pace for the course and pace id provided.
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: The id of the course pace
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: A CoursePace object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePace'
+    put:
+      summary: Update a Course pace
+      description: Returns the updated course pace.
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: The id of the course pace
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Fields to update for the course pace
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                end_date:
+                  type: string
+                  format: date-time
+                  description: End date of the course pace
+                exclude_weekends:
+                  type: boolean
+                  description: Course pace dates excludes weekends if true
+                selected_days_to_skip:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of days to skip (e.g., ["fri","sat"])
+                hard_end_dates:
+                  type: boolean
+                  description: Use hard end dates if true
+                workflow_state:
+                  type: string
+                  description: The state of the course pace
+                course_pace_module_item_attributes:
+                  type: array
+                  items:
+                    type: object
+                  description: Module items attributes
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: The updated CoursePace object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePace'
+    delete:
+      summary: Delete a Course pace
+      description: Returns the deleted course pace.
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: The id of the course pace
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: The deleted CoursePace object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePace'
+  /api/v1/courses/{course_id}/course_pacing:
+    post:
+      summary: Create a Course pace
+      description: Create a new course pace for the specified course.
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Course pace object to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                end_date:
+                  type: string
+                  format: date-time
+                exclude_weekends:
+                  type: boolean
+                selected_days_to_skip:
+                  type: array
+                  items:
+                    type: string
+                hard_end_dates:
+                  type: boolean
+                workflow_state:
+                  type: string
+                course_pace_module_item_attributes:
+                  type: array
+                  items:
+                    type: object
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: The created CoursePace object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePace'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CoursePace:
+      type: object
+      description: A CoursePace object
+      properties:
+        id:
+          type: integer
+          description: The ID of the course pace
+        course_id:
+          type: integer
+        user_id:
+          type: integer
+        workflow_state:
+          type: string
+        exclude_weekends:
+          type: boolean
+        selected_days_to_skip:
+          type: array
+          items:
+            type: string
+        hard_end_dates:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        root_account_id:
+          type: integer
+        start_date:
+          type: string
+          format: date-time
+        modules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+          nullable: true
+        progress:
+          $ref: '#/components/schemas/Progress'
+          nullable: true
+    Module:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        position:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModuleItem'
+          nullable: true
+        context_id:
+          type: integer
+        context_type:
+          type: string
+    ModuleItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        duration:
+          type: integer
+        course_pace_id:
+          type: integer
+        root_account_id:
+          type: integer
+        module_item_id:
+          type: integer
+        assignment_title:
+          type: string
+        points_possible:
+          type: number
+        assignment_link:
+          type: string
+        position:
+          type: integer
+        module_item_type:
+          type: string
+        published:
+          type: boolean
+    Progress:
+      type: object
+      properties:
+        id:
+          type: integer
+        context_id:
+          type: integer
+        context_type:
+          type: string
+        user_id:
+          type: integer
+        tag:
+          type: string
+        completion:
+          type: integer
+        workflow_state:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        message:
+          type: string
+        results:
+          type: object
+          additionalProperties: true
+        url:
+          type: string
+          format: uri}

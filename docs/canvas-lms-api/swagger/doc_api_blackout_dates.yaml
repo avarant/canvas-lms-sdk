@@ -1,0 +1,366 @@
+openapi: 3.0.0
+info:
+  title: Blackout Dates API
+  version: "1.0"
+paths:
+  /api/v1/courses/{course_id}/blackout_dates:
+    get:
+      summary: List blackout dates for a course
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of BlackoutDate objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlackoutDate'
+    post:
+      summary: Create a blackout date for a course
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Blackout date to create
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlackoutDateInput'
+      responses:
+        '200':
+          description: The created BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+    put:
+      summary: Bulk create, update, and delete blackout dates for a course
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Array of blackout dates to sync
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkBlackoutDatesRequest'
+      responses:
+        '200':
+          description: The list of blackout dates after sync
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlackoutDate'
+  /api/v1/accounts/{account_id}/blackout_dates:
+    get:
+      summary: List blackout dates for an account
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of BlackoutDate objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BlackoutDate'
+    post:
+      summary: Create a blackout date for an account
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Blackout date to create
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlackoutDateInput'
+      responses:
+        '200':
+          description: The created BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+  /api/v1/courses/{course_id}/blackout_dates/{id}:
+    get:
+      summary: Get a single blackout date for a course
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the blackout date
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+    put:
+      summary: Update a blackout date for a course
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the blackout date
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Fields to update on the blackout date
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlackoutDateInput'
+      responses:
+        '200':
+          description: The updated BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+    delete:
+      summary: Delete a blackout date for a course
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the blackout date
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The deleted BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+  /api/v1/accounts/{account_id}/blackout_dates/{id}:
+    get:
+      summary: Get a single blackout date for an account
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the blackout date
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+    put:
+      summary: Update a blackout date for an account
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the blackout date
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Fields to update on the blackout date
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BlackoutDateInput'
+      responses:
+        '200':
+          description: The updated BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+    delete:
+      summary: Delete a blackout date for an account
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the blackout date
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The deleted BlackoutDate object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+  /api/v1/courses/{course_id}/blackout_dates/new:
+    get:
+      summary: Initialize a new, unsaved blackout date for a course
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An unsaved BlackoutDate object with default values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+  /api/v1/accounts/{account_id}/blackout_dates/new:
+    get:
+      summary: Initialize a new, unsaved blackout date for an account
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An unsaved BlackoutDate object with default values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackoutDate'
+components:
+  schemas:
+    BlackoutDate:
+      type: object
+      properties:
+        id:
+          type: integer
+        context_id:
+          type: integer
+        context_type:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        event_title:
+          type: string
+      required:
+        - id
+        - context_id
+        - context_type
+        - start_date
+        - end_date
+        - event_title
+    BlackoutDateInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          description: The start date of the blackout date
+        end_date:
+          type: string
+          format: date
+          description: The end date of the blackout date
+        event_title:
+          type: string
+          description: The title of the blackout date
+      required:
+        - start_date
+        - end_date
+        - event_title
+    BulkBlackoutDatesRequest:
+      type: object
+      properties:
+        blackout_dates:
+          type: array
+          description: >
+            An array of blackout date objects. Existing entries with an `id` are updated,
+            entries without an `id` are created, and any existing blackout dates not present
+            in the array are deleted.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              start_date:
+                type: string
+                format: date
+              end_date:
+                type: string
+                format: date
+              event_title:
+                type: string
+            required:
+              - start_date
+              - end_date
+              - event_title

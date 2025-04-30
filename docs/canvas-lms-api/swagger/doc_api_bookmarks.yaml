@@ -1,0 +1,146 @@
+openapi: "3.0.0"
+info:
+  title: "Canvas LMS Bookmarks API"
+  version: "1.0.0"
+servers:
+  - url: "https://{canvas}/api/v1"
+    description: Canvas LMS API server
+    variables:
+      canvas:
+        default: "canvas.instructure.com"
+security:
+  - bearerAuth: []
+paths:
+  /users/self/bookmarks:
+    get:
+      tags:
+        - Bookmarks
+      summary: "Returns the paginated list of bookmarks."
+      responses:
+        '200':
+          description: "A list of Bookmark objects."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bookmark'
+    post:
+      tags:
+        - Bookmarks
+      summary: "Creates a bookmark."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "The name of the bookmark."
+                url:
+                  type: string
+                  description: "The URL of the bookmark."
+                position:
+                  type: integer
+                  description: "The position of the bookmark. Defaults to the bottom."
+                data:
+                  type: object
+                  description: "The data associated with the bookmark."
+              required:
+                - name
+                - url
+      responses:
+        '200':
+          description: "The created Bookmark object."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookmark'
+  /users/self/bookmarks/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: "The ID of the bookmark."
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Bookmarks
+      summary: "Returns the details for a bookmark."
+      responses:
+        '200':
+          description: "A Bookmark object."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookmark'
+    put:
+      tags:
+        - Bookmarks
+      summary: "Updates a bookmark."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "The name of the bookmark."
+                url:
+                  type: string
+                  description: "The URL of the bookmark."
+                position:
+                  type: integer
+                  description: "The position of the bookmark. Defaults to the bottom."
+                data:
+                  type: object
+                  description: "The data associated with the bookmark."
+      responses:
+        '200':
+          description: "The updated Bookmark object."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookmark'
+    delete:
+      tags:
+        - Bookmarks
+      summary: "Deletes a bookmark."
+      responses:
+        '204':
+          description: "No content."
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Bookmark:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "The unique identifier for the bookmark."
+        name:
+          type: string
+          description: "The display name of the bookmark."
+        url:
+          type: string
+          description: "The URL that the bookmark points to."
+        position:
+          type: integer
+          description: "The position of the bookmark in the list."
+        data:
+          type: object
+          description: "Additional data associated with the bookmark."
+      required:
+        - id
+        - name
+        - url
+        - position

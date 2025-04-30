@@ -1,0 +1,326 @@
+openapi: 3.0.0
+info:
+  title: LTI Registrations API
+  version: BETA
+servers:
+  - url: https://{{canvas-instance}}/api/v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ListLtiRegistrationsResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LtiRegistration'
+    LtiRegistration:
+      type: object
+      description: A registration of an LTI tool in Canvas
+      # Full schema omitted for brevity
+paths:
+  /accounts/{account_id}/lti_registrations:
+    get:
+      summary: List LTI Registrations in an account
+      description: >
+        Returns all LTI registrations in the specified account. Includes registrations created in this account, those set to 'allow' from a parent root account, and those enabled 'on' at the parent root account level.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas account ID.
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+          description: The number of registrations to return per page. Defaults to 15.
+        - name: page
+          in: query
+          schema:
+            type: integer
+          description: The page number to return. Defaults to 1.
+        - name: sort
+          in: query
+          schema:
+            type: string
+          description: The field to sort by. Choices: name, nickname, lti_version, installed, installed_by, updated_by, updated, on. Defaults to installed.
+        - name: dir
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: The order to sort the given column by. Defaults to desc.
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [account_binding, configuration, overlaid_configuration, overlay]
+          description: Array of additional data to include. Always includes [account_binding].
+      responses:
+        '200':
+          description: A paginated list of LTI registrations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListLtiRegistrationsResponse'
+    post:
+      summary: Create an LTI Registration
+      description: >
+        Create a new LTI Registration, along with an associated Tool Configuration, Developer Key, and Registration Account binding.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas account ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the tool.
+                admin_nickname:
+                  type: string
+                  description: A friendly nickname set by admins.
+                vendor:
+                  type: string
+                  description: The vendor of the tool.
+                description:
+                  type: string
+                  description: A description of the tool. Cannot exceed 2048 bytes.
+                configuration:
+                  type: object
+                  description: Lti::ToolConfiguration or Lti::LegacyConfiguration for the tool.
+                overlay:
+                  type: object
+                  description: Lti::Overlay configuration overrides.
+                unified_tool_id:
+                  type: string
+                  description: Unique identifier for analytics. Generated if omitted.
+                workflow_state:
+                  type: string
+                  enum: [on, off, allow]
+                  description: >
+                    The desired state for this registration/account binding.  
+                    "allow" is only valid for Site Admin registrations. Defaults to "off".
+              required:
+                - configuration
+      responses:
+        '200':
+          description: The created LTI registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiRegistration'
+  /accounts/{account_id}/lti_registrations/{id}:
+    get:
+      summary: Show an LTI Registration
+      description: Return details about the specified LTI registration, including the configuration and account binding.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas account ID.
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The registration ID.
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [account_binding, configuration, overlaid_configuration, overlaid_legacy_configuration, overlay, overlay_versions]
+          description: Array of additional data to include.
+      responses:
+        '200':
+          description: Details of the specified LTI registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiRegistration'
+    put:
+      summary: Update an LTI Registration
+      description: Update the specified LTI registration. Updating the base tool configuration of a dynamic registration returns 422; other fields are freely updatable.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                admin_nickname:
+                  type: string
+                description:
+                  type: string
+                configuration:
+                  type: object
+                  description: Lti::ToolConfiguration or Lti::LegacyConfiguration. Not allowed for dynamic registrations.
+                overlay:
+                  type: object
+                  description: Lti::Overlay overrides.
+                workflow_state:
+                  type: string
+                  enum: [on, off, allow]
+              # no required fields; at least one must be present
+      responses:
+        '200':
+          description: The updated LTI registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiRegistration'
+    delete:
+      summary: Delete an LTI Registration
+      description: Remove the specified LTI registration.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The deleted LTI registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiRegistration'
+  /accounts/{account_id}/lti_registration_by_client_id/{client_id}:
+    get:
+      summary: Show an LTI Registration (via the client_id)
+      description: Returns details about the specified LTI registration by client_id.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: client_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The client_id of the registration.
+      responses:
+        '200':
+          description: The specified LTI registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiRegistration'
+  /accounts/{account_id}/lti_registrations/{id}/reset:
+    put:
+      summary: Reset an LTI Registration to Defaults
+      description: >
+        Reset the specified LTI registration to its default settings in this context,
+        removing all customizations present in the overlay.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The reset LTI registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiRegistration'
+  /accounts/{account_id}/lti_registrations/{id}/bind:
+    post:
+      summary: Bind an LTI Registration to an Account
+      description: >
+        Enable or disable the specified LTI registration for the specified account.
+        Only allowed for root accounts. Use "allow" to make the registration visible but not enabled.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workflow_state:
+                  type: string
+                  enum: [on, off, allow]
+                  description: The desired state for this registration/account binding.
+              required:
+                - workflow_state
+      responses:
+        '200':
+          description: The binding result as an LTI registration object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiRegistration'

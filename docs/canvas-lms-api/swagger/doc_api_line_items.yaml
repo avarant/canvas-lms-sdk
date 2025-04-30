@@ -1,0 +1,274 @@
+openapi: "3.0.0"
+info:
+  title: "Canvas LMS Line Items API"
+  version: "1.0.0"
+  description: |
+    Line Item API for IMS Assignment and Grade Services.
+paths:
+  /api/lti/courses/{course_id}/line_items:
+    post:
+      summary: "Create a Line Item"
+      tags:
+        - "Line Items"
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course"
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: "Line Item to create"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scoreMaximum:
+                  type: number
+                  description: "The maximum score for the line item."
+                label:
+                  type: string
+                  description: "The label for the Line Item."
+                resourceId:
+                  type: string
+                  description: "A Tool Provider specified id for the Line Item."
+                tag:
+                  type: string
+                  description: "A value used to qualify a line Item beyond its ids."
+                resourceLinkId:
+                  type: string
+                  description: "The resource link id the Line Item should be attached to."
+                startDateTime:
+                  type: string
+                  format: date-time
+                  description: "The ISO8601 date/time when the line item is made available."
+                endDateTime:
+                  type: string
+                  format: date-time
+                  description: "The ISO8601 date/time when the line item stops receiving submissions."
+                "https://canvas.instructure.com/lti/submission_type":
+                  type: object
+                  description: "(EXTENSION) - Optional block to set Assignment Submission Type."
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - none
+                        - external_tool
+                      description: "‘none’ or ‘external_tool’"
+                    external_tool_url:
+                      type: string
+                      description: "Submission URL only used when type is ‘external_tool’"
+              required:
+                - scoreMaximum
+                - label
+            example:
+              scoreMaximum: 100.0
+              label: "LineItemLabel1"
+              resourceId: "1"
+              tag: "MyTag"
+              resourceLinkId: "1"
+              startDateTime: "2022-01-31T22:23:11+0000"
+              endDateTime: "2022-02-07T22:23:11+0000"
+              "https://canvas.instructure.com/lti/submission_type":
+                type: "external_tool"
+                external_tool_url: "https://my.launch.url"
+      responses:
+        '200':
+          description: "A LineItem object"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineItem'
+    get:
+      summary: "List Line Items"
+      tags:
+        - "Line Items"
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course"
+          required: true
+          schema:
+            type: string
+        - name: tag
+          in: query
+          description: "If specified only Line Items with this tag will be included."
+          schema:
+            type: string
+        - name: resource_id
+          in: query
+          description: "If specified only Line Items with this resource_id will be included."
+          schema:
+            type: string
+        - name: resource_link_id
+          in: query
+          description: "If specified only Line Items attached to the specified resource_link_id will be included."
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: "May be used to limit the number of Line Items returned in a page."
+          schema:
+            type: string
+        - name: include
+          in: query
+          description: "Array of additional information to include."
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - launch_url
+      responses:
+        '200':
+          description: "An array of LineItem objects"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LineItem'
+  /api/lti/courses/{course_id}/line_items/{id}:
+    put:
+      summary: "Update a Line Item"
+      tags:
+        - "Line Items"
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course"
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: "ID of the Line Item"
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: "Fields to update on the Line Item"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scoreMaximum:
+                  type: number
+                label:
+                  type: string
+                resourceId:
+                  type: string
+                tag:
+                  type: string
+                startDateTime:
+                  type: string
+                  format: date-time
+                endDateTime:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: "The updated LineItem object"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineItem'
+    get:
+      summary: "Show a Line Item"
+      tags:
+        - "Line Items"
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course"
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: "ID of the Line Item"
+          required: true
+          schema:
+            type: string
+        - name: include
+          in: query
+          description: "Array of additional information to include."
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - launch_url
+      responses:
+        '200':
+          description: "A LineItem object"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineItem'
+    delete:
+      summary: "Delete a Line Item"
+      tags:
+        - "Line Items"
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course"
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: "ID of the Line Item"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "The deleted LineItem object"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineItem'
+components:
+  schemas:
+    LineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "The fully qualified URL for showing, updating, and deleting the Line Item."
+        scoreMaximum:
+          type: number
+          description: "The maximum score of the Line Item."
+        label:
+          type: string
+          description: "The label of the Line Item."
+        tag:
+          type: string
+          description: "Tag used to qualify a Line Item beyond its ids."
+        resourceId:
+          type: string
+          description: "A Tool Provider specified id for the Line Item."
+        resourceLinkId:
+          type: string
+          description: "The resource link id the Line Item is attached to."
+        "https://canvas.instructure.com/lti/submission_type":
+          type: object
+          description: "The extension that defines the submission_type of the line_item."
+        "https://canvas.instructure.com/lti/launch_url":
+          type: string
+          description: "The launch URL of the Line Item (returned when include=launch_url)."
+      required:
+        - id
+        - scoreMaximum
+        - label

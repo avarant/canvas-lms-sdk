@@ -1,0 +1,259 @@
+openapi: "3.0.0"
+info:
+  title: Outcome Results API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/outcome_results:
+    get:
+      summary: Gets the outcome results for users and outcomes in the specified context.
+      tags:
+        - Outcome Results
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: user_ids[]
+          in: query
+          description: >-
+            If specified, only the users whose ids are given will be included in the results. SIS ids can be used,
+            prefixed by "sis_user_id:". It is an error to specify an id for a user who is not a student in the context.
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+        - name: outcome_ids[]
+          in: query
+          description: >-
+            If specified, only the outcomes whose ids are given will be included in the results. It is an error to specify
+            an id for an outcome which is not linked to the context.
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+        - name: include[]
+          in: query
+          description: >-
+            Specify additional collections to be side loaded with the result. "alignments" includes only the alignments
+            referenced by the returned results. "outcomes.alignments" includes all alignments referenced by outcomes in the context.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - alignments
+                - outcomes
+                - outcomes.alignments
+                - outcome_groups
+                - outcome_links
+                - outcome_paths
+                - users
+          style: form
+          explode: true
+        - name: include_hidden
+          in: query
+          description: If true, results that are hidden from the learning mastery gradebook and student rollup scores will be included.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of outcome results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  outcome_results:
+                    type: array
+                    items:
+                      type: object
+              example:
+                outcome_results:
+                  - id: 42
+                    score: 6
+                    submitted_or_assessed_at: "2013-02-01T00:00:00-06:00"
+                    links:
+                      user: "3"
+                      learning_outcome: "97"
+                      alignment: "53"
+                    percent: 0.65
+
+  /api/v1/courses/{course_id}/assign_outcome_order:
+    post:
+      summary: Saves the ordering of outcomes in LMGB for a user.
+      tags:
+        - Outcome Results
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ordering saved successfully.
+
+  /api/v1/courses/{course_id}/outcome_rollups:
+    get:
+      summary: Gets the outcome rollups for the users and outcomes in the specified context.
+      tags:
+        - Outcome Results
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: aggregate
+          in: query
+          description: >-
+            If specified, instead of returning one rollup for each user, all the user rollups will be combined into one
+            rollup for the course that will contain the average (or median, see below) rollup score for each outcome.
+          required: false
+          schema:
+            type: string
+            enum:
+              - course
+        - name: aggregate_stat
+          in: query
+          description: >-
+            If aggregate rollups requested, then this value determines what statistic is used for the aggregate. Defaults
+            to "mean" if this value is not specified.
+          required: false
+          schema:
+            type: string
+            enum:
+              - mean
+              - median
+        - name: user_ids[]
+          in: query
+          description: >-
+            If specified, only the users whose ids are given will be included in the results or used in an aggregate result.
+            It is an error to specify an id for a user who is not a student in the context.
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+        - name: outcome_ids[]
+          in: query
+          description: >-
+            If specified, only the outcomes whose ids are given will be included in the results. It is an error to specify
+            an id for an outcome which is not linked to the context.
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+        - name: include[]
+          in: query
+          description: Specify additional collections to be side loaded with the result.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - courses
+                - outcomes
+                - outcomes.alignments
+                - outcome_groups
+                - outcome_links
+                - outcome_paths
+                - users
+          style: form
+          explode: true
+        - name: exclude[]
+          in: query
+          description: Specify additional values to exclude. "missing_user_rollups" excludes rollups for users without results.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - missing_user_rollups
+          style: form
+          explode: true
+        - name: sort_by
+          in: query
+          description: >-
+            If specified, sorts outcome result rollups. "student" sorting will sort by a user's sortable name. "outcome"
+            sorting will sort by the given outcome's rollup score. The latter requires specifying the "sort_outcome_id"
+            parameter. By default, the sort order is ascending.
+          required: false
+          schema:
+            type: string
+            enum:
+              - student
+              - outcome
+        - name: sort_outcome_id
+          in: query
+          description: If outcome sorting requested, then this determines which outcome to use for rollup score sorting.
+          required: false
+          schema:
+            type: integer
+        - name: sort_order
+          in: query
+          description: If sorting requested, then this allows changing the default sort order of ascending to descending.
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: add_defaults
+          in: query
+          description: >-
+            If defaults are requested, then color and mastery level defaults will be added to outcome ratings in the rollup.
+            This will only take effect if the Account Level Mastery Scales FF is DISABLED.
+          required: false
+          schema:
+            type: boolean
+        - name: contributing_scores
+          in: query
+          description: >-
+            If contributing scores are requested, then each individual outcome score will also include all graded artifacts
+            that contributed to the outcome score.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of outcome rollups with optional linked collections.
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                rollups:
+                  - scores: null
+                    name: "John Doe"
+                    links:
+                      course: 42
+                      user: 42
+                      section: 57
+                linked:
+                  outcomes: []
+                  users: []
+                  courses: []
+                  outcome_groups: []
+                  outcome_links: []
+                  outcome_paths: []
+                  outcomes.alignments: []

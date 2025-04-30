@@ -1,0 +1,332 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Grading Periods API
+  version: v1
+paths:
+  /api/v1/accounts/{account_id}/grading_periods:
+    get:
+      summary: List grading periods
+      description: Returns the paginated list of grading periods for the specified account.
+      parameters:
+        - name: account_id
+          in: path
+          description: The ID of the account.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of grading periods
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_periods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriod'
+  /api/v1/courses/{course_id}/grading_periods:
+    get:
+      summary: List grading periods
+      description: Returns the paginated list of grading periods for the specified course.
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of grading periods
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_periods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriod'
+  /api/v1/courses/{course_id}/grading_periods/{id}:
+    get:
+      summary: Get a single grading period
+      description: Returns the grading period with the given ID.
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course.
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: The ID of the grading period.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A grading period
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_periods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriod'
+    put:
+      summary: Update a single grading period
+      description: Update an existing grading period.
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course.
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: The ID of the grading period.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grading_periods:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      start_date:
+                        type: string
+                        format: date-time
+                        description: The date the grading period starts.
+                      end_date:
+                        type: string
+                        format: date-time
+                        description: The date the grading period ends.
+                      weight:
+                        type: number
+                        description: A weight value for the grading period.
+                    required:
+                      - start_date
+                      - end_date
+      responses:
+        '200':
+          description: The updated grading period(s)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_periods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriod'
+    delete:
+      summary: Delete a grading period
+      description: Deletes the specified grading period. Returns 204 on success.
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course.
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: The ID of the grading period.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+  /api/v1/accounts/{account_id}/grading_periods/{id}:
+    delete:
+      summary: Delete a grading period
+      description: Deletes the specified grading period. Returns 204 on success.
+      parameters:
+        - name: account_id
+          in: path
+          description: The ID of the account.
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: The ID of the grading period.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+  /api/v1/courses/{course_id}/grading_periods/batch_update:
+    patch:
+      summary: Batch update grading periods
+      description: Update multiple grading periods in a course.
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grading_periods:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The ID of the grading period (omit to create new).
+                      title:
+                        type: string
+                        description: The title of the grading period.
+                      start_date:
+                        type: string
+                        format: date-time
+                        description: The date the grading period starts.
+                      end_date:
+                        type: string
+                        format: date-time
+                        description: The date the grading period ends.
+                      close_date:
+                        type: string
+                        format: date-time
+                        description: The date after which grades can no longer be changed.
+                      weight:
+                        type: number
+                        description: A weight value for the grading period.
+                    required:
+                      - title
+                      - start_date
+                      - end_date
+                      - close_date
+      responses:
+        '200':
+          description: The updated grading period(s)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_periods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriod'
+  /api/v1/grading_period_sets/{set_id}/grading_periods/batch_update:
+    patch:
+      summary: Batch update grading periods
+      description: Update multiple grading periods in a grading period set.
+      parameters:
+        - name: set_id
+          in: path
+          description: The ID of the grading period set.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grading_periods:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The ID of the grading period (omit to create new).
+                      title:
+                        type: string
+                        description: The title of the grading period.
+                      start_date:
+                        type: string
+                        format: date-time
+                        description: The date the grading period starts.
+                      end_date:
+                        type: string
+                        format: date-time
+                        description: The date the grading period ends.
+                      close_date:
+                        type: string
+                        format: date-time
+                        description: The date after which grades can no longer be changed.
+                      weight:
+                        type: number
+                        description: A weight value for the grading period.
+                    required:
+                      - title
+                      - start_date
+                      - end_date
+                      - close_date
+      responses:
+        '200':
+          description: The updated grading period(s)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grading_periods:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GradingPeriod'
+components:
+  schemas:
+    GradingPeriod:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the grading period.
+        title:
+          type: string
+          description: The title of the grading period.
+        start_date:
+          type: string
+          format: date-time
+          description: The start date of the grading period.
+        end_date:
+          type: string
+          format: date-time
+          description: The end date of the grading period.
+        close_date:
+          type: string
+          format: date-time
+          description: The close date after which grades cannot be changed.
+        weight:
+          type: number
+          description: A weight value that contributes to the overall grading period set.
+        is_closed:
+          type: boolean
+          description: True if the grading period's close_date has passed.
+      required:
+        - id
+        - title
+        - start_date
+        - end_date
+        - close_date
+        - weight
+        - is_closed

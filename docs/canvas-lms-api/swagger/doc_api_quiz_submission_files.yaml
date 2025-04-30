@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Quiz Submission Files API
+  version: '1.0.0'
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/submissions/self/files:
+    post:
+      summary: Upload a file
+      description: |
+        Associate a new quiz submission file.  
+        This API endpoint is the first step in uploading a quiz submission file.  
+        See the File Upload Documentation for details on the file upload workflow.
+      tags:
+        - Quiz Submission Files
+      security:
+        - oauth2:
+          - "url:POST|/api/v1/courses/:course_id/quizzes/:quiz_id/submissions/self/files"
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the quiz submission file.
+                on_duplicate:
+                  type: string
+                  description: How to handle duplicate names.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        upload_url:
+                          type: string
+                          format: uri
+                          description: URL to upload the file to (e.g., S3 bucket).
+                        upload_params:
+                          type: object
+                          description: Parameters to include when uploading to the storage service.
+                          properties:
+                            key:
+                              type: string
+                            acl:
+                              type: string
+                            Filename:
+                              type: string
+                            AWSAccessKeyId:
+                              type: string
+                            Policy:
+                              type: string
+                            Signature:
+                              type: string
+                            Content-Type:
+                              type: string
+                          additionalProperties: false
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string

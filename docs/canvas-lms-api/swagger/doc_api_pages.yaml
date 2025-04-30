@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Pages API
+  version: "1.0"
+paths:
+  /api/v1/courses/{course_id}/front_page:
+    get:
+      summary: Show front page
+      description: Retrieve the content of the front page for a course.
+      tags:
+        - Pages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A Page object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+              example:
+                page_id: 1
+                url: "my-page-title"
+                title: "My Page Title"
+                created_at: "2012-08-06T16:46:33-06:00"
+                updated_at: "2012-08-08T14:25:20-06:00"
+                hide_from_students: false
+                editing_roles: "teachers,students"
+                last_edited_by: null
+                body: "<p>Page Content</p>"
+                published: true
+                publish_at: "2022-09-01T00:00:00"
+                front_page: true
+                locked_for_user: false
+                lock_info: null
+                lock_explanation: null
+                editor: "rce"
+                block_editor_attributes:
+                  id: 278
+                  version: "0.2"
+                  blocks: "{...block json here...}"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/groups/{group_id}/front_page:
+    get:
+      summary: Show front page
+      description: Retrieve the content of the front page for a group.
+      tags:
+        - Pages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A Page object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Page:
+      type: object
+      properties:
+        page_id:
+          type: integer
+          description: The ID of the page
+        url:
+          type: string
+          description: The unique locator for the page
+        title:
+          type: string
+          description: The title of the page
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        hide_from_students:
+          type: boolean
+          description: Deprecated; inverse of published
+        editing_roles:
+          type: string
+          description: Roles allowed to edit the page
+        last_edited_by:
+          type: object
+          nullable: true
+        body:
+          type: string
+          description: The page content in HTML
+        published:
+          type: boolean
+        publish_at:
+          type: string
+          format: date-time
+        front_page:
+          type: boolean
+        locked_for_user:
+          type: boolean
+        lock_info:
+          type: object
+          nullable: true
+        lock_explanation:
+          type: string
+          nullable: true
+        editor:
+          type: string
+          enum: [rce, block_editor]
+        block_editor_attributes:
+          type: object
+          nullable: true
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message of the failure.

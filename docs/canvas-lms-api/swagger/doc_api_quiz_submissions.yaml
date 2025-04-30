@@ -1,0 +1,399 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Quiz Submissions API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/submissions:
+    get:
+      summary: Get a list of all submissions for this quiz.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the quiz submission.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - submission
+                - quiz
+                - user
+      responses:
+        '200':
+          description: A list of quiz submissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizSubmission'
+    post:
+      summary: Start taking a quiz (create a quiz submission).
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Parameters to start a quiz submission.
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_code:
+                  type: string
+                  description: Access code for the quiz, if any.
+                preview:
+                  type: boolean
+                  description: Whether this is a preview submission (teachers only).
+      responses:
+        '200':
+          description: Quiz submission started successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizSubmission'
+        '400':
+          description: Bad Request (e.g., quiz is locked)
+        '403':
+          description: Forbidden (invalid access code or IP filter violation)
+        '409':
+          description: Conflict (submission already exists)
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/submission:
+    get:
+      summary: Get the current user's submission for this quiz.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the quiz submission.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - submission
+                - quiz
+                - user
+      responses:
+        '200':
+          description: The quiz submission for the current user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizSubmission'
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/submissions/{id}:
+    get:
+      summary: Get a single quiz submission by ID.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the quiz submission.
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the quiz submission.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - submission
+                - quiz
+                - user
+      responses:
+        '200':
+          description: The requested quiz submission.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizSubmission'
+    put:
+      summary: Update student question scores and comments.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the quiz submission.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Quiz submission updates (manual scoring, fudge points).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz_submissions:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - attempt
+                    properties:
+                      attempt:
+                        type: integer
+                        description: The attempt number to update (must be complete).
+                      fudge_points:
+                        type: number
+                        description: Points to add or subtract.
+                      questions:
+                        type: object
+                        description: Scores and comments per question.
+                        additionalProperties:
+                          type: object
+                          properties:
+                            score:
+                              type: number
+                              description: Score for the question.
+                            comment:
+                              type: string
+                              description: Comment for the question.
+      responses:
+        '200':
+          description: Quiz submission updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizSubmission'
+        '400':
+          description: Bad Request (e.g., missing/invalid attempt, attempt not complete)
+        '403':
+          description: Forbidden (insufficient permissions)
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/submissions/{id}/complete:
+    post:
+      summary: Complete the quiz submission (turn it in).
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the quiz submission.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Parameters to complete a quiz submission.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - attempt
+                - validation_token
+              properties:
+                attempt:
+                  type: integer
+                  description: The latest attempt number to complete.
+                validation_token:
+                  type: string
+                  description: Validation token received when the submission was created.
+                access_code:
+                  type: string
+                  description: Access code for the quiz, if any.
+      responses:
+        '200':
+          description: Quiz submission completed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizSubmission'
+        '400':
+          description: Bad Request (e.g., already complete, missing/invalid attempt)
+        '403':
+          description: Forbidden (invalid access code, IP filter violation, invalid token)
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/submissions/{id}/time:
+    get:
+      summary: Get current timing data for the quiz attempt.
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the quiz submission.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Current timing data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  end_at:
+                    type: string
+                    format: date-time
+                    description: When the submission becomes overdue.
+                  time_left:
+                    type: integer
+                    description: Time left in seconds.
+components:
+  schemas:
+    QuizSubmission:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the quiz submission.
+        quiz_id:
+          type: integer
+          description: The ID of the quiz.
+        user_id:
+          type: integer
+          description: The ID of the student.
+        submission_id:
+          type: integer
+          description: The ID of the submission.
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        attempt:
+          type: integer
+        extra_attempts:
+          type: integer
+        extra_time:
+          type: integer
+        manually_unlocked:
+          type: boolean
+        time_spent:
+          type: integer
+        score:
+          type: number
+        score_before_regrade:
+          type: number
+        kept_score:
+          type: number
+        fudge_points:
+          type: number
+        has_seen_results:
+          type: boolean
+        workflow_state:
+          type: string
+          description: Current state of the quiz submission.
+          enum:
+            - untaken
+            - pending_review
+            - complete
+            - settings_only
+            - preview
+        overdue_and_needs_submission:
+          type: boolean
+  securitySchemes: {}
+security: []

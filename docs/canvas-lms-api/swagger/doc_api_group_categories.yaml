@@ -1,0 +1,500 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Group Categories API
+  version: "1.0.0"
+servers:
+  - url: https://{canvas}/api/v1
+    variables:
+      canvas:
+        default: canvas.instructure.com
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    GroupCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the group category.
+        name:
+          type: string
+          description: The display name of the group category.
+        role:
+          type: string
+          nullable: true
+          description: >
+            Certain types of group categories have special role designations.
+            Currently these include: 'communities', 'student_organized', 'imported'.
+        self_signup:
+          type: string
+          nullable: true
+          description: >
+            If enabled, users may join a group themselves. Values: 'enabled',
+            'restricted', or null.
+        auto_leader:
+          type: string
+          nullable: true
+          description: >
+            Auto-assign group leaders. Values: 'random', 'first', or null.
+        context_type:
+          type: string
+        account_id:
+          type: integer
+        course_id:
+          type: integer
+        group_limit:
+          type: integer
+          nullable: true
+        sis_group_category_id:
+          type: string
+          nullable: true
+        sis_import_id:
+          type: integer
+          nullable: true
+        progress:
+          $ref: '#/components/schemas/Progress'
+        non_collaborative:
+          type: boolean
+          nullable: true
+    Progress:
+      type: object
+      properties:
+        id:
+          type: integer
+        completion:
+          type: integer
+        context_id:
+          type: integer
+        context_type:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        message:
+          type: string
+          nullable: true
+        tag:
+          type: string
+        workflow_state:
+          type: string
+        user_id:
+          type: integer
+          nullable: true
+        url:
+          type: string
+    Group:
+      type: object
+    User:
+      type: object
+paths:
+  /accounts/{account_id}/group_categories:
+    get:
+      summary: List group categories for an account
+      description: Returns a paginated list of group categories in an account context.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: collaboration_state
+          in: query
+          schema:
+            type: string
+            enum: [all, collaborative, non_collaborative]
+          description: >
+            Filter by collaboration state: 'all', 'collaborative' (default),
+            or 'non_collaborative'.
+      responses:
+        "200":
+          description: A list of GroupCategory objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCategory'
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create a Group Category in an account
+      description: Create a new group category under an account.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                  description: Name of the group category.
+                non_collaborative:
+                  type: boolean
+                  description: Only users with the Differentiated Tag Add permission can set.
+                self_signup:
+                  type: string
+                  enum: [enabled, restricted]
+                  description: >
+                    Allow students to self sign up (course only).
+                auto_leader:
+                  type: string
+                  enum: [first, random]
+                  description: Auto-assign group leaders.
+                group_limit:
+                  type: integer
+                  description: Limit number of users per group (requires self_signup).
+                sis_group_category_id:
+                  type: string
+                  description: SIS identifier.
+                create_group_count:
+                  type: integer
+                  description: Create this number of groups (course only).
+                split_group_count:
+                  type: integer
+                  description: Deprecated. Evenly distribute students synchronously.
+      responses:
+        "200":
+          description: The created GroupCategory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCategory'
+      security:
+        - bearerAuth: []
+  /courses/{course_id}/group_categories:
+    get:
+      summary: List group categories for a course
+      description: Returns a paginated list of group categories in a course context.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: collaboration_state
+          in: query
+          schema:
+            type: string
+            enum: [all, collaborative, non_collaborative]
+      responses:
+        "200":
+          description: A list of GroupCategory objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupCategory'
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create a Group Category in a course
+      description: Create a new group category under a course.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                non_collaborative:
+                  type: boolean
+                self_signup:
+                  type: string
+                  enum: [enabled, restricted]
+                auto_leader:
+                  type: string
+                  enum: [first, random]
+                group_limit:
+                  type: integer
+                sis_group_category_id:
+                  type: string
+                create_group_count:
+                  type: integer
+                split_group_count:
+                  type: integer
+      responses:
+        "200":
+          description: The created GroupCategory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCategory'
+      security:
+        - bearerAuth: []
+  /group_categories/{group_category_id}:
+    get:
+      summary: Get a single group category
+      description: Returns the data for a single group category.
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A GroupCategory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCategory'
+        "401":
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+    put:
+      summary: Update a Group Category
+      description: Modifies an existing group category.
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                self_signup:
+                  type: string
+                  enum: [enabled, restricted]
+                auto_leader:
+                  type: string
+                  enum: [first, random]
+                group_limit:
+                  type: integer
+                sis_group_category_id:
+                  type: string
+                create_group_count:
+                  type: integer
+                split_group_count:
+                  type: integer
+      responses:
+        "200":
+          description: The updated GroupCategory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCategory'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Delete a Group Category
+      description: Deletes a group category and all groups under it.
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: No Content
+      security:
+        - bearerAuth: []
+  /courses/{course_id}/group_categories/bulk_manage_differentiation_tag:
+    post:
+      summary: Bulk manage differentiation tags
+      description: >
+        Perform bulk create/update/delete operations on groups within a non-collaborative group category.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [operations, group_category]
+              properties:
+                operations:
+                  type: object
+                  description: >
+                    A hash containing arrays of create/update/delete operations.
+                  additionalProperties: true
+                group_category:
+                  type: object
+                  description: Attributes for the GroupCategory.
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+      responses:
+        "200":
+          description: Bulk operation result
+      security:
+        - bearerAuth: []
+  /group_categories/{group_category_id}/import:
+    post:
+      summary: Import category groups
+      description: Create groups via CSV import.
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  format: binary
+          text/csv:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Import progress object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Progress'
+      security:
+        - bearerAuth: []
+  /group_categories/{group_category_id}/groups:
+    get:
+      summary: List groups in a group category
+      description: Returns a paginated list of groups in a group category.
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of Group objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+      security:
+        - bearerAuth: []
+  /group_categories/{group_category_id}/export:
+    get:
+      summary: Export groups and users in category
+      description: Returns a CSV file of users in a ready-to-import format. (BETA)
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: CSV export
+          content:
+            text/csv:
+              schema:
+                type: string
+      security:
+        - bearerAuth: []
+  /group_categories/{group_category_id}/users:
+    get:
+      summary: List users in group category
+      description: Returns a paginated list of users in the group category.
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: search_term
+          in: query
+          schema:
+            type: string
+          description: Partial name or ID to match (min 3 characters).
+        - name: unassigned
+          in: query
+          schema:
+            type: boolean
+          description: If true, only unassigned users are returned.
+      responses:
+        "200":
+          description: A list of User objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: []
+  /group_categories/{group_category_id}/assign_unassigned_members:
+    post:
+      summary: Assign unassigned members
+      description: Assign all unassigned members as evenly as possible among existing groups.
+      parameters:
+        - name: group_category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                sync:
+                  type: boolean
+                  description: >
+                    If true, perform assignment synchronously (default is async).
+      responses:
+        "200":
+          description: >
+            If async, returns a Progress object; if sync, returns an array of group
+            membership assignments.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Progress'
+                  - type: array
+                    items:
+                      type: object
+      security:
+        - bearerAuth: []
+security:
+  - bearerAuth: []

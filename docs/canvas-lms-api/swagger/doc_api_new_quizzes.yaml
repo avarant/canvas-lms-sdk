@@ -1,0 +1,329 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS New Quizzes API
+  version: 1.0.0
+servers:
+  - url: https://{{canvas}}/api/quiz/v1
+paths:
+  /courses/{course_id}/quizzes:
+    get:
+      summary: List new quizzes
+      description: Get a list of new quizzes for a course.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+      responses:
+        '200':
+          description: A list of NewQuiz objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewQuiz'
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create a new quiz
+      description: Create a new quiz for the specified course.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz:
+                  $ref: '#/components/schemas/NewQuizInput'
+      responses:
+        '200':
+          description: The created NewQuiz object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewQuiz'
+      security:
+        - bearerAuth: []
+  /courses/{course_id}/quizzes/{assignment_id}:
+    get:
+      summary: Get a new quiz
+      description: Get details about a single new quiz.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the assignment associated with the quiz
+      responses:
+        '200':
+          description: A NewQuiz object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewQuiz'
+      security:
+        - bearerAuth: []
+    patch:
+      summary: Update a single quiz
+      description: Update properties of an existing quiz.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the assignment associated with the quiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz:
+                  $ref: '#/components/schemas/NewQuizInput'
+      responses:
+        '200':
+          description: The updated NewQuiz object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewQuiz'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Delete a new quiz
+      description: Delete a single new quiz.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the assignment associated with the quiz
+      responses:
+        '200':
+          description: The deleted NewQuiz object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewQuiz'
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    NewQuiz:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "5"
+        title:
+          type: string
+          example: "Hamlet Act 3 Quiz"
+        instructions:
+          type: string
+          example: "<p>Welcome to the final exam for...</p>"
+        assignment_group_id:
+          type: string
+          example: "3"
+        points_possible:
+          type: number
+          example: 20
+        due_at:
+          type: string
+          format: date-time
+          example: "2013-01-23T23:59:00-07:00"
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+        published:
+          type: boolean
+          example: true
+        grading_type:
+          type: string
+          enum:
+            - pass_fail
+            - percent
+            - letter_grade
+            - gpa_scale
+            - points
+          example: points
+        quiz_settings:
+          $ref: '#/components/schemas/QuizSettings'
+    NewQuizInput:
+      type: object
+      properties:
+        title:
+          type: string
+        assignment_group_id:
+          type: integer
+        points_possible:
+          type: number
+        due_at:
+          type: string
+          format: date-time
+        lock_at:
+          type: string
+          format: date-time
+        unlock_at:
+          type: string
+          format: date-time
+        grading_type:
+          type: string
+          enum:
+            - pass_fail
+            - percent
+            - letter_grade
+            - gpa_scale
+            - points
+        instructions:
+          type: string
+        quiz_settings:
+          $ref: '#/components/schemas/QuizSettings'
+    QuizSettings:
+      type: object
+      properties:
+        calculator_type:
+          type: string
+          enum:
+            - none
+            - basic
+            - scientific
+        filter_ip_address:
+          type: boolean
+        filters:
+          type: object
+          properties:
+            ips:
+              type: array
+              items:
+                type: array
+                items:
+                  type: string
+        one_at_a_time_type:
+          type: string
+          enum:
+            - none
+            - question
+        allow_backtracking:
+          type: boolean
+        shuffle_answers:
+          type: boolean
+        shuffle_questions:
+          type: boolean
+        require_student_access_code:
+          type: boolean
+        student_access_code:
+          type: string
+        has_time_limit:
+          type: boolean
+        session_time_limit_in_seconds:
+          type: integer
+        multiple_attempts:
+          $ref: '#/components/schemas/MultipleAttemptsSettings'
+        result_view_settings:
+          $ref: '#/components/schemas/ResultViewSettings'
+    MultipleAttemptsSettings:
+      type: object
+      properties:
+        multiple_attempts_enabled:
+          type: boolean
+        attempt_limit:
+          type: boolean
+        max_attempts:
+          type: integer
+        score_to_keep:
+          type: string
+          enum:
+            - average
+            - first
+            - highest
+            - latest
+        cooling_period:
+          type: boolean
+        cooling_period_seconds:
+          type: integer
+    ResultViewSettings:
+      type: object
+      properties:
+        result_view_restricted:
+          type: boolean
+        display_points_awarded:
+          type: boolean
+        display_points_possible:
+          type: boolean
+        display_items:
+          type: boolean
+        display_item_response:
+          type: boolean
+        display_item_response_qualifier:
+          type: string
+          enum:
+            - always
+            - once_per_attempt
+            - after_last_attempt
+            - once_after_last_attempt
+        show_item_responses_at:
+          type: string
+          format: date-time
+        hide_item_responses_at:
+          type: string
+          format: date-time
+        display_item_response_correctness:
+          type: boolean
+        display_item_response_correctness_qualifier:
+          type: string
+          enum:
+            - always
+            - after_last_attempt
+        show_item_response_correctness_at:
+          type: string
+          format: date-time
+        hide_item_response_correctness_at:
+          type: string
+          format: date-time
+        display_item_correct_answer:
+          type: boolean
+        display_item_feedback:
+          type: boolean

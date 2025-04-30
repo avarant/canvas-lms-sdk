@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Assignment Extensions API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/extensions:
+    post:
+      summary: Set extensions for student assignment submissions
+      description: >
+        API for setting extensions on student assignment submissions. These cannot be
+        set for discussion assignments or quizzes. For quizzes, use Quiz Extensions instead.
+      tags:
+        - Assignment Extensions
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course.
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the assignment.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - assignment_extensions
+              properties:
+                assignment_extensions:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - user_id
+                      - extra_attempts
+                    properties:
+                      user_id:
+                        type: integer
+                        description: The ID of the user to add assignment extensions for.
+                      extra_attempts:
+                        type: integer
+                        description: Number of times the student is allowed to re-take the assignment over the limit.
+            example:
+              assignment_extensions:
+                - user_id: 3
+                  extra_attempts: 2
+                - user_id: 2
+                  extra_attempts: 2
+      responses:
+        '200':
+          description: Successful response containing the created assignment extensions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  assignment_extensions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        assignment_id:
+                          type: integer
+                          description: The ID of the assignment the extension belongs to.
+                        user_id:
+                          type: integer
+                          description: The ID of the student needing the assignment extension.
+                        extra_attempts:
+                          type: integer
+                          description: Number of times the student is allowed to re-submit the assignment.
+              example:
+                assignment_extensions:
+                  - assignment_id: 2
+                    user_id: 3
+                    extra_attempts: 2
+        '400':
+          description: Bad Request - if any of the extensions are invalid.
+        '403':
+          description: Forbidden - if you are not allowed to extend assignments for this course.
+components:
+  schemas:
+    AssignmentExtension:
+      type: object
+      properties:
+        assignment_id:
+          type: integer
+          description: The ID of the Assignment the extension belongs to.
+        user_id:
+          type: integer
+          description: The ID of the Student that needs the assignment extension.
+        extra_attempts:
+          type: integer
+          description: Number of times the student is allowed to re-submit the assignment.

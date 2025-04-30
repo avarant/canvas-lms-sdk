@@ -1,0 +1,61 @@
+/api/v1/accounts/{account_id}/scopes:
+  get:
+    summary: List scopes
+    description: >
+      A list of scopes that can be applied to developer keys and access tokens.
+      BETA: This API endpoint is not finalized, and there could be breaking changes before its final release.
+    parameters:
+      - name: account_id
+        in: path
+        description: ID of the account.
+        required: true
+        schema:
+          type: integer
+      - name: group_by
+        in: query
+        description: The attribute to group the scopes by. By default no grouping is done.
+        required: false
+        schema:
+          type: string
+          enum:
+            - resource_name
+    responses:
+      '200':
+        description: A list of Scope objects
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Scope'
+components:
+  schemas:
+    Scope:
+      type: object
+      description: A Scope object
+      properties:
+        resource:
+          type: string
+          description: The resource the scope is associated with
+        resource_name:
+          type: string
+          description: The localized resource name
+        controller:
+          type: string
+          description: The controller the scope is associated to
+        action:
+          type: string
+          description: The controller action the scope is associated to
+        verb:
+          type: string
+          description: The HTTP verb for the scope
+        scope:
+          type: string
+          description: The identifier for the scope
+      required:
+        - resource
+        - resource_name
+        - controller
+        - action
+        - verb
+        - scope

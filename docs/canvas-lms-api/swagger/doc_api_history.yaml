@@ -1,0 +1,68 @@
+/api/v1/users/{user_id}/history:
+  get:
+    summary: List recent history for a user
+    description: >
+      Return a paginated list of the user’s recent history. History entries are returned
+      in descending order, newest to oldest. You may list history entries for yourself
+      (use `self` as the user_id), for a student you observe, or for a user you manage
+      as an administrator. Note that the `per_page` pagination argument is not supported
+      and the number of history entries returned per page will vary.
+    parameters:
+      - name: user_id
+        in: path
+        description: ID of the user to list history for (use "self" for the current user)
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: A list of HistoryEntry objects
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/HistoryEntry'
+components:
+  schemas:
+    HistoryEntry:
+      type: object
+      description: Information about a recently visited item or page in Canvas
+      properties:
+        asset_code:
+          type: string
+          description: The asset string for the item viewed
+        asset_name:
+          type: string
+          description: The name of the item
+        asset_icon:
+          type: string
+          description: The icon type shown for the item
+        asset_readable_category:
+          type: string
+          description: The associated category describing the asset icon
+        context_type:
+          type: string
+          description: The type of context of the item visited
+          enum:
+            - Course
+            - Group
+            - User
+            - Account
+        context_id:
+          type: integer
+          description: The id of the context, if applicable
+        context_name:
+          type: string
+          description: The name of the context
+        visited_url:
+          type: string
+          format: uri
+          description: The URL of the item
+        visited_at:
+          type: string
+          format: date-time
+          description: When the page was visited
+        interaction_seconds:
+          type: integer
+          description: The estimated time spent on the page in seconds

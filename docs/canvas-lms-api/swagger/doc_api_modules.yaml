@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Modules API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/modules:
+    get:
+      summary: A paginated list of the modules in a course
+      description: |
+        Modules are collections of learning materials useful for organizing courses
+        and optionally providing a linear flow through them. Module items can be
+        accessed linearly or sequentially depending on module configuration.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: The ID of the course.
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          required: false
+          description: |
+            “items”: Return module items inline if possible.  
+            “content_details”: Requires ‘items’. Returns additional details with module items specific to their associated content items.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - items
+                - content_details
+        - name: search_term
+          in: query
+          required: false
+          description: The partial name of the modules (and module items, if ‘items’ is included) to match and return.
+          schema:
+            type: string
+        - name: student_id
+          in: query
+          required: false
+          description: Returns module completion information for the student with this id.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of Module objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Module'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Course not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Module:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the module.
+        workflow_state:
+          type: string
+          description: The state of the module: 'active', 'deleted'.
+        position:
+          type: integer
+          description: The position of this module in the course (1-based).
+        name:
+          type: string
+          description: The name of this module.
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date this module will unlock.
+        require_sequential_progress:
+          type: boolean
+          description: Whether module items must be unlocked in order.
+        requirement_type:
+          type: string
+          description: Whether module requires all required items or one required item to be considered complete.
+        prerequisite_module_ids:
+          type: array
+          items:
+            type: integer
+          description: IDs of Modules that must be completed before this one is unlocked.
+        items_count:
+          type: integer
+          description: The number of items in the module.
+        items_url:
+          type: string
+          format: uri
+          description: The API URL to retrieve this module's items.
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModuleItem'
+          nullable: true
+          description: The contents of this module (present if include[]=items).
+        state:
+          type: string
+          description: The state of this Module for the calling user.
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date the calling user completed the module.
+        publish_final_grade:
+          type: boolean
+          nullable: true
+          description: Whether the student's final grade should be published to the SIS upon completion.
+        published:
+          type: boolean
+          nullable: true
+          description: Whether this module is published (present only if the caller has permission).
+    ModuleItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        module_id:
+          type: integer
+        position:
+          type: integer
+        title:
+          type: string
+        indent:
+          type: integer
+        type:
+          type: string
+        content_id:
+          type: integer
+        html_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        page_url:
+          type: string
+        external_url:
+          type: string
+          format: uri
+        new_tab:
+          type: boolean
+        completion_requirement:
+          type: object
+        content_details:
+          type: object
+        published:
+          type: boolean

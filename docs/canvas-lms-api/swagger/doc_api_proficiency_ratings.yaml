@@ -1,0 +1,195 @@
+openapi: 3.0.0
+info:
+  title: Proficiency Ratings API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/{account_id}/outcome_proficiency:
+    post:
+      summary: Create or update account-level proficiency ratings. These ratings will apply to all sub-accounts unless they have their own ratings defined.
+      tags:
+        - Proficiency Ratings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: An array of proficiency ratings to create or update
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                ratings:
+                  type: array
+                  description: An array of proficiency rating objects
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                        description: The description of the rating level.
+                      points:
+                        type: integer
+                        description: The non-negative number of points of the rating level. Points across ratings should be strictly decreasing in value.
+                      mastery:
+                        type: boolean
+                        description: Indicates the rating level where mastery is first achieved. Only one rating in a proficiency should be marked for mastery.
+                      color:
+                        type: string
+                        description: The color associated with the rating level. Should be a hex color code like '00FFFF'.
+                    required:
+                      - description
+                      - points
+                      - mastery
+                      - color
+              required:
+                - ratings
+      responses:
+        '200':
+          description: A Proficiency object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proficiency'
+    get:
+      summary: Get account-level proficiency ratings. If not defined for this account, returns ratings for the nearest super-account with ratings defined.
+      tags:
+        - Proficiency Ratings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A Proficiency object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proficiency'
+        '404':
+          description: Proficiency ratings not found for this account or any parent account
+  /api/v1/courses/{course_id}/outcome_proficiency:
+    post:
+      summary: Create or update course-level proficiency ratings.
+      tags:
+        - Proficiency Ratings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: An array of proficiency ratings to create or update
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                ratings:
+                  type: array
+                  description: An array of proficiency rating objects
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                        description: The description of the rating level.
+                      points:
+                        type: integer
+                        description: The non-negative number of points of the rating level. Points across ratings should be strictly decreasing in value.
+                      mastery:
+                        type: boolean
+                        description: Indicates the rating level where mastery is first achieved. Only one rating in a proficiency should be marked for mastery.
+                      color:
+                        type: string
+                        description: The color associated with the rating level. Should be a hex color code like '00FFFF'.
+                    required:
+                      - description
+                      - points
+                      - mastery
+                      - color
+              required:
+                - ratings
+      responses:
+        '200':
+          description: A Proficiency object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proficiency'
+    get:
+      summary: Get course-level proficiency ratings. If not defined for this course, returns ratings for the nearest parent account with ratings defined.
+      tags:
+        - Proficiency Ratings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A Proficiency object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proficiency'
+        '404':
+          description: Proficiency ratings not found for this course or any parent account
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ProficiencyRating:
+      type: object
+      description: A single proficiency rating level.
+      properties:
+        description:
+          type: string
+          description: The description of the rating level.
+        points:
+          type: integer
+          description: The non-negative number of points of the rating level.
+        mastery:
+          type: boolean
+          description: Indicates whether this rating is the first level of mastery.
+        color:
+          type: string
+          description: Hex color code associated with the rating level.
+      required:
+        - description
+        - points
+        - mastery
+        - color
+    Proficiency:
+      type: object
+      description: A collection of proficiency ratings.
+      properties:
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProficiencyRating'
+      required:
+        - ratings

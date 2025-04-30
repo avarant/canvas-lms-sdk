@@ -1,0 +1,598 @@
+openapi: 3.0.0
+info:
+  title: Media Objects API
+  version: "1.0"
+servers:
+  - url: https://{canvas}/api/v1
+    variables:
+      canvas:
+        default: api.canvas.example.com
+        description: Your Canvas domain
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth 2.0
+  schemas:
+    MediaTrack:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        media_object_id:
+          type: integer
+        kind:
+          type: string
+        locale:
+          type: string
+        content:
+          type: string
+        webvtt_content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - user_id
+        - media_object_id
+        - kind
+        - locale
+    MediaTrackSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        kind:
+          type: string
+        locale:
+          type: string
+        url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - kind
+        - locale
+        - url
+    MediaSource:
+      type: object
+      properties:
+        height:
+          type: integer
+        width:
+          type: integer
+        content_type:
+          type: string
+        containerFormat:
+          type: string
+        url:
+          type: string
+        bitrate:
+          type: integer
+        size:
+          type: integer
+        isOriginal:
+          type: boolean
+        fileExt:
+          type: string
+      required:
+        - url
+    MediaObject:
+      type: object
+      properties:
+        can_add_captions:
+          type: boolean
+        user_entered_title:
+          type: string
+        title:
+          type: string
+        media_id:
+          type: string
+        media_type:
+          type: string
+        media_tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaTrackSummary'
+        media_sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaSource'
+      required:
+        - media_id
+        - media_type
+security:
+  - bearerAuth: []
+paths:
+  /media_objects/{media_object_id}/media_tracks:
+    get:
+      summary: List media tracks for a Media Object
+      description: List the media tracks associated with a media object.
+      tags:
+        - Media Tracks
+      parameters:
+        - name: media_object_id
+          in: path
+          description: ID of the media object
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Fields to include in the returned MediaTrack objects
+          required: false
+          schema:
+            type: string
+            enum:
+              - content
+              - webvtt_content
+              - created_at
+              - updated_at
+      responses:
+        '200':
+          description: A list of MediaTrack objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaTrack'
+        '401':
+          description: Unauthorized
+    put:
+      summary: Replace media tracks for a Media Object
+      description: |
+        Replace the media tracks associated with a media object. Deletes any existing tracks not listed,
+        leaves untouched tracks with no content field, and updates or creates tracks with a content field.
+      tags:
+        - Media Tracks
+      parameters:
+        - name: media_object_id
+          in: path
+          description: ID of the media object
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Fields to include in the returned MediaTrack objects
+          required: false
+          schema:
+            type: string
+            enum:
+              - content
+              - webvtt_content
+              - created_at
+              - updated_at
+      requestBody:
+        description: An array of media track objects to create or update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  locale:
+                    type: string
+                  kind:
+                    type: string
+                  content:
+                    type: string
+                  webvtt_content:
+                    type: string
+                required:
+                  - locale
+            example:
+              - locale: en
+              - locale: af
+                content: |
+                  1
+                  00:00:00,000 --> 00:00:01,251
+                  This is the content
+      responses:
+        '200':
+          description: A list of MediaTrack objects after update
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaTrack'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+  /media_attachments/{attachment_id}/media_tracks:
+    get:
+      summary: List media tracks for an Attachment
+      description: List the media tracks associated with a media attachment.
+      tags:
+        - Media Tracks
+      parameters:
+        - name: attachment_id
+          in: path
+          description: ID of the media attachment
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Fields to include in the returned MediaTrack objects
+          required: false
+          schema:
+            type: string
+            enum:
+              - content
+              - webvtt_content
+              - created_at
+              - updated_at
+      responses:
+        '200':
+          description: A list of MediaTrack objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaTrack'
+        '401':
+          description: Unauthorized
+    put:
+      summary: Replace media tracks for an Attachment
+      description: |
+        Replace the media tracks associated with a media attachment. Deletes any existing tracks not listed,
+        leaves untouched tracks with no content field, and updates or creates tracks with a content field.
+      tags:
+        - Media Tracks
+      parameters:
+        - name: attachment_id
+          in: path
+          description: ID of the media attachment
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Fields to include in the returned MediaTrack objects
+          required: false
+          schema:
+            type: string
+            enum:
+              - content
+              - webvtt_content
+              - created_at
+              - updated_at
+      requestBody:
+        description: An array of media track objects to create or update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  locale:
+                    type: string
+                  kind:
+                    type: string
+                  content:
+                    type: string
+                  webvtt_content:
+                    type: string
+                required:
+                  - locale
+            example:
+              - locale: en
+              - locale: af
+                content: |
+                  1
+                  00:00:00,000 --> 00:00:01,251
+                  This is the content
+      responses:
+        '200':
+          description: A list of MediaTrack objects after update
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaTrack'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+  /media_objects:
+    get:
+      summary: List Media Objects
+      description: Returns media objects created by the user making the request.
+      tags:
+        - Media Objects
+      parameters:
+        - name: sort
+          in: query
+          description: Field to sort on (default: title)
+          schema:
+            type: string
+            enum:
+              - title
+              - created_at
+        - name: order
+          in: query
+          description: Sort direction (default: asc)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: exclude[]
+          in: query
+          description: Data to exclude to speed up response
+          schema:
+            type: string
+            enum:
+              - sources
+              - tracks
+      responses:
+        '200':
+          description: A list of MediaObject objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaObject'
+        '401':
+          description: Unauthorized
+  /courses/{course_id}/media_objects:
+    get:
+      summary: List Media Objects in a Course
+      description: Returns media objects associated with the given course.
+      tags:
+        - Media Objects
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Field to sort on (default: title)
+          schema:
+            type: string
+            enum:
+              - title
+              - created_at
+        - name: order
+          in: query
+          description: Sort direction (default: asc)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: exclude[]
+          in: query
+          description: Data to exclude to speed up response
+          schema:
+            type: string
+            enum:
+              - sources
+              - tracks
+      responses:
+        '200':
+          description: A list of MediaObject objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaObject'
+        '401':
+          description: Unauthorized
+  /groups/{group_id}/media_objects:
+    get:
+      summary: List Media Objects in a Group
+      description: Returns media objects associated with the given group.
+      tags:
+        - Media Objects
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Field to sort on (default: title)
+          schema:
+            type: string
+            enum:
+              - title
+              - created_at
+        - name: order
+          in: query
+          description: Sort direction (default: asc)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: exclude[]
+          in: query
+          description: Data to exclude to speed up response
+          schema:
+            type: string
+            enum:
+              - sources
+              - tracks
+      responses:
+        '200':
+          description: A list of MediaObject objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaObject'
+        '401':
+          description: Unauthorized
+  /media_attachments:
+    get:
+      summary: List Media Attachments
+      description: Returns media attachments created by the user making the request.
+      tags:
+        - Media Objects
+      parameters:
+        - name: sort
+          in: query
+          description: Field to sort on (default: title)
+          schema:
+            type: string
+            enum:
+              - title
+              - created_at
+        - name: order
+          in: query
+          description: Sort direction (default: asc)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: exclude[]
+          in: query
+          description: Data to exclude to speed up response
+          schema:
+            type: string
+            enum:
+              - sources
+              - tracks
+      responses:
+        '200':
+          description: A list of MediaObject objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaObject'
+        '401':
+          description: Unauthorized
+  /courses/{course_id}/media_attachments:
+    get:
+      summary: List Media Attachments in a Course
+      description: Returns media attachments associated with the given course.
+      tags:
+        - Media Objects
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Field to sort on (default: title)
+          schema:
+            type: string
+            enum:
+              - title
+              - created_at
+        - name: order
+          in: query
+          description: Sort direction (default: asc)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: exclude[]
+          in: query
+          description: Data to exclude to speed up response
+          schema:
+            type: string
+            enum:
+              - sources
+              - tracks
+      responses:
+        '200':
+          description: A list of MediaObject objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaObject'
+        '401':
+          description: Unauthorized
+  /groups/{group_id}/media_attachments:
+    get:
+      summary: List Media Attachments in a Group
+      description: Returns media attachments associated with the given group.
+      tags:
+        - Media Objects
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Field to sort on (default: title)
+          schema:
+            type: string
+            enum:
+              - title
+              - created_at
+        - name: order
+          in: query
+          description: Sort direction (default: asc)
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: exclude[]
+          in: query
+          description: Data to exclude to speed up response
+          schema:
+            type: string
+            enum:
+              - sources
+              - tracks
+      responses:
+        '200':
+          description: A list of MediaObject objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaObject'
+        '401':
+          description: Unauthorized

@@ -1,0 +1,413 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS REST API
+  version: "1.0.0"
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    LearningObjectDates:
+      type: object
+      properties:
+        id:
+          type: integer
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+        reply_to_topic_due_at:
+          type: string
+          format: date-time
+          nullable: true
+        required_replies_due_at:
+          type: string
+          format: date-time
+          nullable: true
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+        only_visible_to_overrides:
+          type: boolean
+        graded:
+          type: boolean
+        blueprint_date_locks:
+          type: array
+          items:
+            type: string
+        visible_to_everyone:
+          type: boolean
+        overrides:
+          type: array
+          items:
+            type: object
+        checkpoints:
+          type: array
+          items:
+            type: object
+        tag:
+          type: string
+    AssignmentOverride:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        due_at:
+          type: string
+          format: date-time
+        unlock_at:
+          type: string
+          format: date-time
+        lock_at:
+          type: string
+          format: date-time
+        student_ids:
+          type: array
+          items:
+            type: integer
+        course_section_id:
+          type: integer
+        course_id:
+          type: integer
+        noop_id:
+          type: integer
+        unassign_item:
+          type: boolean
+paths:
+  /api/v1/courses/{course_id}/modules/{context_module_id}/date_details:
+    get:
+      summary: Get a learning object's date information for a module
+      description: Get a learning object’s date-related information, including due date, availability dates, override status, and a paginated list of all assignment overrides for the item.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: context_module_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningObjectDates'
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/date_details:
+    get:
+      summary: Get a learning object's date information for an assignment
+      description: Get a learning object’s date-related information, including due date, availability dates, override status, and a paginated list of all assignment overrides for the item.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningObjectDates'
+    put:
+      summary: Update a learning object's date information for an assignment
+      description: Updates date-related information for learning objects, including due date, availability dates, override status, and assignment overrides.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_at:
+                  type: string
+                  format: date-time
+                unlock_at:
+                  type: string
+                  format: date-time
+                lock_at:
+                  type: string
+                  format: date-time
+                only_visible_to_overrides:
+                  type: boolean
+                assignment_overrides:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AssignmentOverride'
+      responses:
+        '204':
+          description: No Content
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/date_details:
+    get:
+      summary: Get a learning object's date information for a quiz
+      description: Get a learning object’s date-related information, including due date, availability dates, override status, and a paginated list of all assignment overrides for the item.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningObjectDates'
+    put:
+      summary: Update a learning object's date information for a quiz
+      description: Updates date-related information for learning objects, including due date, availability dates, override status, and assignment overrides.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_at:
+                  type: string
+                  format: date-time
+                unlock_at:
+                  type: string
+                  format: date-time
+                lock_at:
+                  type: string
+                  format: date-time
+                only_visible_to_overrides:
+                  type: boolean
+                assignment_overrides:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AssignmentOverride'
+      responses:
+        '204':
+          description: No Content
+  /api/v1/courses/{course_id}/discussion_topics/{discussion_topic_id}/date_details:
+    get:
+      summary: Get a learning object's date information for a discussion topic
+      description: Get a learning object’s date-related information, including due date, availability dates, override status, and a paginated list of all assignment overrides for the item.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: discussion_topic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningObjectDates'
+    put:
+      summary: Update a learning object's date information for a discussion topic
+      description: Updates date-related information for learning objects, including due date, availability dates, override status, and assignment overrides.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: discussion_topic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_at:
+                  type: string
+                  format: date-time
+                unlock_at:
+                  type: string
+                  format: date-time
+                lock_at:
+                  type: string
+                  format: date-time
+                only_visible_to_overrides:
+                  type: boolean
+                assignment_overrides:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AssignmentOverride'
+      responses:
+        '204':
+          description: No Content
+  /api/v1/courses/{course_id}/pages/{url_or_id}/date_details:
+    get:
+      summary: Get a learning object's date information for a page
+      description: Get a learning object’s date-related information, including due date, availability dates, override status, and a paginated list of all assignment overrides for the item.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: url_or_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningObjectDates'
+    put:
+      summary: Update a learning object's date information for a page
+      description: Updates date-related information for learning objects, including due date, availability dates, override status, and assignment overrides.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: url_or_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_at:
+                  type: string
+                  format: date-time
+                unlock_at:
+                  type: string
+                  format: date-time
+                lock_at:
+                  type: string
+                  format: date-time
+                only_visible_to_overrides:
+                  type: boolean
+                assignment_overrides:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AssignmentOverride'
+      responses:
+        '204':
+          description: No Content
+  /api/v1/courses/{course_id}/files/{attachment_id}/date_details:
+    get:
+      summary: Get a learning object's date information for a file
+      description: Get a learning object’s date-related information, including due date, availability dates, override status, and a paginated list of all assignment overrides for the item.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: attachment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningObjectDates'
+    put:
+      summary: Update a learning object's date information for a file
+      description: Updates date-related information for learning objects, including due date, availability dates, override status, and assignment overrides.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: attachment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_at:
+                  type: string
+                  format: date-time
+                unlock_at:
+                  type: string
+                  format: date-time
+                lock_at:
+                  type: string
+                  format: date-time
+                only_visible_to_overrides:
+                  type: boolean
+                assignment_overrides:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AssignmentOverride'
+      responses:
+        '204':
+          description: No Content

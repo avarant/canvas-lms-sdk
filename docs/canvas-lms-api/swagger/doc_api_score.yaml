@@ -1,0 +1,154 @@
+/api/lti/courses/{course_id}/line_items/{line_item_id}/scores:
+  post:
+    summary: Create a Score
+    description: >
+      Create a new Result from the score params. If this is the first created
+      line_item for a resourceLinkId, or it is a line item that is not attached
+      to a resourceLinkId, then a submission record will be created for the
+      associated assignment when gradingProgress is set to FullyGraded or
+      PendingManual. The submission score and comment will be updated
+      accordingly. It is also possible to submit a file along with this score,
+      which will attach the file to the submission that is created. Returns a
+      URL pointing to the Result and, if files were submitted, the Content Items
+      sent in the request, each with a URL to the upload progress.
+    parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: line_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - userId
+              - activityProgress
+              - gradingProgress
+              - timestamp
+            properties:
+              userId:
+                type: string
+                description: The lti_user_id or the Canvas user_id.
+              activityProgress:
+                type: string
+                description: Indicate to Canvas the status of the user towards the activity’s completion.
+                enum:
+                  - Initialized
+                  - Started
+                  - InProgress
+                  - Submitted
+                  - Completed
+              gradingProgress:
+                type: string
+                description: Indicate to Canvas the status of the grading process.
+                enum:
+                  - NotReady
+                  - Failed
+                  - Pending
+                  - PendingManual
+                  - FullyGraded
+              timestamp:
+                type: string
+                format: date-time
+                description: Date and time when the score was modified in the tool (ISO8601 with subsecond precision).
+              scoreGiven:
+                type: number
+                description: The current score received in the tool for this line item and user.
+              scoreMaximum:
+                type: number
+                description: Maximum possible score for this result; required if scoreGiven is present.
+              comment:
+                type: string
+                nullable: true
+                description: Comment visible to the student about this score.
+              submission:
+                type: object
+                description: Contains metadata about the submission attempt.
+                properties:
+                  submittedAt:
+                    type: string
+                    format: date-time
+                    description: Date and time that the submission was originally created.
+              'https://canvas.instructure.com/lti/submission':
+                type: object
+                description: '(EXTENSION) Optional submission type and data.'
+                properties:
+                  new_submission:
+                    type: boolean
+                  preserve_score:
+                    type: boolean
+                  prioritize_non_tool_grade:
+                    type: boolean
+                  submission_type:
+                    type: string
+                    description: Permissible values: none, basic_lti_launch, online_text_entry, external_tool, online_upload, online_url.
+                    enum:
+                      - none
+                      - basic_lti_launch
+                      - online_text_entry
+                      - external_tool
+                      - online_upload
+                      - online_url
+                  submission_data:
+                    type: string
+                  submitted_at:
+                    type: string
+                    format: date-time
+                  content_items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        url:
+                          type: string
+                          format: uri
+                        title:
+                          type: string
+                        media_type:
+                          type: string
+    responses:
+      '200':
+        description: Successful response
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resultUrl:
+                  type: string
+                  format: uri
+                'https://canvas.instructure.com/lti/submission':
+                  type: object
+                  properties:
+                    content_items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          url:
+                            type: string
+                            format: uri
+                          title:
+                            type: string
+                          progress:
+                            type: string
+                            format: uri
+      '400':
+        description: Bad Request – invalid timestamp (earlier than existing score update)
+      '422':
+        description: Unprocessable Entity – validation error (e.g., user not found or missing scoreMaximum)
+    security:
+      - oauth2:
+          - "url:POST|/api/lti/courses/{course_id}/line_items/{line_item_id}/scores"

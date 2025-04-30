@@ -1,0 +1,122 @@
+openapi: 3.0.0
+paths:
+  /api/v1/users/self/files:
+    post:
+      summary: Create a file upload and obtain parameters for uploading
+      description: |
+        Notify Canvas of an upcoming file upload by submitting file metadata.
+        Returns a URL and parameters for uploading the file via multipart/form-data POST,
+        or initiates a URL‐based import of a publicly accessible file.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The filename of the file. UTF-8 names allowed.
+                size:
+                  type: integer
+                  description: The size of the file in bytes.
+                content_type:
+                  type: string
+                  description: The MIME content type. Guessed if omitted.
+                parent_folder_id:
+                  type: integer
+                  description: ID of the folder to store the file in.
+                parent_folder_path:
+                  type: string
+                  description: |
+                    Path of the folder to store the file in. Forward slash (/) as separator.
+                    Created if it does not exist.
+                folder:
+                  type: string
+                  description: Deprecated; use parent_folder_path instead.
+                on_duplicate:
+                  type: string
+                  description: |
+                    How to handle duplicate filenames. 
+                    overwrite (default) or rename.
+                  enum:
+                    - overwrite
+                    - rename
+                success_include[]:
+                  type: array
+                  items:
+                    type: string
+                  description: Additional information to include in a successful upload response.
+                url:
+                  type: string
+                  description: Public HTTP/HTTPS URL to fetch the file instead of direct upload.
+                submit_assignment:
+                  type: boolean
+                  description: |
+                    For URL‐based uploads associated with an assignment,
+                    whether to auto-submit the assignment. Defaults to true.
+              required:
+                - name
+      responses:
+        '200':
+          description: Successful initiation of upload. Returns upload URL and parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  upload_url:
+                    type: string
+                    description: The endpoint to POST the raw file data or URL parameters.
+                  upload_params:
+                    type: object
+                    description: Opaque parameters to include in the upload request.
+                    additionalProperties: true
+                  progress:
+                    type: object
+                    description: |
+                      Provided for URL‐based uploads. Poll this resource to check status.
+                    properties:
+                      url:
+                        type: string
+                        description: Endpoint to poll for upload progress.
+                      workflow_state:
+                        type: string
+                      id:
+                        type: integer
+                required:
+                  - upload_url
+                  - upload_params
+              examples:
+                directUpload:
+                  summary: Direct upload initiation
+                  value:
+                    upload_url: "https://some-bucket.s3.amazonaws.com/"
+                    upload_params:
+                      key: "/users/1234/files/profile_pic.jpg"
+                urlUpload:
+                  summary: URL‐based upload initiation
+                  value:
+                    upload_url: "https://file-service.url/opaque"
+                    upload_params: {}
+                    progress:
+                      url: "https://canvas.example.edu/api/v1/progress/1"
+                      workflow_state: "running"
+        '400':
+          description: Invalid request or parameters
+        '401':
+          description: Unauthorized – authentication required or invalid token
+        '403':
+          description: Forbidden – insufficient permissions for this context
+        '404':
+          description: Context (user, course, assignment, etc.) not found
+        '500':
+          description: Internal Canvas error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

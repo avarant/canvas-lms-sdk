@@ -1,0 +1,3305 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title>New Quizzes - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="current" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div class="service">
+  
+    <h1>New Quizzes API</h1>
+  
+  
+  <table id='quicklinks'>
+  </table>
+  <p>API for accessing and building New Quizzes. To interact with New Quiz <em>items</em>,
+see the <a href="/doc/api/new_quiz_items.html">New Quiz Items API</a>.</p>
+
+
+
+
+
+  <div class='object_definition'>
+  <h3><a name="NewQuiz">A NewQuiz object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // the ID of the quiz
+  &quot;id&quot;: &quot;5&quot;,
+  // the title of the quiz
+  &quot;title&quot;: &quot;Hamlet Act 3 Quiz&quot;,
+  // the quiz&#39;s instructions
+  &quot;instructions&quot;: &quot;&lt;p&gt;Welcome to the final exam for...&lt;/p&gt;&quot;,
+  // the ID of the quiz&#39;s assignment group
+  &quot;assignment_group_id&quot;: &quot;3&quot;,
+  // The total point value given to the quiz
+  &quot;points_possible&quot;: 20,
+  // when the quiz is due
+  &quot;due_at&quot;: &quot;2013-01-23T23:59:00-07:00&quot;,
+  // when to lock the quiz
+  &quot;lock_at&quot;: null,
+  // when to unlock the quiz
+  &quot;unlock_at&quot;: &quot;2013-01-21T23:59:00-07:00&quot;,
+  // whether the quiz has a published or unpublished draft state
+  &quot;published&quot;: true,
+  // the type of grading the assignment receives (&#39;pass_fail&#39;, &#39;percent&#39;,
+  // &#39;letter_grade&#39;, &#39;gpa_scale&#39;, or &#39;points&#39;)
+  &quot;grading_type&quot;: &quot;points&quot;,
+  // additional quiz settings (see QuizSettings)
+  &quot;quiz_settings&quot;: null
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="QuizSettings">A QuizSettings object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // type of calculator the user will have access to during the quiz (&#39;none&#39;,
+  // basic&#39; or &#39;scientific&#39;)
+  &quot;calculator_type&quot;: &quot;scientific&quot;,
+  // whether access to the quiz should be restricted to the IP address ranges
+  // described in &#39;filters&#39;
+  &quot;filter_ip_address&quot;: true,
+  // IP address ranges from which users can take the quiz, if &#39;filter_ip_address&#39;
+  // is true
+  &quot;filters&quot;: {&quot;ips&quot;:[[&quot;1.1.1.1&quot;,&quot;1.1.1.3&quot;],[&quot;2.2.2.3&quot;,&quot;2.2.2.9&quot;]]},
+  // whether questions should be shown all at once (&#39;none&#39;) or one-at-a-time
+  // (&#39;question&#39;)
+  &quot;one_at_a_time_type&quot;: &quot;none&quot;,
+  // whether to allow user to return to previous questions when
+  // &#39;one_at_a_time_type&#39; is set to &#39;question&#39;
+  &quot;allow_backtracking&quot;: false,
+  // whether answers should be shuffled during quiz
+  &quot;shuffle_answers&quot;: false,
+  // whether questions should be shuffled during quiz
+  &quot;shuffle_questions&quot;: false,
+  // whether to require an access code to take the quiz (set as
+  // &#39;student_access_code&#39;)
+  &quot;require_student_access_code&quot;: true,
+  // access code that is required to take the quiz if
+  // &#39;require_student_access_code&#39; is true
+  &quot;student_access_code&quot;: &quot;supersecret&quot;,
+  // whether the quiz has a time limit (set as &#39;session_time_limit_in_seconds&#39;)
+  &quot;has_time_limit&quot;: true,
+  // time limit during the quiz (in seconds)
+  &quot;session_time_limit_in_seconds&quot;: 3600,
+  // settings to configure multiple quiz attempts (see MultipleAttemptsSettings)
+  &quot;multiple_attempts&quot;: null,
+  // settings to restrict student result view (see ResultViewSettings)
+  &quot;result_view_settings&quot;: null
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="MultipleAttemptsSettings">A MultipleAttemptsSettings object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // whether to allow multiple attempts
+  &quot;multiple_attempts_enabled&quot;: true,
+  // whether to limit the number of attempts if &#39;multiple_attempts_enabled&#39; is
+  // true. Unlimited attempts if false.
+  &quot;attempt_limit&quot;: true,
+  // number of attempts to allow if &#39;multiple_attempts_enabled&#39; and
+  // &#39;attempt_limit&#39; are true
+  &quot;max_attempts&quot;: 3,
+  // specifies which score to keep after attempts (&#39;average&#39;, &#39;first&#39;, &#39;highest&#39;,
+  // or &#39;latest&#39;)
+  &quot;score_to_keep&quot;: &quot;highest&quot;,
+  // whether to enforce a waiting period after an attempt (set as
+  // &#39;cooling_period_seconds&#39;)
+  &quot;cooling_period&quot;: true,
+  // required waiting period (in seconds) between attempts. Enforced if
+  // &#39;cooling_period&#39; is true.
+  &quot;cooling_period_seconds&quot;: 1800
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="ResultViewSettings">A ResultViewSettings object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // whether to restrict the student result view
+  &quot;result_view_restricted&quot;: true,
+  // whether to show points awarded (overall and per question), if
+  // &#39;result_view_restricted&#39; is true
+  &quot;display_points_awarded&quot;: true,
+  // whether to show points possible (overall and per question), if
+  // &#39;result_view_restricted&#39; is true
+  &quot;display_points_possible&quot;: true,
+  // whether to show questions in the result view, if &#39;result_view_restricted&#39; is
+  // true
+  &quot;display_items&quot;: true,
+  // whether to show student&#39;s responses in the result view, if &#39;display_items&#39; is
+  // true
+  &quot;display_item_response&quot;: true,
+  // whether student responses should be shown for all attempts (&#39;always&#39;), only
+  // once after each attempt (&#39;once_per_attempt&#39;), only after their last attempt
+  // (&#39;after_last_attempt&#39;), or only once after their last attempt
+  // (&#39;once_after_last_attempt&#39;). if &#39;display_item_response&#39; is true
+  &quot;display_item_response_qualifier&quot;: &quot;always&quot;,
+  // when student responses should be shown to them, if &#39;display_item_responses&#39;
+  // is true
+  &quot;show_item_responses_at&quot;: &quot;2024-06-20T20:00:00.000-06:00&quot;,
+  // when student responses should be hidden from them, if
+  // &#39;display_item_responses&#39; is true. must be later than &#39;show_item_responses_at&#39;
+  &quot;hide_item_responses_at&quot;: &quot;2024-06-21T20:00:00.000-06:00&quot;,
+  // whether to indicate whether the student&#39;s response is correct/incorrect, if
+  // &#39;display_item_response&#39; is true
+  &quot;display_item_response_correctness&quot;: true,
+  // whether student response correctness should be shown for all attempts
+  // (&#39;always&#39;) or only after their last attempt (&#39;after_last_attempt&#39;), if
+  // &#39;display_item_response_correctness&#39; is true
+  &quot;display_item_response_correctness_qualifier&quot;: &quot;always&quot;,
+  // when correctness of student responses should be shown to them, if
+  // &#39;display_item_response_correctness&#39; is true
+  &quot;show_item_response_correctness_at&quot;: &quot;2024-06-20T20:00:00.000-06:00&quot;,
+  // when correctness of student responses should be hidden from them, if
+  // &#39;display_item_response_correctness&#39; is true. must be later than
+  // &#39;show_item_response_correctness_at&#39;
+  &quot;hide_item_response_correctness_at&quot;: &quot;2024-06-21T20:00:00.000-06:00&quot;,
+  // whether to show the correct answer for each question, if
+  // &#39;display_item_response_correctness&#39; is true
+  &quot;display_item_correct_answer&quot;: true,
+  // whether to show feedback for each item, if &#39;display_items&#39; is true
+  &quot;display_item_feedback&quot;: true
+}</code></pre>
+  </div>
+  
+
+<div id="Services" class="method_details_list">
+
+  <div class="method_details first">
+  <h2 class='api_method_name' name='method.new_quizzes/quizzes_api.show' data-subtopic='New Quizzes'>
+    <a name='method.new_quizzes/quizzes_api.show' href='#method.new_quizzes/quizzes_api.show'>
+      Get a new quiz
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/quiz/v1/courses/:course_id/quizzes/:assignment_id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/quiz/v1/courses/:course_id/quizzes/:assignment_id</code>
+  </div>
+
+
+<p>Get details about a single new quiz.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>course_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>no description</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>assignment_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The id of the assignment associated with the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/quiz/v1/courses/1/quizzes/12&#39; \
+      -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+
+  Returns a
+
+<a href='new_quizzes.html#NewQuiz'>NewQuiz</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.new_quizzes/quizzes_api.index' data-subtopic='New Quizzes'>
+    <a name='method.new_quizzes/quizzes_api.index' href='#method.new_quizzes/quizzes_api.index'>
+      List new quizzes
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/quiz/v1/courses/:course_id/quizzes
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/quiz/v1/courses/:course_id/quizzes</code>
+  </div>
+
+
+<p>Get a list of new quizzes.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>course_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>no description</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/quiz/v1/courses/1/quizzes&#39; \
+     -H &#39;Authorization Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+
+  Returns a list of 
+
+<a href='new_quizzes.html#NewQuiz'>NewQuiz</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.new_quizzes/quizzes_api.create' data-subtopic='New Quizzes'>
+    <a name='method.new_quizzes/quizzes_api.create' href='#method.new_quizzes/quizzes_api.create'>
+      Create a new quiz
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/quiz/v1/courses/:course_id/quizzes
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/quiz/v1/courses/:course_id/quizzes</code>
+  </div>
+
+
+<p>Create a new quiz for the course.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>course_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>no description</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[title]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The title of the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[assignment_group_id]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The ID of the quizâs assignment group.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[points_possible]</td>
+      <td>
+        
+      </td>
+      <td>number</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The total point value given to the quiz. Must be positive.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[due_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When the quiz is due.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[lock_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When to lock the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[unlock_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When to unlock the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[grading_type]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The type of grading the assignment receives.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>pass_fail</code>, <code class=enum>percent</code>, <code class=enum>letter_grade</code>, <code class=enum>gpa_scale</code>, <code class=enum>points</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[instructions]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Instructions for the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][calculator_type]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies which type of Calculator a student can use during Quiz taking. Should be null if no calculator is allowed.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>none</code>, <code class=enum>basic</code>, <code class=enum>scientific</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][filter_ip_address]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether IP filtering is needed.  Must be true for filters to take effect.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][filters][ips][]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies ranges of IP addresses where the quiz can be taken from. Each range is an array like [start address, end address], or null if thereâs no restriction.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][multiple_attempts_enabled]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether multiple attempts for this quiz is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][attempt_limit]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether there is an attempt limit.  Only set if multiple_attempts_enabled is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][max_attempts]</td>
+      <td>
+        
+      </td>
+      <td>Positive Integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The allowed attempts a student can take. If null, the allowed attempts are unlimited.  Only used if attempt_limit is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][score_to_keep]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whichever score to keep for the attempts.  Only used if multiple_attempts_enabled is true.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>average</code>, <code class=enum>first</code>, <code class=enum>highest</code>, <code class=enum>latest</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][cooling_period]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether there is a cooling (waiting) period.  Only used if multiple_attempts_enabled is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][cooling_period_seconds]</td>
+      <td>
+        
+      </td>
+      <td>Positive Integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Required waiting period in seconds between attempts. If null, there is no required time. Only used if cooling_period is true</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][one_at_a_time_type]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies the settings for questions to display when quiz taking.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>none</code>, <code class=enum>question</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][allow_backtracking]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether to allow user to return to previous questions when âone_at_a_time_typeâ is set to âquestionâ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][result_view_restricted]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether the results view is restricted for students.  Must be true for any student restrictions to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_points_awarded]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether points are shown. Must set result_view_restricted to true to use this parameter.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_points_possible]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether points possible is shown. Must set result_view_restricted to true to use this parameter.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_items]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether to show items in the results view.  Must be true for any items restrictions to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether item response is shown.  Only set if display_items is true.  Must be true for display_item_response_qualifier, show_item_responses_at, hide_item_responses_at, and display_item_response_correctness to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response_qualifier]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies after which attempts student responses should be shown to them. Only used if display_item_response is true.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>always</code>, <code class=enum>once_per_attempt</code>, <code class=enum>after_last_attempt</code>, <code class=enum>once_after_last_attempt</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][show_item_responses_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student responses should be shown to them. Only used if display_item_response is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][hide_item_responses_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student responses should be hidden from them. Only used if display_item_response is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response_correctness]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether item correctness is shown.  Only set if display_item_response is true.  Must be true for display_item_response_correctness_qualifier, show_item_response_correctness_at, hide_item_response_correctness_at and display_item_correct_answer to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response_correctness_qualifier]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies after which attempts student response correctness should be shown to them. Only used if display_item_response_correctness is true.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>always</code>, <code class=enum>after_last_attempt</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][show_item_response_correctness_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student response correctness should be shown to them. Only used if display_item_response_correctness is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][hide_item_response_correctness_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student response correctness should be hidden from them. Only used if display_item_response_correctness is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_correct_answer]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether correct answer is shown.  Only set if display_item_response_correctness is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_feedback]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether Item feedback is shown.  Only set if display_items is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][shuffle_answers]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether answers should be shuffled for students.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][shuffle_questions]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether questions should be shuffled for students.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][require_student_access_code]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether an access code is needed to take the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][student_access_code]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Access code to restrict quiz access. Should be null if no restriction.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][has_time_limit]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether there is a time limit for the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][session_time_limit_in_seconds]</td>
+      <td>
+        
+      </td>
+      <td>Positive Integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Limit the time a student can work on the quiz. Should be null if no restriction.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/quiz/v1/courses/1/quizzes&#39; \
+     -X POST \
+     -H &#39;Authorization Bearer &lt;token&gt;&#39; \
+     -d &#39;quiz[title]=New quiz&#39; \
+     -d &#39;quiz[assignment_group_id]=1&#39; \
+     -d &#39;quiz[points_possible]=100.0&#39; \
+     -d &#39;quiz[due_at]=2023-01-02T00:00:00Z&#39; \
+     -d &#39;quiz[lock_at]=2023-01-03T00:00:00Z&#39; \
+     -d &#39;quiz[unlock_at]=2023-01-01T00:00:00Z&#39; \
+     -d &#39;quiz[grading_type]=points&#39; \
+     -d &#39;quiz[instructions]=Instructions for quiz&#39; \
+     -d &#39;quiz[quiz_settings][calculator_type]=scientific&#39; \
+     -d &#39;quiz[quiz_settings][filter_ip_address]=true&#39; \
+     -d &#39;quiz[quiz_settings][filters][ips]=[[&quot;10.0.0.0&quot;,&quot;10.10.0.0&quot;], [&quot;12.0.0.0&quot;, &quot;12.10.10.0&quot;]]&#39; \
+     -d &#39;quiz[quiz_settings][one_at_a_time_type]=question&#39; \
+     -d &#39;quiz[quiz_settings][allow_backtracking]=true&#39; \
+     -d &#39;quiz[quiz_settings][shuffle_answers]=true&#39; \
+     -d &#39;quiz[quiz_settings][shuffle_questions]=true&#39; \
+     -d &#39;quiz[quiz_settings][require_student_access_code]=true&#39; \
+     -d &#39;quiz[quiz_settings][student_access_code]=12345&#39; \
+     -d &#39;quiz[quiz_settings][has_time_limit]=true&#39; \
+     -d &#39;quiz[quiz_settings][session_time_limit_in_seconds]=7500&#39; \
+     -d &#39;quiz[quiz_settings][multiple_attempts][max_attempts]=4&#39; \
+     -d &#39;quiz[quiz_settings][multiple_attempts][attempt_limit]=true&#39; \
+     -d &#39;quiz[quiz_settings][multiple_attempts][score_to_keep]=average&#39; \
+     -d &#39;quiz[quiz_settings][multiple_attempts][cooling_period]=true&#39; \
+     -d &#39;quiz[quiz_settings][multiple_attempts][cooling_period_seconds]=93600&#39; \
+     -d &#39;quiz[quiz_settings][multiple_attempts][multiple_attempts_enabled]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_items]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_item_feedback]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_item_response]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_item_response_qualifier]=always&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][show_item_responses_at]=2023-01-01T00:00:00Z&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][hide_item_responses_at]=2023-01-02T00:00:00Z&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_points_awarded]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][result_view_restricted]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_points_possible]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_item_correct_answer]=true&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][display_item_response_correctness]=true&#39;
+     -d &#39;quiz[quiz_settings][result_view_settings][display_item_response_correctness_qualifier]=always&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][show_item_response_correctness_at]=2023-01-01T00:00:00Z&#39; \
+     -d &#39;quiz[quiz_settings][result_view_settings][hide_item_response_correctness_at]=2023-01-02T00:00:00Z&#39; \</code></pre>
+    
+  </div>
+
+
+
+  Returns a
+
+<a href='new_quizzes.html#NewQuiz'>NewQuiz</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.new_quizzes/quizzes_api.update' data-subtopic='New Quizzes'>
+    <a name='method.new_quizzes/quizzes_api.update' href='#method.new_quizzes/quizzes_api.update'>
+      Update a single quiz
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    PATCH /api/quiz/v1/courses/:course_id/quizzes/:assignment_id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:PATCH|/api/quiz/v1/courses/:course_id/quizzes/:assignment_id</code>
+  </div>
+
+
+<p>Update a single quiz for the course.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>course_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>no description</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>assignment_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The id of the assignment associated with the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[title]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The title of the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[assignment_group_id]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The ID of the quizâs assignment group.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[points_possible]</td>
+      <td>
+        
+      </td>
+      <td>number</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The total point value given to the quiz. Must be positive.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[due_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When the quiz is due.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[lock_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When to lock the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[unlock_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When to unlock the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[grading_type]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The type of grading the assignment receives.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>pass_fail</code>, <code class=enum>percent</code>, <code class=enum>letter_grade</code>, <code class=enum>gpa_scale</code>, <code class=enum>points</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[instructions]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Instructions for the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][calculator_type]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies which type of Calculator a student can use during Quiz taking. Should be null if no calculator is allowed.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>none</code>, <code class=enum>basic</code>, <code class=enum>scientific</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][filter_ip_address]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether IP filtering is needed. Must be true for filters to take effect.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][filters][ips][]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies ranges of IP addresses where the quiz can be taken from. Each range is an array like [start address, end address], or null if thereâs no restriction. Specifies the range of IP addresses where the quiz can be taken from. Should be null if thereâs no restriction.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][multiple_attempts_enabled]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether multiple attempts for this quiz is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][attempt_limit]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether there is an attempt limit.  Only set if multiple_attempts_enabled is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][max_attempts]</td>
+      <td>
+        
+      </td>
+      <td>Positive Integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The allowed attempts a student can take. If null, the allowed attempts are unlimited. Only used if attempt_limit is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][score_to_keep]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whichever score to keep for the attempts. Only used if multiple_attempts_enabled is true.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>average</code>, <code class=enum>first</code>, <code class=enum>highest</code>, <code class=enum>latest</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][cooling_period]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether there is a cooling period. Only used if multiple_attempts_enabled is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][multiple_attempts][cooling_period_seconds]</td>
+      <td>
+        
+      </td>
+      <td>Positive Integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Required waiting period in seconds between attempts. If null, there is no required time.  Only used if cooling_period is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][one_at_a_time_type]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies the settings for questions to display when quiz taking.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>none</code>, <code class=enum>question</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][allow_backtracking]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether to allow user to return to previous questions when âone_at_a_time_typeâ is set to âquestionâ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][result_view_restricted]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether the results view is restricted for students.  Must be true for any student restrictions to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_points_awarded]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether points are shown. Must set result_view_restricted to true to use this parameter.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_points_possible]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether points possible is shown. Must set result_view_restricted to true to use this parameter.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_items]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether to show items in the results view.  Must be true for any items restrictions to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether item response is shown.  Only set if display_items is true.  Must be true for display_item_response_qualifier, show_item_responses_at, hide_item_responses_at, and display_item_response_correctness to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response_qualifier]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies after which attempts student responses should be shown to them. Only used if display_item_response is true.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>always</code>, <code class=enum>once_per_attempt</code>, <code class=enum>after_last_attempt</code>, <code class=enum>once_after_last_attempt</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][show_item_responses_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student responses should be shown to them. Only used if display_item_response is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][hide_item_responses_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student responses should be hidden from them. Only used if display_item_response is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response_correctness]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether item correctness is shown.  Only set if display_item_response is true.  Must be true for display_item_response_correctness_qualifier, show_item_response_correctness_at, hide_item_response_correctness_at and display_item_correct_answer to be set.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_response_correctness_qualifier]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Specifies after which attempts student response correctness should be shown to them. Only used if display_item_response_correctness is true.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>always</code>, <code class=enum>after_last_attempt</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][show_item_response_correctness_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student response correctness should be shown to them. Only used if display_item_response_correctness is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][hide_item_response_correctness_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When student response correctness should be hidden from them. Only used if display_item_response_correctness is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_correct_answer]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether correct answer is shown.  Only set if display_item_response_correctness is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][result_view_settings][display_item_feedback]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether Item feedback is shown.  Only set if display_items is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][shuffle_answers]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether answers should be shuffled for students.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][shuffle_questions]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether questions should be shuffled for students.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][require_student_access_code]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether an access code is needed to take the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][student_access_code]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Access code to restrict quiz access. Should be null if no restriction.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][has_time_limit]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether there is a time limit for the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>quiz[quiz_settings][session_time_limit_in_seconds]</td>
+      <td>
+        
+      </td>
+      <td>Positive Integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Limit the time a student can work on the quiz. Should be null if no restriction.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/quiz/v1/courses/1/quizzes/12&#39; \
+     -X PATCH \
+     -H &#39;Authorization: Bearer &lt;token&gt;&#39; \
+     -d &#39;quiz[title]=New quiz&#39; \
+     -d &#39;quiz[assignment_group_id]=1&#39; \
+     -d &#39;quiz[points_possible]=100.0&#39; \
+     -d &#39;quiz[due_at]=2023-01-02T00:00:00Z&#39; \
+     -d &#39;quiz[lock_at]=2023-01-03T00:00:00Z&#39; \
+     -d &#39;quiz[unlock_at]=2023-01-01T00:00:00Z&#39; \
+     -d &#39;quiz[grading_type]=points&#39; \
+     -d &#39;quiz[instructions]=Instructions for quiz&#39; \
+     -d &#39;quiz[quiz_settings][calculator_type]=scientific&#39; \
+     -d &#39;quiz[quiz_settings][filter_ip_address]=true&#39; \
+     -d &#39;quiz[quiz_settings][filters][ips]=[[&quot;10.0.0.0&quot;,&quot;10.10.0.0&quot;], [&quot;12.0.0.0&quot;, &quot;12.10.10.0&quot;]]&#39; \
+     -d &#39;quiz[quiz_settings][one_at_a_time_type]=question&#39; \
+     -d &#39;quiz[quiz_settings][allow_backtracking]=true&#39; \
+     -d &#39;quiz[quiz_settings][shuffle_answers]=true&#39; \
+     -d &#39;quiz[quiz_settings][shuffle_questions]=true&#39; \
+     -d &#39;quiz[quiz_settings][require_student_access_code]=true&#39; \
+     -d &#39;quiz[quiz_settings][student_access_code]=12345&#39;</code></pre>
+    
+  </div>
+
+
+
+  Returns a
+
+<a href='new_quizzes.html#NewQuiz'>NewQuiz</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.new_quizzes/quizzes_api.destroy' data-subtopic='New Quizzes'>
+    <a name='method.new_quizzes/quizzes_api.destroy' href='#method.new_quizzes/quizzes_api.destroy'>
+      Delete a new quiz
+    </a>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    DELETE /api/quiz/v1/courses/:course_id/quizzes/:assignment_id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:DELETE|/api/quiz/v1/courses/:course_id/quizzes/:assignment_id</code>
+  </div>
+
+
+<p>Delete a single new quiz.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>course_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>no description</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>assignment_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The id of the assignment associated with the quiz.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/quiz/v1/courses/1/quizzes/12&#39; \
+     -X DELETE \
+     -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+
+  Returns a
+
+<a href='new_quizzes.html#NewQuiz'>NewQuiz</a>
+object
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:48 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

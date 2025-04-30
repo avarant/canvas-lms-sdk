@@ -1,0 +1,155 @@
+openapi: "3.0.0"
+info:
+  title: "Canvas LMS Polls API"
+  version: "1.0.0"
+paths:
+  /api/v1/polls:
+    get:
+      tags:
+        - Polls
+      summary: "List polls"
+      description: "Returns the paginated list of polls for the current user."
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "A list of polls"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollList'
+    post:
+      tags:
+        - Polls
+      summary: "Create a single poll"
+      description: "Create a new poll for the current user."
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                polls:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/PollInput'
+              required:
+                - polls
+      responses:
+        '200':
+          description: "The created poll(s)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollList'
+  /api/v1/polls/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: "The unique identifier of the poll"
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Polls
+      summary: "Get a single poll"
+      description: "Returns the poll with the given id."
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "A single poll"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollList'
+    put:
+      tags:
+        - Polls
+      summary: "Update a single poll"
+      description: "Update an existing poll belonging to the current user."
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                polls:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/PollInput'
+              required:
+                - polls
+      responses:
+        '200':
+          description: "The updated poll(s)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollList'
+    delete:
+      tags:
+        - Polls
+      summary: "Delete a poll"
+      description: "Deletes the poll with the given id."
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: "No Content – poll deleted successfully"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Poll:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "The unique identifier for the poll."
+        question:
+          type: string
+          description: "The question/title of the poll."
+        description:
+          type: string
+          description: "A short description of the poll."
+        created_at:
+          type: string
+          format: date-time
+          description: "The time at which the poll was created."
+        user_id:
+          type: integer
+          description: "The unique identifier for the user that created the poll."
+        total_results:
+          type: object
+          additionalProperties:
+            type: integer
+          description: "An aggregate of the results of all associated poll sessions, keyed by poll choice id."
+    PollInput:
+      type: object
+      properties:
+        question:
+          type: string
+          description: "The title of the poll."
+        description:
+          type: string
+          description: "A brief description or instructions for the poll."
+      required:
+        - question
+    PollList:
+      type: object
+      properties:
+        polls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Poll'

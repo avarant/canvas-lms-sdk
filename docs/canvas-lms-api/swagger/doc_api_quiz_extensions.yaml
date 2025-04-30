@@ -1,0 +1,114 @@
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/extensions:
+    post:
+      summary: Set extensions for student quiz submissions
+      tags:
+        - Quiz Extensions
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          description: ID of the quiz
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Array of quiz extension definitions
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quiz_extensions
+              properties:
+                quiz_extensions:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - user_id
+                    properties:
+                      user_id:
+                        type: integer
+                        description: The ID of the user we want to add quiz extensions for.
+                      extra_attempts:
+                        type: integer
+                        description: Number of times the student is allowed to re-take the quiz over the multiple-attempt limit. Limited to 1000 attempts or less.
+                      extra_time:
+                        type: integer
+                        description: The number of extra minutes to allow for all attempts. Adds to the existing time limit. Limited to 10080 minutes (1 week).
+                      manually_unlocked:
+                        type: boolean
+                        description: Allow the student to take the quiz even if it’s locked for everyone else.
+                      extend_from_now:
+                        type: integer
+                        description: Number of minutes to extend the quiz from the current time. Mutually exclusive with extend_from_end_at. Limited to 1440 minutes (24 hours).
+                      extend_from_end_at:
+                        type: integer
+                        description: Number of minutes to extend the quiz beyond its current ending time. Mutually exclusive with extend_from_now. Limited to 1440 minutes (24 hours).
+            examples:
+              multiple_extensions:
+                summary: Multiple extensions example
+                value:
+                  quiz_extensions:
+                    - user_id: 3
+                      extra_attempts: 2
+                      extra_time: 20
+                      manually_unlocked: true
+                    - user_id: 2
+                      extra_attempts: 2
+                      extra_time: 20
+                      manually_unlocked: false
+              single_extension:
+                summary: Single extension using extend_from_now
+                value:
+                  quiz_extensions:
+                    - user_id: 3
+                      extend_from_now: 20
+      responses:
+        '200':
+          description: Quiz extensions created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_extensions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizExtension'
+        '403':
+          description: Forbidden - you are not allowed to extend quizzes for this course
+components:
+  schemas:
+    QuizExtension:
+      type: object
+      properties:
+        quiz_id:
+          type: integer
+          description: The ID of the Quiz the quiz extension belongs to.
+        user_id:
+          type: integer
+          description: The ID of the Student that needs the quiz extension.
+        extra_attempts:
+          type: integer
+          description: Number of times the student is allowed to re-take the quiz over the multiple-attempt limit.
+        extra_time:
+          type: integer
+          description: Amount of extra time allowed for the quiz submission, in minutes.
+        manually_unlocked:
+          type: boolean
+          description: The student can take the quiz even if it's locked for everyone else.
+        end_at:
+          type: string
+          format: date-time
+          description: The time at which the quiz submission will be overdue and flagged as a late submission.
+      required:
+        - quiz_id
+        - user_id

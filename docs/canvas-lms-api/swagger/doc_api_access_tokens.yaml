@@ -1,0 +1,158 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Access Tokens API
+  version: v1
+paths:
+  /api/v1/users/{user_id}/tokens/{id}:
+    get:
+      summary: Show an access token
+      description: The ID can be the actual database ID of the token, or the ‘token_hint’ value.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID or token_hint of the token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Access token details
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Token not found
+    put:
+      summary: Update an access token
+      description: |
+        Update an existing access token.  
+        The ID can be the actual database ID of the token, or the ‘token_hint’ value.  
+        Regenerating an expired token requires a new expiration date.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID or token_hint of the token
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Token attributes to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: object
+                  properties:
+                    purpose:
+                      type: string
+                      description: The purpose of the token.
+                    expires_at:
+                      type: string
+                      format: date-time
+                      description: The time at which the token will expire.
+                    scopes:
+                      type: array
+                      items:
+                        type: string
+                      description: The scopes to associate with the token.
+                    regenerate:
+                      type: boolean
+                      description: Regenerate the actual token.
+      responses:
+        '200':
+          description: Access token updated
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad request
+        '404':
+          description: Token not found
+    delete:
+      summary: Delete an access token
+      description: The ID can be the actual database ID of the token, or the ‘token_hint’ value.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID or token_hint of the token
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Token deleted
+        '404':
+          description: Token not found
+
+  /api/v1/users/{user_id}/tokens:
+    post:
+      summary: Create an access token
+      description: |
+        Create a new access token for the specified user.  
+        If the user is not the current user, the token will be created as “pending”, and must be activated by the user before it can be used.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Attributes for the new token
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: object
+                  properties:
+                    purpose:
+                      type: string
+                      description: The purpose of the token.
+                    expires_at:
+                      type: string
+                      format: date-time
+                      description: The time at which the token will expire.
+                    scopes:
+                      type: array
+                      items:
+                        type: string
+                      description: The scopes to associate with the token. Ignored if scopes are not enabled on the developer key.
+                  required:
+                    - purpose
+      responses:
+        '201':
+          description: Token created
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad request
+        '404':
+          description: User not found

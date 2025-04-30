@@ -1,0 +1,313 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Grading Standards API
+  version: "1.0.0"
+paths:
+  /api/v1/accounts/{account_id}/grading_standards:
+    get:
+      summary: List the grading standards available in an account context
+      description: Returns the paginated list of grading standards for the given account that are visible to the user.
+      tags:
+        - Grading Standards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of GradingStandard objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GradingStandard'
+    post:
+      summary: Create a new grading standard in an account context
+      tags:
+        - Grading Standards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - title
+                - grading_scheme_entry
+              properties:
+                title:
+                  type: string
+                  description: The title for the Grading Standard.
+                points_based:
+                  type: boolean
+                  description: Whether or not a grading scheme is points based. Defaults to false.
+                scaling_factor:
+                  type: number
+                  format: float
+                  description: The factor by which to scale a percentage into a points based scheme grade. This is the maximum number of points possible in the grading scheme. Defaults to 1. Not required for percentage based grading schemes.
+                grading_scheme_entry:
+                  type: array
+                  description: A list of grading scheme entries.
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - value
+                    properties:
+                      name:
+                        type: string
+                        description: The name for an entry value within a GradingStandard that describes the range of the value, e.g., A-.
+                      value:
+                        type: number
+                        description: The lower bound of the range for the entry. e.g., 93.
+              example:
+                title: New standard name
+                points_based: false
+                scaling_factor: 1.0
+                grading_scheme_entry:
+                  - name: A
+                    value: 94
+                  - name: A-
+                    value: 90
+      responses:
+        '200':
+          description: GradingStandard created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradingStandard'
+              example:
+                title: New standard name
+                id: 1
+                context_id: 1
+                context_type: Course
+                points_based: false
+                scaling_factor: 1.0
+                grading_scheme:
+                  - name: A
+                    value: 0.9
+                  - name: B
+                    value: 0.8
+
+  /api/v1/courses/{course_id}/grading_standards:
+    get:
+      summary: List the grading standards available in a course context
+      description: Returns the paginated list of grading standards for the given course that are visible to the user.
+      tags:
+        - Grading Standards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: ID of the course.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of GradingStandard objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GradingStandard'
+    post:
+      summary: Create a new grading standard in a course context
+      tags:
+        - Grading Standards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: ID of the course.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - title
+                - grading_scheme_entry
+              properties:
+                title:
+                  type: string
+                  description: The title for the Grading Standard.
+                points_based:
+                  type: boolean
+                  description: Whether or not a grading scheme is points based. Defaults to false.
+                scaling_factor:
+                  type: number
+                  format: float
+                  description: The factor by which to scale a percentage into a points based scheme grade. This is the maximum number of points possible in the grading scheme. Defaults to 1. Not required for percentage based grading schemes.
+                grading_scheme_entry:
+                  type: array
+                  description: A list of grading scheme entries.
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - value
+                    properties:
+                      name:
+                        type: string
+                        description: The name for an entry value within a GradingStandard that describes the range of the value, e.g., A-.
+                      value:
+                        type: number
+                        description: The lower bound of the range for the entry. e.g., 93.
+              example:
+                title: New standard name
+                points_based: false
+                scaling_factor: 1.0
+                grading_scheme_entry:
+                  - name: A
+                    value: 94
+                  - name: A-
+                    value: 90
+      responses:
+        '200':
+          description: GradingStandard created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradingStandard'
+              example:
+                title: New standard name
+                id: 1
+                context_id: 1
+                context_type: Course
+                points_based: false
+                scaling_factor: 1.0
+                grading_scheme:
+                  - name: A
+                    value: 0.9
+                  - name: B
+                    value: 0.8
+
+  /api/v1/accounts/{account_id}/grading_standards/{grading_standard_id}:
+    get:
+      summary: Get a single grading standard in an account context
+      description: Returns a grading standard for the given account that is visible to the user.
+      tags:
+        - Grading Standards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account.
+          schema:
+            type: integer
+        - name: grading_standard_id
+          in: path
+          required: true
+          description: ID of the grading standard.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A GradingStandard object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradingStandard'
+
+  /api/v1/courses/{course_id}/grading_standards/{grading_standard_id}:
+    get:
+      summary: Get a single grading standard in a course context
+      description: Returns a grading standard for the given course that is visible to the user.
+      tags:
+        - Grading Standards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: ID of the course.
+          schema:
+            type: integer
+        - name: grading_standard_id
+          in: path
+          required: true
+          description: ID of the grading standard.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A GradingStandard object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradingStandard'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    GradingSchemeEntry:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name for an entry value within a GradingStandard that describes the range of the value.
+        value:
+          type: number
+          description: The lower bound of the range for the entry.
+        calculated_value:
+          type: number
+          description: The value that will be used to compare against a grade.
+    GradingStandard:
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the grading standard.
+        id:
+          type: integer
+          description: The id of the grading standard.
+        context_type:
+          type: string
+          description: The context this standard is associated with, either 'Account' or 'Course'.
+          enum:
+            - Account
+            - Course
+        context_id:
+          type: integer
+          description: The id for the context (either the Account or Course id).
+        points_based:
+          type: boolean
+          description: Whether this is a points-based standard.
+        scaling_factor:
+          type: number
+          description: The factor by which to scale a score.
+        grading_scheme:
+          type: array
+          description: A list of grading scheme entries.
+          items:
+            $ref: '#/components/schemas/GradingSchemeEntry'

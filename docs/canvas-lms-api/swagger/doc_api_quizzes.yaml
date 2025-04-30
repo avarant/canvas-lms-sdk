@@ -1,0 +1,294 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Quizzes API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/quizzes:
+    get:
+      summary: List quizzes in a course
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: search_term
+          in: query
+          description: The partial title of the quizzes to match and return.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of Quiz objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quiz'
+    post:
+      summary: Create a quiz
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz:
+                  type: object
+                  required:
+                    - title
+                  properties:
+                    title:
+                      type: string
+                      description: The quiz title.
+                    description:
+                      type: string
+                      description: A description of the quiz.
+                    quiz_type:
+                      type: string
+                      description: The type of quiz.
+                      enum:
+                        - practice_quiz
+                        - assignment
+                        - graded_survey
+                        - survey
+                    assignment_group_id:
+                      type: integer
+                      description: The assignment group ID to put the assignment in.
+                    time_limit:
+                      type: integer
+                      description: Time limit to take this quiz, in minutes.
+                    shuffle_answers:
+                      type: boolean
+                    hide_results:
+                      type: string
+                      enum:
+                        - always
+                        - until_after_last_attempt
+                    show_correct_answers:
+                      type: boolean
+                    show_correct_answers_last_attempt:
+                      type: boolean
+                    show_correct_answers_at:
+                      type: string
+                      format: date-time
+                    hide_correct_answers_at:
+                      type: string
+                      format: date-time
+                    allowed_attempts:
+                      type: integer
+                    scoring_policy:
+                      type: string
+                      enum:
+                        - keep_highest
+                        - keep_latest
+                    one_question_at_a_time:
+                      type: boolean
+                    cant_go_back:
+                      type: boolean
+                    access_code:
+                      type: string
+                    ip_filter:
+                      type: string
+                    due_at:
+                      type: string
+                      format: date-time
+                    lock_at:
+                      type: string
+                      format: date-time
+                    unlock_at:
+                      type: string
+                      format: date-time
+                    published:
+                      type: boolean
+                    one_time_results:
+                      type: boolean
+                    only_visible_to_overrides:
+                      type: boolean
+      responses:
+        '200':
+          description: The newly created Quiz object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+  /api/v1/courses/{course_id}/quizzes/{id}:
+    get:
+      summary: Get a single quiz
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the quiz
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A Quiz object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+    put:
+      summary: Edit a quiz
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz:
+                  type: object
+                  properties:
+                    notify_of_update:
+                      type: boolean
+                      description: If true, notifies users that the quiz has changed.
+      responses:
+        '200':
+          description: The updated Quiz object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+    delete:
+      summary: Delete a quiz
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Quiz deleted successfully
+  /api/v1/courses/{course_id}/quizzes/{id}/reorder:
+    post:
+      summary: Reorder quiz items
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: integer
+                        description: The associated item's unique identifier
+                      type:
+                        type: string
+                        description: The type of item ('question' or 'group')
+                        enum:
+                          - question
+                          - group
+      responses:
+        '204':
+          description: No Content (reorder successful)
+  /api/v1/courses/{course_id}/quizzes/{id}/validate_access_code:
+    post:
+      summary: Validate quiz access code
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - access_code
+              properties:
+                access_code:
+                  type: string
+                  description: The access code being validated
+      responses:
+        '200':
+          description: Boolean indicating whether the access code is correct
+          content:
+            application/json:
+              schema:
+                type: boolean
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Quiz:
+      type: object
+      description: A Quiz object as defined by Canvas LMS
+      properties: {}

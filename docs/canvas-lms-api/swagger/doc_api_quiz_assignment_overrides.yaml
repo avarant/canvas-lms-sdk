@@ -1,0 +1,177 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Quiz Assignment Overrides API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/quizzes/assignment_overrides:
+    get:
+      summary: Retrieve assignment-overridden dates for Classic Quizzes
+      tags:
+        - Quiz Assignment Overrides
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: "quiz_assignment_overrides[][quiz_ids][]"
+          in: query
+          description: >
+            An array of quiz IDs. If omitted, overrides for all quizzes
+            available to the operating user will be returned.
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          description: A set of assignment-overridden dates for quizzes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizAssignmentOverrideSetContainer'
+              example:
+                quiz_assignment_overrides:
+                  - quiz_id: "1"
+                    due_dates:
+                      - id: 1
+                        due_at: "2014-02-21T06:59:59Z"
+                        unlock_at: null
+                        lock_at: "2014-02-21T06:59:59Z"
+                        title: "Project X"
+                        base: true
+                    all_dates:
+                      - id: 2
+                        due_at: "2014-02-22T06:59:59Z"
+                        unlock_at: null
+                        lock_at: "2014-02-22T06:59:59Z"
+                        title: "Section A"
+                        base: false
+                  - quiz_id: "2"
+                    due_dates: []
+                    all_dates: []
+        default:
+          description: Unexpected error
+  /api/v1/courses/{course_id}/new_quizzes/assignment_overrides:
+    get:
+      summary: Retrieve assignment-overridden dates for New Quizzes
+      tags:
+        - Quiz Assignment Overrides
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: "quiz_assignment_overrides[][quiz_ids][]"
+          in: query
+          description: >
+            An array of quiz IDs. If omitted, overrides for all quizzes
+            available to the operating user will be returned.
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          description: A set of assignment-overridden dates for new quizzes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizAssignmentOverrideSetContainer'
+              example:
+                quiz_assignment_overrides:
+                  - quiz_id: "1"
+                    due_dates:
+                      - id: 1
+                        due_at: "2025-01-10T12:00:00Z"
+                        unlock_at: null
+                        lock_at: "2025-01-10T12:00:00Z"
+                        title: "Group 1"
+                        base: false
+                    all_dates:
+                      - id: 3
+                        due_at: "2025-01-11T12:00:00Z"
+                        unlock_at: null
+                        lock_at: "2025-01-11T12:00:00Z"
+                        title: "All Students"
+                        base: true
+        default:
+          description: Unexpected error
+components:
+  schemas:
+    QuizAssignmentOverride:
+      type: object
+      description: Set of assignment-overridden dates for a quiz.
+      properties:
+        id:
+          type: integer
+          description: >
+            ID of the assignment override, unless this is the base construct,
+            in which case the “id” field is omitted.
+        due_at:
+          type: string
+          format: date-time
+          description: The date after which any quiz submission is considered late.
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date when the quiz becomes available for taking.
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: >
+            When the quiz will stop being available for taking. A value of null
+            means it can always be taken.
+        title:
+          type: string
+          nullable: true
+          description: Title of the section this assignment override is for, if any.
+        base:
+          type: boolean
+          description: >
+            If this property is present, dates in this structure are not based
+            on an assignment override, but are instead for all students.
+    QuizAssignmentOverrideSet:
+      type: object
+      description: Set of assignment-overridden dates for a quiz.
+      properties:
+        quiz_id:
+          type: string
+          description: ID of the quiz those dates are for.
+        due_dates:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/QuizAssignmentOverride'
+          description: >
+            An array of quiz assignment overrides. For students, this array will
+            always contain a single item which is the set of dates that apply to
+            that student. For teachers and staff, it may contain more.
+        all_dates:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/QuizAssignmentOverride'
+          description: >
+            An array of all assignment overrides active for the quiz. This is
+            visible only to teachers and staff.
+      required:
+        - quiz_id
+    QuizAssignmentOverrideSetContainer:
+      type: object
+      description: Container for set of assignment-overridden dates for a quiz.
+      properties:
+        quiz_assignment_overrides:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuizAssignmentOverrideSet'
+          description: The QuizAssignmentOverrideSet
+      required:
+        - quiz_assignment_overrides

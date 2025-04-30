@@ -1,0 +1,264 @@
+openapi: "3.0.0"
+info:
+  title: Canvas Quiz Questions API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/questions:
+    get:
+      summary: List questions in a quiz or a submission
+      description: Returns the paginated list of QuizQuestions in this quiz.
+      parameters:
+        - $ref: '#/components/parameters/course_id'
+        - $ref: '#/components/parameters/quiz_id'
+        - name: quiz_submission_id
+          in: query
+          description: >-
+            If specified, the endpoint will return the questions that were
+            presented for that submission. This is useful if the quiz has been
+            modified after the submission was created and the latest quiz
+            version’s set of questions does not match the submission’s. NOTE:
+            you must specify quiz_submission_attempt as well if you specify this
+            parameter.
+          schema:
+            type: integer
+        - name: quiz_submission_attempt
+          in: query
+          description: The attempt of the submission you want the questions for.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of QuizQuestion objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuizQuestion'
+    post:
+      summary: Create a single quiz question
+      description: Create a new quiz question for this quiz
+      parameters:
+        - $ref: '#/components/parameters/course_id'
+        - $ref: '#/components/parameters/quiz_id'
+      requestBody:
+        description: Quiz question to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  $ref: '#/components/schemas/QuizQuestionInput'
+      responses:
+        '200':
+          description: QuizQuestion created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizQuestion'
+
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/questions/{id}:
+    get:
+      summary: Get a single quiz question
+      description: Returns the quiz question with the given id
+      parameters:
+        - $ref: '#/components/parameters/course_id'
+        - $ref: '#/components/parameters/quiz_id'
+        - name: id
+          in: path
+          required: true
+          description: The quiz question unique identifier.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: QuizQuestion object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizQuestion'
+    put:
+      summary: Update an existing quiz question
+      description: Updates an existing quiz question for this quiz
+      parameters:
+        - $ref: '#/components/parameters/course_id'
+        - $ref: '#/components/parameters/quiz_id'
+        - name: id
+          in: path
+          required: true
+          description: The quiz question’s unique identifier.
+          schema:
+            type: integer
+      requestBody:
+        description: Quiz question fields to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  $ref: '#/components/schemas/QuizQuestionInput'
+      responses:
+        '200':
+          description: QuizQuestion updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizQuestion'
+    delete:
+      summary: Delete a quiz question
+      description: Deletes a quiz question
+      parameters:
+        - $ref: '#/components/parameters/course_id'
+        - $ref: '#/components/parameters/quiz_id'
+        - name: id
+          in: path
+          required: true
+          description: The quiz question’s unique identifier.
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content, question deleted successfully
+
+components:
+  parameters:
+    course_id:
+      name: course_id
+      in: path
+      required: true
+      description: The course’s unique identifier.
+      schema:
+        type: integer
+    quiz_id:
+      name: quiz_id
+      in: path
+      required: true
+      description: The quiz’s unique identifier.
+      schema:
+        type: integer
+
+  schemas:
+    QuizQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the quiz question.
+        quiz_id:
+          type: integer
+          description: The ID of the Quiz the question belongs to.
+        position:
+          type: integer
+          description: The order in which the question will be retrieved and displayed.
+        question_name:
+          type: string
+          description: The name of the question.
+        question_type:
+          type: string
+          description: The type of the question.
+        question_text:
+          type: string
+          description: The text of the question.
+        points_possible:
+          type: integer
+          description: The maximum amount of points possible received for getting this question correct.
+        correct_comments:
+          type: string
+          description: The comments to display if the student answers the question correctly.
+        incorrect_comments:
+          type: string
+          description: The comments to display if the student answers incorrectly.
+        neutral_comments:
+          type: string
+          description: The comments to display regardless of how the student answered.
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+
+    QuizQuestionInput:
+      type: object
+      properties:
+        question_name:
+          type: string
+        question_text:
+          type: string
+        quiz_group_id:
+          type: integer
+        question_type:
+          type: string
+          description: The type of question. Multiple optional fields depend upon the type of question to be used.
+          enum:
+            - calculated_question
+            - essay_question
+            - file_upload_question
+            - fill_in_multiple_blanks_question
+            - matching_question
+            - multiple_answers_question
+            - multiple_choice_question
+            - multiple_dropdowns_question
+            - numerical_question
+            - short_answer_question
+            - text_only_question
+            - true_false_question
+        position:
+          type: integer
+        points_possible:
+          type: integer
+        correct_comments:
+          type: string
+        incorrect_comments:
+          type: string
+        neutral_comments:
+          type: string
+        text_after_answers:
+          type: string
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the answer. Do not supply if this answer is part of a new question.
+        answer_text:
+          type: string
+        answer_weight:
+          type: integer
+        answer_comments:
+          type: string
+        text_after_answers:
+          type: string
+        answer_match_left:
+          type: string
+        answer_match_right:
+          type: string
+        matching_answer_incorrect_matches:
+          type: string
+        numerical_answer_type:
+          type: string
+          enum:
+            - exact_answer
+            - range_answer
+            - precision_answer
+        exact:
+          type: number
+        margin:
+          type: number
+        approximate:
+          type: number
+        precision:
+          type: integer
+        start:
+          type: number
+        end:
+          type: number
+        blank_id:
+          type: integer

@@ -1,0 +1,55 @@
+```yaml
+/api/v1/error_reports:
+  post:
+    tags:
+      - Error Reports
+    summary: Create a new error report documenting an experienced problem
+    description: |
+      Performs the same action as when a user uses the “help -> report a problem” dialog.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  subject:
+                    type: string
+                    description: The summary of the problem
+                  url:
+                    type: string
+                    description: URL from which the report was issued
+                  email:
+                    type: string
+                    description: Email address for the reporting user
+                  comments:
+                    type: string
+                    description: The long version of the story from the user on what they experienced
+                  http_env:
+                    type: object
+                    description: >
+                      A collection of metadata about the users’ environment.
+                      If not provided, Canvas will collect it based on information
+                      found in the request.
+                required:
+                  - subject
+    responses:
+      '201':
+        description: Error report created successfully
+      '400':
+        description: Bad request – invalid parameters
+      '401':
+        description: Unauthorized – authentication failed
+      '500':
+        description: Internal server error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+```

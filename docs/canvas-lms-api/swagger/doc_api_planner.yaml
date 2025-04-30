@@ -1,0 +1,182 @@
+paths:
+/api/v1/planner/items:
+  get:
+    summary: List planner items
+    description: >
+      Retrieve the paginated list of objects to be shown on the planner for the current user
+      with the associated planner override to override an item’s visibility if set.
+      Planner items for a student may also be retrieved by a linked observer.
+    parameters:
+      - name: start_date
+        in: query
+        description: >
+          Only return items starting from the given date. The value should be formatted
+          as yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: end_date
+        in: query
+        description: >
+          Only return items up to the given date. The value should be formatted
+          as yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: context_codes
+        in: query
+        description: >
+          List of context codes of courses and/or groups whose items you want to see.
+          If not specified, defaults to all contexts associated to the current user.
+          Note that concluded courses will be ignored unless specified in the includes[] parameter.
+          The format of this field is the context type, followed by an underscore,
+          followed by the context id. For example: course_42, group_123
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+      - name: observed_user_id
+        in: query
+        description: >
+          Return planner items for the given observed user. Must be accompanied by
+          context_codes[]. The user making the request must be observing the observed
+          user in all the courses specified by context_codes[].
+        required: false
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: Only return items that have new or unread activity.
+        required: false
+        schema:
+          type: string
+          enum:
+            - new_activity
+    responses:
+      '200':
+        description: A JSON array of planner items
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  context_type:
+                    type: string
+                  course_id:
+                    type: integer
+                  planner_override:
+                    type: object
+                    nullable: true
+                  submissions:
+                    type: [boolean, object]
+                  plannable_id:
+                    type: string
+                  plannable_type:
+                    type: string
+                  plannable:
+                    type: object
+                  html_url:
+                    type: string
+            example:
+              - context_type: "Course"
+                course_id: 1
+                planner_override: null
+                submissions: false
+                plannable_id: "789"
+                plannable_type: "planner_note"
+                plannable:
+                  id: 1
+                  todo_date: "2017-05-30T06:00:00Z"
+                  title: "hello"
+                  details: "world"
+                  user_id: 2
+                  course_id: null
+                  workflow_state: "active"
+                  created_at: "2017-05-30T16:29:04Z"
+                  updated_at: "2017-05-30T16:29:15Z"
+                html_url: "http://canvas.instructure.com/api/v1/planner_notes.1"
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal Server Error
+
+/api/v1/users/{user_id}/planner/items:
+  get:
+    summary: List planner items for a specified user
+    description: >
+      Retrieve the paginated list of planner items for the specified user (observer use).
+      The requesting user must be observing the target user in the contexts specified.
+    parameters:
+      - name: user_id
+        in: path
+        description: ID of the user whose planner items are to be retrieved.
+        required: true
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: >
+          Only return items starting from the given date. The value should be formatted
+          as yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: end_date
+        in: query
+        description: >
+          Only return items up to the given date. The value should be formatted
+          as yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: context_codes
+        in: query
+        description: >
+          List of context codes of courses and/or groups whose items you want to see.
+          If not specified, defaults to all contexts associated to the current user.
+          Note that concluded courses will be ignored unless specified in the includes[] parameter.
+          The format of this field is the context type, followed by an underscore,
+          followed by the context id. For example: course_42, group_123
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+      - name: filter
+        in: query
+        description: Only return items that have new or unread activity.
+        required: false
+        schema:
+          type: string
+          enum:
+            - new_activity
+    responses:
+      '200':
+        description: A JSON array of planner items for the specified user
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/paths/~1api~1v1~1planner~1items/get/responses/200/content/application~1json/schema/items'
+      '400':
+        description: Bad Request
+      '401':
+        description: Unauthorized
+      '404':
+        description: Not Found
+      '500':
+        description: Internal Server Error

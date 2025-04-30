@@ -1,0 +1,325 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LTI Originality Reports API
+  version: 1.0.0
+paths:
+  /api/lti/assignments/{assignment_id}/submissions/{submission_id}/originality_report:
+    post:
+      summary: Create a new OriginalityReport for the specified file
+      tags:
+        - Originality Reports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the assignment
+        - name: submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the submission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                originality_report:
+                  type: object
+                  properties:
+                    file_id:
+                      type: integer
+                      description: The id of the file being given an originality score
+                    originality_score:
+                      type: number
+                      format: float
+                      description: A number between 0 and 100 representing the measure of the specified file’s originality
+                    originality_report_url:
+                      type: string
+                      description: The URL where the originality report for the specified file may be found
+                    originality_report_file_id:
+                      type: integer
+                      description: The ID of the file within Canvas that contains the originality report document
+                    tool_setting:
+                      $ref: '#/components/schemas/ToolSetting'
+                    workflow_state:
+                      type: string
+                      description: May be “pending”, “error”, or “scored”. Inferred to “scored” if originality_score is provided
+                    error_message:
+                      type: string
+                      description: A message describing the error; sets workflow_state to “error”
+                    attempt:
+                      type: integer
+                      description: Attempt number for online text entries when no file_id is given
+                  required:
+                    - originality_score
+      responses:
+        '200':
+          description: Successful creation of an OriginalityReport
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginalityReport'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized – invalid or missing JWT token
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+  /api/lti/assignments/{assignment_id}/submissions/{submission_id}/originality_report/{id}:
+    put:
+      summary: Edit an existing OriginalityReport
+      tags:
+        - Originality Reports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the OriginalityReport to modify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                originality_report:
+                  type: object
+                  properties:
+                    originality_score:
+                      type: number
+                      format: float
+                      description: A number between 0 and 100 representing the measure of the specified file’s originality
+                    originality_report_url:
+                      type: string
+                      description: The URL where the originality report for the specified file may be found
+                    originality_report_file_id:
+                      type: integer
+                      description: The ID of the file within Canvas that contains the originality report document
+                    tool_setting:
+                      $ref: '#/components/schemas/ToolSetting'
+                    workflow_state:
+                      type: string
+                      description: May be “pending”, “error”, or “scored”. Inferred to “scored” if originality_score is provided
+                    error_message:
+                      type: string
+                      description: A message describing the error; sets workflow_state to “error”
+      responses:
+        '200':
+          description: Successful update of an OriginalityReport
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginalityReport'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized – invalid or missing JWT token
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+  /api/lti/assignments/{assignment_id}/files/{file_id}/originality_report:
+    put:
+      summary: Edit an existing OriginalityReport by file ID
+      tags:
+        - Originality Reports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: file_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the file associated with the report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                originality_report:
+                  type: object
+                  properties:
+                    originality_score:
+                      type: number
+                      format: float
+                    originality_report_url:
+                      type: string
+                    originality_report_file_id:
+                      type: integer
+                    tool_setting:
+                      $ref: '#/components/schemas/ToolSetting'
+                    workflow_state:
+                      type: string
+                    error_message:
+                      type: string
+      responses:
+        '200':
+          description: Successful update of an OriginalityReport
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginalityReport'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized – invalid or missing JWT token
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+  /api/lti/assignments/{assignment_id}/submissions/{submission_id}/originality_report/{id}:
+    get:
+      summary: Retrieve a single OriginalityReport
+      tags:
+        - Originality Reports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An OriginalityReport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginalityReport'
+        '401':
+          description: Unauthorized – invalid or missing JWT token
+        '404':
+          description: Not Found
+
+  /api/lti/assignments/{assignment_id}/files/{file_id}/originality_report:
+    get:
+      summary: Retrieve a single OriginalityReport by file ID
+      tags:
+        - Originality Reports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: file_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An OriginalityReport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OriginalityReport'
+        '401':
+          description: Unauthorized – invalid or missing JWT token
+        '404':
+          description: Not Found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ToolSetting:
+      type: object
+      properties:
+        resource_type_code:
+          type: string
+          description: The resource type code of the resource handler to use to display originality reports
+        resource_url:
+          type: string
+          description: A URL to override the inferred launch URL; requires resource_type_code when used
+    OriginalityReport:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The id of the OriginalityReport
+        file_id:
+          type: integer
+          description: The id of the file receiving the originality score
+        originality_score:
+          type: number
+          format: float
+          description: A number between 0 and 100 representing the originality score
+        originality_report_file_id:
+          type: integer
+          description: The ID of the file in Canvas containing the originality report
+        originality_report_url:
+          type: string
+          description: A non-LTI launch URL where the originality report may be found
+        tool_setting:
+          $ref: '#/components/schemas/ToolSetting'
+        error_report:
+          type: string
+          nullable: true
+          description: A message describing the error; presence sets workflow_state to "error"
+        submission_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: The submitted_at date time of the submission
+        root_account_id:
+          type: integer
+          description: The id of the root Account associated with the OriginalityReport
+      required:
+        - id
+        - file_id
+        - originality_score
+        - root_account_id
+tags:
+  - name: Originality Reports
+    description: Endpoints for creating, updating, and retrieving LTI Originality Reports in Canvas

@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  title: New Quizzes Reports API
+  version: 1.0.0
+paths:
+  /api/quiz/v1/courses/{course_id}/quizzes/{assignment_id}/reports:
+    post:
+      summary: Generate a new report for this quiz
+      description: |
+        Generate a new report for this quiz. Returns a Progress object that can be used to track the progress of the report generation.
+      tags:
+        - New Quizzes Reports
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the quiz (assignment)
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz_report:
+                  type: object
+                  properties:
+                    report_type:
+                      type: string
+                      description: The type of report to be generated
+                      enum:
+                        - student_analysis
+                        - item_analysis
+                    format:
+                      type: string
+                      description: The format of report to be generated
+                      enum:
+                        - csv
+                        - json
+                  required:
+                    - report_type
+                    - format
+            example:
+              quiz_report:
+                report_type: student_analysis
+                format: csv
+      responses:
+        '200':
+          description: Progress object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Progress'
+        '400':
+          description: Bad Request – invalid report type or format
+        '409':
+          description: Conflict – a quiz report of the specified type is already being generated
+components:
+  schemas:
+    Progress:
+      type: object
+      description: Represents the status of an asynchronous report generation job
+      properties:
+        id:
+          type: integer
+          description: The ID of the Progress object
+        context_id:
+          type: integer
+          description: The context (quiz) owning the job
+        context_type:
+          type: string
+        user_id:
+          type: integer
+          description: The ID of the user who started the job
+        completion:
+          type: integer
+          description: Percent completed
+        workflow_state:
+          type: string
+          enum:
+            - queued
+            - running
+            - completed
+            - failed
+          description: The state of the job
+        created_at:
+          type: string
+          format: date-time
+          description: Time the job was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Time the job was last updated
+        results:
+          type: object
+          description: Details for successfully completed jobs
+          properties:
+            url:
+              type: string
+              description: URL of the generated report
+        url:
+          type: string
+          description: URL where a progress update can be retrieved
+      required:
+        - id
+        - context_id
+        - context_type
+        - user_id
+        - completion
+        - workflow_state
+        - created_at
+        - updated_at
+        - results
+        - url
+      example:
+        id: 1
+        context_id: 1
+        context_type: Assignment
+        user_id: 123
+        completion: 100
+        workflow_state: completed
+        created_at: '2013-01-15T15:00:00Z'
+        updated_at: '2013-01-15T15:04:00Z'
+        results:
+          url: 'https://canvas.example.edu/api/assignments/1/files/2/download'
+        url: 'https://canvas.example.edu/api/v1/progress/1'

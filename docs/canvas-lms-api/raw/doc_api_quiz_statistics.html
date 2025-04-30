@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title>Quiz Statistics - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="current" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div class="service">
+  
+    <h1>Quiz Statistics API</h1>
+  
+  
+  <table id='quicklinks'>
+  </table>
+  <p>API for accessing quiz submission statistics. The statistics provided by this
+interface are an aggregate of what is known as Student and Item Analysis for a
+quiz.</p>
+
+<p>These statistics are extracted (and composed) from <em>graded</em> (manually or, when
+viable, automatically) submissions for a quiz and provide an insight into how
+the participant students had responded to each question, as well as insights
+into the reception of each question answer individually.</p>
+
+<p>Some of these statistics are exclusive to Multiple Choice and True/False types
+of questions, others to other question types. See
+Quiz Statistics for a reference of these statistics.</p>
+
+
+
+
+
+  <div class='object_definition'>
+  <h3><a name="QuizStatistics">A QuizStatistics object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // The ID of the quiz statistics report.
+  &quot;id&quot;: 1,
+  // The ID of the Quiz the statistics report is for. 
+  // NOTE: AVAILABLE ONLY IN NON-JSON-API REQUESTS.
+  &quot;quiz_id&quot;: 2,
+  // Whether there are any students that have made mutliple submissions for this
+  // quiz.
+  &quot;multiple_attempts_exist&quot;: true,
+  // In the presence of multiple attempts, this field describes whether the
+  // statistics describe all the submission attempts and not only the latest ones.
+  &quot;includes_all_versions&quot;: true,
+  // The time at which the statistics were generated, which is usually after the
+  // occurrence of a quiz event, like a student submitting it.
+  &quot;generated_at&quot;: &quot;2013-01-23T23:59:00-07:00&quot;,
+  // The API HTTP/HTTPS URL to this quiz statistics.
+  &quot;url&quot;: &quot;http://canvas.example.edu/api/v1/courses/1/quizzes/2/statistics&quot;,
+  // The HTTP/HTTPS URL to the page where the statistics can be seen visually.
+  &quot;html_url&quot;: &quot;http://canvas.example.edu/courses/1/quizzes/2/statistics&quot;,
+  // Question-specific statistics for each question and its answers.
+  &quot;question_statistics&quot;: null,
+  // Question-specific statistics for each question and its answers.
+  &quot;submission_statistics&quot;: null,
+  // JSON-API construct that contains links to media related to this quiz
+  // statistics object. 
+  // NOTE: AVAILABLE ONLY IN JSON-API REQUESTS.
+  &quot;links&quot;: null
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="QuizStatisticsLinks">A QuizStatisticsLinks object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">// Links to media related to QuizStatistics.
+{
+  // HTTP/HTTPS API URL to the quiz this statistics describe.
+  &quot;quiz&quot;: &quot;http://canvas.example.edu/api/v1/courses/1/quizzes/2&quot;
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="QuizStatisticsQuestionStatistics">A QuizStatisticsQuestionStatistics object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">// Statistics for submissions made to a specific quiz question.
+{
+  // Number of students who have provided an answer to this question. Blank or
+  // empty responses are not counted.
+  &quot;responses&quot;: 3,
+  // Statistics related to each individual pre-defined answer.
+  &quot;answers&quot;: null
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="QuizStatisticsAnswerStatistics">A QuizStatisticsAnswerStatistics object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">// Statistics for a specific pre-defined answer in a Multiple-Choice or
+// True/False quiz question.
+{
+  // ID of the answer.
+  &quot;id&quot;: 3866,
+  // The text attached to the answer.
+  &quot;text&quot;: &quot;Blue.&quot;,
+  // An integer to determine correctness of the answer. Incorrect answers should
+  // be 0, correct answers should 100
+  &quot;weight&quot;: 100,
+  // Number of students who have chosen this answer.
+  &quot;responses&quot;: 2
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="QuizStatisticsAnswerPointBiserial">A QuizStatisticsAnswerPointBiserial object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">// A point-biserial construct for a single pre-defined answer in a
+// Multiple-Choice or True/False question.
+{
+  // ID of the answer the point biserial is for.
+  &quot;answer_id&quot;: 3866,
+  // The point biserial value for this answer. Value ranges between -1 and 1.
+  &quot;point_biserial&quot;: -0.802955068546966,
+  // Convenience attribute that denotes whether this is the correct answer as
+  // opposed to being a distractor. This is mutually exclusive with the
+  // `distractor` value
+  &quot;correct&quot;: true,
+  // Convenience attribute that denotes whether this is a distractor answer and
+  // not the correct one. This is mutually exclusive with the `correct` value
+  &quot;distractor&quot;: false
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="QuizStatisticsSubmissionStatistics">A QuizStatisticsSubmissionStatistics object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">// Generic statistics for all submissions for a quiz.
+{
+  // The number of students who have taken the quiz.
+  &quot;unique_count&quot;: 3,
+  // The mean of the student submission scores.
+  &quot;score_average&quot;: 4.33333333333333,
+  // The highest submission score.
+  &quot;score_high&quot;: 6,
+  // The lowest submission score.
+  &quot;score_low&quot;: 3,
+  // Standard deviation of the submission scores.
+  &quot;score_stdev&quot;: 1.24721912892465,
+  // A percentile distribution of the student scores, each key is the percentile
+  // (ranges between 0 and 100%) while the value is the number of students who
+  // received that score.
+  &quot;scores&quot;: {&quot;50&quot;:1,&quot;34&quot;:5,&quot;100&quot;:1},
+  // The mean of the number of questions answered correctly by each student.
+  &quot;correct_count_average&quot;: 3.66666666666667,
+  // The mean of the number of questions answered incorrectly by each student.
+  &quot;incorrect_count_average&quot;: 5,
+  // The average time spent by students while taking the quiz.
+  &quot;duration_average&quot;: 42.333333333
+}</code></pre>
+  </div>
+  
+
+<div id="Services" class="method_details_list">
+
+  <div class="method_details first">
+  <h2 class='api_method_name' name='method.quizzes/quiz_statistics.index' data-subtopic='Quiz Statistics'>
+    <a name='method.quizzes/quiz_statistics.index' href='#method.quizzes/quiz_statistics.index'>
+      Fetching the latest quiz statistics
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/quizzes/quiz_statistics_controller.rb">Quizzes::QuizStatisticsController#index</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/quizzes/:quiz_id/statistics
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/quizzes/:quiz_id/statistics</code>
+  </div>
+
+
+<p>This endpoint provides statistics for all quiz versions, or for a specific quiz version, in which case the output is guaranteed to represent the <em>latest</em> and most current version of the quiz.</p>
+
+<p><strong>200 OK</strong> response code is returned if the request was successful.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>all_versions</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether the statistics report should include all submissions attempts.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{
+  &quot;quiz_statistics&quot;: [ QuizStatistics ]
+}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+</div>
+
+</div>
+<div class="appendix">
+  <h2>Appendixes</h2>
+
+  
+    <div class="appendix_entry">
+      <h3 id="Question+Specific+Statistics-appendix">Appendix: Question Specific Statistics</h3>
+
+<p>Based on the question type it represents, the <code>question_statistics</code> document
+may include extra metrics. You can find these metrics below.</p>
+
+<p><a class="bookmark" id="multiple-choice-question-stats"></a></p>
+
+<h4 id="multiple-choice">Multiple Choice</h4>
+
+<pre class="code javascript"><code class="javascript">{
+  // Number of students who have picked any choice.
+  &quot;responses&quot;: 4,
+
+  &quot;answers&quot;: [
+    {
+      // Unique ID of this answer.
+      &quot;id&quot;: &quot;3866&quot;,
+
+       // The readable answer text.
+      &quot;text&quot;: &quot;Red&quot;,
+
+       // Number of students who picked this answer.
+      &quot;responses&quot;: 3,
+
+       // Whether this answer is a correct one.
+      &quot;correct&quot;: true
+    },
+
+    // An incorrect choice:
+    {
+      &quot;id&quot;: &quot;2040&quot;,
+      &quot;text&quot;: &quot;Green&quot;,
+      &quot;correct&quot;: false,
+      &quot;responses&quot;: 1
+    },
+
+    // The &quot;No Answer&quot; - students who didn&#39;t make any choice:
+    {
+      &quot;id&quot;: &quot;none&quot;,
+      &quot;text&quot;: &quot;No Answer&quot;,
+      &quot;responses&quot;: 2,
+      &quot;correct&quot;: false
+    }
+  ],
+
+  // Number of students who have answered this question.
+  &quot;answered_student_count&quot;: 0,
+
+  // Number of students who rank in the top bracket (the top 27%)
+  // among the submitters which have also answered this question.
+  &quot;top_student_count&quot;: 0,
+
+  // Number of students who rank in the middle bracket (the middle 46%)
+  // among the submitters which have also answered this question.
+  &quot;middle_student_count&quot;: 0,
+
+  // Number of students who rank in the bottom bracket (the bottom 27%)
+  // among the submitters which have also answered this question
+  &quot;bottom_student_count&quot;: 0,
+
+  // Number of students who have answered this question correctly.
+  &quot;correct_student_count&quot;: 0,
+
+  // Number of students who have answered this question incorrectly.
+  &quot;incorrect_student_count&quot;: 0,
+
+  // Ratio of students who have answered this question correctly.
+  &quot;correct_student_ratio&quot;: 0,
+
+  // Ratio of students who have answered this question incorrectly.
+  &quot;incorrect_student_ratio&quot;: 0,
+
+  // Number of students who rank in the top bracket (the top 27%) among
+  // the submitters which have also provided a correct answer to this question.
+  &quot;correct_top_student_count&quot;: 0,
+
+  // Number of students who rank in the middle bracket (the middle 46%) among
+  // the submitters which have also provided a correct answer to this question.
+  &quot;correct_middle_student_count&quot;: 0,
+
+  // Number of students who rank in the bottom bracket (the bottom 27%) among
+  // the submitters which have also provided a correct answer to this question.
+  &quot;correct_bottom_student_count&quot;: 0,
+
+  // Variance of *all* the scores.
+  &quot;variance&quot;: 0,
+
+  // Standard deviation of *all* the scores.
+  &quot;stdev&quot;: 0,
+
+  // Denotes the ratio of students who have answered this question correctly,
+  // which should give an indication of how difficult the question is.
+  &quot;difficulty_index&quot;: 0,
+
+  // The reliability, or internal consistency, coefficient of all the scores
+  // as measured by the Cronbach&#39;s alpha algorithm. Value ranges between 0 and
+  // 1.
+  //
+  // Note: This metric becomes available only in quizzes with more than fifteen
+  // submissions.
+  &quot;alpha&quot;: null,
+
+  // A point biserial correlation coefficient for each of the question&#39;s
+  // answers. This metric helps measure the efficiency of an individual
+  // question: the calculation looks at the difference between high-scorers
+  // who chose this answer and low-scorers who also chose this answer.
+  //
+  // See the reference above for a description of each field.
+  &quot;point_biserials&quot;: [
+    {
+      &quot;answer_id&quot;: 3866,
+      &quot;point_biserial&quot;: null,
+      &quot;correct&quot;: true,
+      &quot;distractor&quot;: false
+    },
+    {
+      &quot;answer_id&quot;: 2040,
+      &quot;point_biserial&quot;: null,
+      &quot;correct&quot;: false,
+      &quot;distractor&quot;: true
+    },
+    {
+      &quot;answer_id&quot;: 7387,
+      &quot;point_biserial&quot;: null,
+      &quot;correct&quot;: false,
+      &quot;distractor&quot;: true
+    },
+    {
+      &quot;answer_id&quot;: 4082,
+      &quot;point_biserial&quot;: null,
+      &quot;correct&quot;: false,
+      &quot;distractor&quot;: true
+    }
+  ]
+}
+</code></pre>
+
+<p><a class="bookmark" id="fimb-question-stats"></a></p>
+
+<h4 id="fill-in-multiple-blanks">Fill in Multiple Blanks</h4>
+
+<pre class="code javascript"><code class="javascript">{
+  // Number of students who have filled at least one blank.
+  &quot;responses&quot;: 2,
+
+  // Number of students who have filled every blank.
+  &quot;answered&quot;: 2,
+
+  // Number of students who filled all blanks correctly.
+  &quot;correct&quot;: 1,
+
+  // Number of students who filled one or more blanks correctly.
+  &quot;partially_correct&quot;: 0,
+
+  // Number of students who didn&#39;t fill any blank correctly.
+  &quot;incorrect&quot;: 1,
+
+  // Each entry in the answer set represents a blank and responses to
+  // its pre-defined answers:
+  &quot;answer_sets&quot;: [
+    {
+      &quot;id&quot;: &quot;70dda5dfb8053dc6d1c492574bce9bfd&quot;, // md5sum of the blank
+      &quot;text&quot;: &quot;color&quot;, // the blank_id
+      &quot;answers&quot;: [
+        // Students who filled in this blank with this correct answer:
+        {
+          &quot;id&quot;: &quot;9711&quot;,
+          &quot;text&quot;: &quot;Red&quot;,
+          &quot;responses&quot;: 3,
+          &quot;correct&quot;: true
+        },
+        // Students who filled in this blank with this other correct answer:
+        {
+          &quot;id&quot;: &quot;2700&quot;,
+          &quot;text&quot;: &quot;Blue&quot;,
+          &quot;responses&quot;: 0,
+          &quot;correct&quot;: true
+        },
+        // Students who filled in this blank with something else:
+        {
+          &quot;id&quot;: &quot;other&quot;,
+          &quot;text&quot;: &quot;Other&quot;,
+          &quot;responses&quot;: 1,
+          &quot;correct&quot;: false
+        },
+        // Students who left this blank empty:
+        {
+          &quot;id&quot;: &quot;none&quot;,
+          &quot;text&quot;: &quot;No Answer&quot;,
+          &quot;responses&quot;: 1,
+          &quot;correct&quot;: false
+        }
+      ]
+    }
+  ]
+}
+</code></pre>
+
+<h4 id="multiple-answers">Multiple Answers</h4>
+
+<pre class="code javascript"><code class="javascript">{
+  // Number of students who have picked any choice.
+  &quot;responses&quot;: 3,
+
+  // Number of students who have picked all the right choices.
+  &quot;correct&quot;: 1,
+
+  // Number of students who have picked at least one of the right choices,
+  // but may have also picked a wrong one.
+  &quot;partially_correct&quot;: 2,
+
+  &quot;answers&quot;: [
+    {
+      // Unique ID of this answer choice.
+      &quot;id&quot;: &quot;5514&quot;,
+
+      // Displayable choice text.
+      &quot;text&quot;: &quot;A&quot;,
+
+      // Number of students who picked this choice.
+      &quot;responses&quot;: 3,
+
+      // Whether this choice is part of the answer.
+      &quot;correct&quot;: true
+    },
+    // Here&#39;s the second part of the correct answer:
+    {
+      &quot;id&quot;: &quot;4261&quot;,
+      &quot;text&quot;: &quot;B&quot;,
+      &quot;responses&quot;: 1,
+      &quot;correct&quot;: true
+    },
+
+    // And here&#39;s a distractor:
+    {
+      &quot;id&quot;: &quot;3322&quot;,
+      &quot;text&quot;: &quot;C&quot;,
+      &quot;responses&quot;: 2,
+      &quot;correct&quot;: false
+    },
+
+    // &quot;Missing&quot; answers:
+    //
+    // This is an auto-generated answer to account for all students who
+    // left this question unanswered.
+    {
+      &quot;id&quot;: &quot;none&quot;,
+      &quot;text&quot;: &quot;No Answer&quot;,
+      &quot;responses&quot;: 0,
+      &quot;correct&quot;: false
+    }
+  ]
+}
+</code></pre>
+
+<h4 id="multiple-dropdowns">Multiple Dropdowns</h4>
+
+<p>Multiple Dropdown question statistics look just like the statistics for <a href="#fimb-question-stats">Fill In Multiple Blanks</a>.</p>
+
+<p><a class="bookmark" id="essay-question-stats"></a></p>
+
+<h4 id="essay">Essay</h4>
+
+<pre class="code javascript"><code class="javascript">{
+   // The number of students whose responses were graded by the teacher so
+   // far.
+   &quot;graded&quot;: 5,
+
+   // The number of students who got graded with a full score.
+   &quot;full_credit&quot;: 4,
+
+   // Number of students who wrote any kind of answer.
+   &quot;resposes&quot;: 5,
+
+   // A set of maps of scores and the number of students who received
+   // each score.
+   &quot;point_distribution&quot;: [
+     { &quot;score&quot;: 0, &quot;count&quot;: 1 },
+     { &quot;score&quot;: 1, &quot;count&quot;: 1 },
+     { &quot;score&quot;: 3, &quot;count&quot;: 3 }
+   ]
+}
+</code></pre>
+
+<h4 id="matching">Matching</h4>
+
+<pre class="code javascript"><code class="javascript">{
+  // Number of students who have matched at least one answer.
+  &quot;responses&quot;: 2,
+
+  // Number of students who have matched all answers.
+  &quot;answered&quot;: 2,
+
+  // Number of students who have matched all answers correctly with their
+  // right-hand sides.
+  &quot;correct&quot;: 1,
+
+  // Number of students who have matched one or more answers correctly
+  // with their right-hand sides.
+  &quot;partially_correct&quot;: 0,
+
+  // Number of students who have not matched any answer with their correct
+  // right-hand side.
+  &quot;incorrect&quot;: 1,
+
+  // Each entry in the answer set represents the left-hand side of the match
+  // along with all the possible matches on the right-side
+  &quot;answer_sets&quot;: [
+    {
+      // id of the answer
+      &quot;id&quot;: &quot;1&quot;,
+      // the left-hand side of the match
+      &quot;text&quot;: &quot;What does the color red look like?&quot;,
+      // the available matches
+      &quot;answers&quot;: [
+        // Students who chose this match for this answer set:
+        {
+          // match_id
+          &quot;id&quot;: &quot;9711&quot;,
+          // right-hand side of the match
+          &quot;text&quot;: &quot;Red&quot;,
+          &quot;responses&quot;: 3,
+          &quot;correct&quot;: true
+        },
+        // Students who chose an incorrect match:
+        {
+          &quot;id&quot;: &quot;2700&quot;,
+          &quot;text&quot;: &quot;Blue&quot;,
+          &quot;responses&quot;: 0,
+          &quot;correct&quot;: false
+        },
+        // Students who did not make any match:
+        {
+          &quot;id&quot;: &quot;none&quot;,
+          &quot;text&quot;: &quot;No Answer&quot;,
+          &quot;responses&quot;: 1,
+          &quot;correct&quot;: false
+        }
+      ]
+    }
+  ]
+}
+</code></pre>
+
+<h4 id="file-upload">File Upload</h4>
+
+<p>File Upload question statistics look just like the statistics for <a href="#essay-question-stats">Essays</a>.</p>
+
+<h4 id="formula">Formula</h4>
+
+<p>Formula question statistics look just like the statistics for <a href="#essay-question-stats">Essays</a>.</p>
+
+<h4 id="numerical">Numerical</h4>
+
+<pre class="code javascript"><code class="javascript">{
+  // Number of students who have provided any kind of answer.
+  &quot;responses&quot;: 2,
+
+  // Number of students who have provided a correct answer.
+  &quot;correct&quot;: 1,
+
+  // Number of students who have provided a correct answer and received full
+  // credit or higher.
+  &quot;full_credit&quot;: 2,
+
+  // Number of students who have provided an answer which was not correct.
+  &quot;incorrect&quot;: 1,
+
+  &quot;answers&quot;: [
+    {
+      // Unique ID of this answer.
+      &quot;id&quot;: &quot;9711&quot;,
+
+      // This metric contains a formatted version of the correct answer
+      // ready for display.
+      &quot;text&quot;: &quot;15.00&quot;,
+
+      // Number of students who provided this answer.
+      &quot;responses&quot;: 3,
+
+      // Whether this answer is a correct one.
+      &quot;correct&quot;: true,
+
+      // Lower and upper boundaries of the answer range. This is consistent
+      // regardless of the answer type (e.g., exact vs range).
+      //
+      // In the case of exact answers, the range will be the exact value
+      // minus plus the defined margin.
+      &quot;value&quot;: [ 13.5, 16.5 ],
+
+      // Margin of error tolerance. This is always zero for range answers.
+      &quot;margin&quot;: 1.5
+    },
+
+    // &quot;Other&quot; answers:
+    //
+    // This is an auto-generated answer that will be present if any student
+    // provides a number for an answer that is incorrect (doesn&#39;t map to
+    // any of the pre-defined answers.)
+    {
+      &quot;id&quot;: &quot;other&quot;,
+      &quot;text&quot;: &quot;Other&quot;,
+      &quot;responses&quot;: 0,
+      &quot;correct&quot;: false
+    },
+
+    // &quot;Missing&quot; answers:
+    //
+    // This is an auto-generated answer to account for all students who
+    // left this question unanswered.
+    {
+      &quot;id&quot;: &quot;none&quot;,
+      &quot;text&quot;: &quot;No Answer&quot;,
+      &quot;responses&quot;: 0,
+      &quot;correct&quot;: false
+    }
+  ]
+}
+</code></pre>
+
+<h3 id="short-answer-aka-fill-in-the-blank">Short Answer (aka Fill in The Blank)</h3>
+
+<pre class="code javascript"><code class="javascript">{
+  // Number of students who have written anything.
+  &quot;responses&quot;: 2,
+
+  // Number of students who have written a correct answer.
+  &quot;correct&quot;: 2,
+
+  &quot;answers&quot;: [
+    {
+      // Unique ID of this answer.
+      &quot;id&quot;: &quot;4684&quot;,
+
+       // The readable answer text.
+      &quot;text&quot;: &quot;Something&quot;,
+
+       // Number of students who picked this answer.
+      &quot;responses&quot;: 3,
+
+       // Whether this answer is a correct one.
+      &quot;correct&quot;: true
+    },
+
+    // Another correct answer:
+    {
+      &quot;id&quot;: &quot;1797&quot;,
+      &quot;text&quot;: &quot;Very cool.&quot;,
+      &quot;responses&quot;: 0,
+      &quot;correct&quot;: true
+    },
+
+    // &quot;Other&quot; answers:
+    //
+    // This is an auto-generated answer that will be present if any student
+    // does write an answer, but is incorrect.
+    {
+      &quot;id&quot;: &quot;other&quot;,
+      &quot;text&quot;: &quot;Other&quot;,
+      &quot;responses&quot;: 0,
+      &quot;correct&quot;: false
+    },
+
+    // &quot;Missing&quot; answers:
+    //
+    // This is an auto-generated answer to account for all students who
+    // left this question unanswered.
+    {
+      &quot;id&quot;: &quot;none&quot;,
+      &quot;text&quot;: &quot;No Answer&quot;,
+      &quot;responses&quot;: 0,
+      &quot;correct&quot;: false
+    }
+  ]
+}
+</code></pre>
+
+<h4 id="true-false">True/False</h4>
+
+<p>True/False question statistics look just like the statistics for <a href="#multiple-choice-question-stats">Multiple-Choice</a>.</p>
+
+
+
+
+    </div>
+  
+  
+</div></div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:49 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

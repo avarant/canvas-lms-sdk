@@ -1,0 +1,3409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title>Accounts - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="current" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div class="service">
+  
+    <h1>Accounts API</h1>
+  
+  
+  <table id='quicklinks'>
+  </table>
+  <p>API for accessing account data.</p>
+
+
+
+
+
+  <div class='object_definition'>
+  <h3><a name="Account">An Account object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // the ID of the Account object
+  &quot;id&quot;: 2,
+  // The display name of the account
+  &quot;name&quot;: &quot;Canvas Account&quot;,
+  // The UUID of the account
+  &quot;uuid&quot;: &quot;WvAHhY5FINzq5IyRIJybGeiXyFkG3SqHUPb7jZY5&quot;,
+  // The account&#39;s parent ID, or null if this is the root account
+  &quot;parent_account_id&quot;: 1,
+  // The ID of the root account, or null if this is the root account
+  &quot;root_account_id&quot;: 1,
+  // The storage quota for the account in megabytes, if not otherwise specified
+  &quot;default_storage_quota_mb&quot;: 500,
+  // The storage quota for a user in the account in megabytes, if not otherwise
+  // specified
+  &quot;default_user_storage_quota_mb&quot;: 50,
+  // The storage quota for a group in the account in megabytes, if not otherwise
+  // specified
+  &quot;default_group_storage_quota_mb&quot;: 50,
+  // The default time zone of the account. Allowed time zones are
+  // {http://www.iana.org/time-zones IANA time zones} or friendlier
+  // {http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html Ruby on Rails
+  // time zones}.
+  &quot;default_time_zone&quot;: &quot;America/Denver&quot;,
+  // The account&#39;s identifier in the Student Information System. Only included if
+  // the user has permission to view SIS information.
+  &quot;sis_account_id&quot;: &quot;123xyz&quot;,
+  // The account&#39;s identifier in the Student Information System. Only included if
+  // the user has permission to view SIS information.
+  &quot;integration_id&quot;: &quot;123xyz&quot;,
+  // The id of the SIS import if created through SIS. Only included if the user
+  // has permission to manage SIS information.
+  &quot;sis_import_id&quot;: 12,
+  // The number of courses directly under the account (available via include)
+  &quot;course_count&quot;: 10,
+  // The number of sub-accounts directly under the account (available via include)
+  &quot;sub_account_count&quot;: 10,
+  // The account&#39;s identifier that is sent as context_id in LTI launches.
+  &quot;lti_guid&quot;: &quot;123xyz&quot;,
+  // The state of the account. Can be &#39;active&#39; or &#39;deleted&#39;.
+  &quot;workflow_state&quot;: &quot;active&quot;
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="TermsOfService">A TermsOfService object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // Terms Of Service id
+  &quot;id&quot;: 1,
+  // The given type for the Terms of Service
+  &quot;terms_type&quot;: &quot;default&quot;,
+  // Boolean dictating if the user must accept Terms of Service
+  &quot;passive&quot;: false,
+  // The id of the root account that owns the Terms of Service
+  &quot;account_id&quot;: 1,
+  // Content of the Terms of Service
+  &quot;content&quot;: &quot;To be or not to be that is the question&quot;,
+  // The type of self registration allowed
+  &quot;self_registration_type&quot;: &quot;[&quot;none&quot;, &quot;observer&quot;, &quot;all&quot;]&quot;
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="HelpLink">A HelpLink object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // The ID of the help link
+  &quot;id&quot;: &quot;instructor_question&quot;,
+  // The name of the help link
+  &quot;text&quot;: &quot;Ask Your Instructor a Question&quot;,
+  // The description of the help link
+  &quot;subtext&quot;: &quot;Questions are submitted to your instructor&quot;,
+  // The URL of the help link
+  &quot;url&quot;: &quot;#teacher_feedback&quot;,
+  // The type of the help link
+  &quot;type&quot;: &quot;default&quot;,
+  // The roles that have access to this help link
+  &quot;available_to&quot;: [&quot;user&quot;, &quot;student&quot;, &quot;teacher&quot;, &quot;admin&quot;, &quot;observer&quot;, &quot;unenrolled&quot;]
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="HelpLinks">A HelpLinks object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // Help link button title
+  &quot;help_link_name&quot;: &quot;Help And Policies&quot;,
+  // Help link button icon
+  &quot;help_link_icon&quot;: &quot;help&quot;,
+  // Help links defined by the account. Could include default help links.
+  &quot;custom_help_links&quot;: [{&quot;id&quot;:&quot;link1&quot;,&quot;text&quot;:&quot;Custom Link!&quot;,&quot;subtext&quot;:&quot;Something something.&quot;,&quot;url&quot;:&quot;https:\/\/google.com&quot;,&quot;type&quot;:&quot;custom&quot;,&quot;available_to&quot;:[&quot;user&quot;,&quot;student&quot;,&quot;teacher&quot;,&quot;admin&quot;,&quot;observer&quot;,&quot;unenrolled&quot;],&quot;is_featured&quot;:true,&quot;is_new&quot;:false,&quot;feature_headline&quot;:&quot;Check this out!&quot;}],
+  // Default help links provided when account has not set help links of their own.
+  &quot;default_help_links&quot;: [{&quot;available_to&quot;:[&quot;student&quot;],&quot;text&quot;:&quot;Ask Your Instructor a Question&quot;,&quot;subtext&quot;:&quot;Questions are submitted to your instructor&quot;,&quot;url&quot;:&quot;#teacher_feedback&quot;,&quot;type&quot;:&quot;default&quot;,&quot;id&quot;:&quot;instructor_question&quot;,&quot;is_featured&quot;:false,&quot;is_new&quot;:true,&quot;feature_headline&quot;:&quot;&quot;}, {&quot;available_to&quot;:[&quot;user&quot;,&quot;student&quot;,&quot;teacher&quot;,&quot;admin&quot;,&quot;observer&quot;,&quot;unenrolled&quot;],&quot;text&quot;:&quot;Search the Canvas Guides&quot;,&quot;subtext&quot;:&quot;Find answers to common questions&quot;,&quot;url&quot;:&quot;https:\/\/community.canvaslms.com\/t5\/Guides\/ct-p\/guides&quot;,&quot;type&quot;:&quot;default&quot;,&quot;id&quot;:&quot;search_the_canvas_guides&quot;,&quot;is_featured&quot;:false,&quot;is_new&quot;:false,&quot;feature_headline&quot;:&quot;&quot;}, {&quot;available_to&quot;:[&quot;user&quot;,&quot;student&quot;,&quot;teacher&quot;,&quot;admin&quot;,&quot;observer&quot;,&quot;unenrolled&quot;],&quot;text&quot;:&quot;Report a Problem&quot;,&quot;subtext&quot;:&quot;If Canvas misbehaves, tell us about it&quot;,&quot;url&quot;:&quot;#create_ticket&quot;,&quot;type&quot;:&quot;default&quot;,&quot;id&quot;:&quot;report_a_problem&quot;,&quot;is_featured&quot;:false,&quot;is_new&quot;:false,&quot;feature_headline&quot;:&quot;&quot;}]
+}</code></pre>
+  </div>
+  
+
+<div id="Services" class="method_details_list">
+
+  <div class="method_details first">
+  <h2 class='api_method_name' name='method.accounts.index' data-subtopic='Accounts'>
+    <a name='method.accounts.index' href='#method.accounts.index'>
+      List accounts
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#index</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts</code>
+  </div>
+
+
+<p>A paginated list of accounts that the current user can view or manage. Typically, students and even teachers will get an empty list in response, only account admins can view the accounts that they are in.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>include[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Array of additional information to include.</p>
+<dl class="rdoc-list note-list"><dt>âlti_guidâ</dt>
+<dd>
+<p>the âtool_consumer_instance_guidâ that will be sent for this account on LTI launches</p>
+</dd><dt>âregistration_settingsâ</dt>
+<dd>
+<p>returns info about the privacy policy and terms of use</p>
+</dd><dt>âservicesâ</dt>
+<dd>
+<p>returns services and whether they are enabled (requires account management permissions)</p>
+</dd><dt>âcourse_countâ</dt>
+<dd>
+<p>returns the number of courses directly under each account</p>
+</dd><dt>âsub_account_countâ</dt>
+<dd>
+<p>returns the number of sub-accounts directly under each account</p>
+</dd></dl>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>lti_guid</code>, <code class=enum>registration_settings</code>, <code class=enum>services</code>, <code class=enum>course_count</code>, <code class=enum>sub_account_count</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a list of 
+
+<a href='accounts_(lti).html#Account'>Account</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.manageable_accounts' data-subtopic='Accounts'>
+    <a name='method.accounts.manageable_accounts' href='#method.accounts.manageable_accounts'>
+      Get accounts that admins can manage
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#manageable_accounts</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/manageable_accounts
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/manageable_accounts</code>
+  </div>
+
+
+<p>A paginated list of accounts where the current user has permission to create or manage courses. List will be empty for students and teachers as only admins can view which accounts they are in.</p>
+
+
+
+
+  Returns a list of 
+
+<a href='accounts_(lti).html#Account'>Account</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.course_creation_accounts' data-subtopic='Accounts'>
+    <a name='method.accounts.course_creation_accounts' href='#method.accounts.course_creation_accounts'>
+      Get accounts that users can create courses in
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#course_creation_accounts</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/course_creation_accounts
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/course_creation_accounts</code>
+  </div>
+
+
+<p>A paginated list of accounts where the current user has permission to create courses.</p>
+
+
+
+
+  Returns a list of 
+
+<a href='accounts_(lti).html#Account'>Account</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.course_accounts' data-subtopic='Accounts'>
+    <a name='method.accounts.course_accounts' href='#method.accounts.course_accounts'>
+      List accounts for course admins
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#course_accounts</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/course_accounts
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/course_accounts</code>
+  </div>
+
+
+<p>A paginated list of accounts that the current user can view through their admin course enrollments. (Teacher, TA, or designer enrollments). Only returns âidâ, ânameâ, âworkflow_stateâ, âroot_account_idâ and âparent_account_idâ</p>
+
+
+
+
+  Returns a list of 
+
+<a href='accounts_(lti).html#Account'>Account</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.show' data-subtopic='Accounts'>
+    <a name='method.accounts.show' href='#method.accounts.show'>
+      Get a single account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#show</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:id</code>
+  </div>
+
+
+<p>Retrieve information on an individual account, given by id or sis sis_account_id.</p>
+
+
+
+
+  Returns an
+
+<a href='accounts_(lti).html#Account'>Account</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.show_settings' data-subtopic='Accounts'>
+    <a name='method.accounts.show_settings' href='#method.accounts.show_settings'>
+      Settings
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#show_settings</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/settings
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/settings</code>
+  </div>
+
+
+<p>Returns a JSON object containing a subset of settings for the specified account. Itâs possible an empty set will be returned if no settings are applicable. The caller must be an Account admin with the manage_account_settings permission.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/settings \
+  -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{&quot;microsoft_sync_enabled&quot;: true, &quot;microsoft_sync_login_attribute_suffix&quot;: false}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.environment' data-subtopic='Accounts'>
+    <a name='method.accounts.environment' href='#method.accounts.environment'>
+      List environment settings
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#environment</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/settings/environment
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/settings/environment</code>
+  </div>
+
+
+<p>Return a hash of global settings for the root account This is the same information supplied to the web interface as <code>ENV.SETTINGS</code>.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;http://&lt;canvas&gt;/api/v1/settings/environment&#39; \
+  -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{ &quot;calendar_contexts_limit&quot;: 10, &quot;open_registration&quot;: false, ...}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.permissions' data-subtopic='Accounts'>
+    <a name='method.accounts.permissions' href='#method.accounts.permissions'>
+      Permissions
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#permissions</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/permissions
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/permissions</code>
+  </div>
+
+
+<p>Returns permission information for the calling user and the given account. You may use âself` as the account id to check permissions against the domain root account. The caller must have an account role or admin (teacher/TA/designer) enrollment in a course in the account.</p>
+
+<p>See also the <a href="courses.html#method.courses.permissions" title="Course">Course</a> and <a href="groups.html#method.groups.permissions" title="Group">Group</a> counterparts.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>permissions[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>List of permissions to check against the authenticated user. Permission names are documented in the <a href="roles.html#method.role_overrides.add_role" title="Create a role">Create a role</a> endpoint.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/self/permissions \
+  -H &#39;Authorization: Bearer &lt;token&gt;&#39; \
+  -d &#39;permissions[]=manage_account_memberships&#39; \
+  -d &#39;permissions[]=become_user&#39;</code></pre>
+    
+  </div>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">{&#39;manage_account_memberships&#39;: &#39;false&#39;, &#39;become_user&#39;: &#39;true&#39;}</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.sub_accounts' data-subtopic='Accounts'>
+    <a name='method.accounts.sub_accounts' href='#method.accounts.sub_accounts'>
+      Get the sub-accounts of an account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#sub_accounts</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/sub_accounts
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/sub_accounts</code>
+  </div>
+
+
+<p>List accounts that are sub-accounts of the given account.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>recursive</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If true, the entire account tree underneath this account will be returned (though still paginated). If false, only direct sub-accounts of this account will be returned. Defaults to false.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>order</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Sorts the accounts by id or name. Only applies when recursive is false. Defaults to id.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>id</code>, <code class=enum>name</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>include[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Array of additional information to include.</p>
+<dl class="rdoc-list note-list"><dt>âcourse_countâ</dt>
+<dd>
+<p>returns the number of courses directly under each account</p>
+</dd><dt>âsub_account_countâ</dt>
+<dd>
+<p>returns the number of sub-accounts directly under each account</p>
+</dd></dl>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>course_count</code>, <code class=enum>sub_account_count</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt;/sub_accounts \
+     -H &#39;Authorization: Bearer &lt;token&gt;&#39;</code></pre>
+    
+  </div>
+
+
+
+  Returns a list of 
+
+<a href='accounts_(lti).html#Account'>Account</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.terms_of_service' data-subtopic='Accounts'>
+    <a name='method.accounts.terms_of_service' href='#method.accounts.terms_of_service'>
+      Get the Terms of Service
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#terms_of_service</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/terms_of_service
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/terms_of_service</code>
+  </div>
+
+
+<p>Returns the terms of service for that account</p>
+
+
+
+
+  Returns a
+
+<a href='accounts.html#TermsOfService'>TermsOfService</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.help_links' data-subtopic='Accounts'>
+    <a name='method.accounts.help_links' href='#method.accounts.help_links'>
+      Get help links
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#help_links</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/help_links
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/help_links</code>
+  </div>
+
+
+<p>Returns the help links for that account</p>
+
+
+
+
+  Returns a
+
+<a href='accounts.html#HelpLinks'>HelpLinks</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.manually_created_courses_account' data-subtopic='Accounts'>
+    <a name='method.accounts.manually_created_courses_account' href='#method.accounts.manually_created_courses_account'>
+      Get the manually-created courses sub-account for the domain root account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#manually_created_courses_account</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/manually_created_courses_account
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/manually_created_courses_account</code>
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.courses_api' data-subtopic='Accounts'>
+    <a name='method.accounts.courses_api' href='#method.accounts.courses_api'>
+      List active courses in an account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#courses_api</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/accounts/:account_id/courses
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/accounts/:account_id/courses</code>
+  </div>
+
+
+<p>Retrieve a paginated list of courses in this account.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>with_enrollments</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If true, include only courses with at least one enrollment.  If false, include only courses with no enrollments.  If not present, do not filter on course enrollment status.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>enrollment_type[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If set, only return courses that have at least one user enrolled in in the course with one of the specified enrollment types.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>teacher</code>, <code class=enum>student</code>, <code class=enum>ta</code>, <code class=enum>observer</code>, <code class=enum>designer</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>published</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If true, include only published courses.  If false, exclude published courses.  If not present, do not filter on published status.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>completed</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If true, include only completed courses (these may be in state âcompletedâ, or their enrollment term may have ended).  If false, exclude completed courses.  If not present, do not filter on completed status.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>blueprint</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If true, include only blueprint courses. If false, exclude them. If not present, do not filter on this basis.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>blueprint_associated</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If true, include only courses that inherit content from a blueprint course. If false, exclude them. If not present, do not filter on this basis.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>public</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If true, include only public courses. If false, exclude them. If not present, do not filter on this basis.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>by_teachers[]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>List of User IDs of teachers; if supplied, include only courses taught by one of the referenced users.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>by_subaccounts[]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>List of Account IDs; if supplied, include only courses associated with one of the referenced subaccounts.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>hide_enrollmentless_courses</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If present, only return courses that have at least one enrollment. Equivalent to âwith_enrollments=trueâ; retained for compatibility.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>state[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If set, only return courses that are in the given state(s). By default, all states but âdeletedâ are returned.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>created</code>, <code class=enum>claimed</code>, <code class=enum>available</code>, <code class=enum>completed</code>, <code class=enum>deleted</code>, <code class=enum>all</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>enrollment_term_id</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If set, only includes courses from the specified term.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>search_term</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The partial course name, code, or full ID to match and return in the results list. Must be at least 3 characters.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>include[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        <ul><li>
+<p>All explanations can be seen in the <a href="courses.html#method.courses.index" title="Course API index documentation">Course API index documentation</a></p>
+</li><li>
+<p>âsectionsâ, âneeds_grading_countâ and âtotal_scoresâ are not valid options at the account level</p>
+</li></ul>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>syllabus_body</code>, <code class=enum>term</code>, <code class=enum>course_progress</code>, <code class=enum>storage_quota_used_mb</code>, <code class=enum>total_students</code>, <code class=enum>teachers</code>, <code class=enum>account_name</code>, <code class=enum>concluded</code>, <code class=enum>post_manually</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>sort</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The column to sort results by.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>course_status</code>, <code class=enum>course_name</code>, <code class=enum>sis_course_id</code>, <code class=enum>teacher</code>, <code class=enum>account_name</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>order</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The order to sort the given column by.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>asc</code>, <code class=enum>desc</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>search_by</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The filter to search by. âcourseâ searches for course names, course codes, and SIS IDs. âteacherâ searches for teacher names</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>course</code>, <code class=enum>teacher</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>starts_before</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If set, only return courses that start before the value (inclusive) or their enrollment term starts before the value (inclusive) or both the courseâs start_at and the enrollment termâs start_at are set to null. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>ends_after</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If set, only return courses that end after the value (inclusive) or their enrollment term ends after the value (inclusive) or both the courseâs end_at and the enrollment termâs end_at are set to null. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>homeroom</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If set, only return homeroom courses.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a list of 
+
+<a href='courses.html#Course'>Course</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.update' data-subtopic='Accounts'>
+    <a name='method.accounts.update' href='#method.accounts.update'>
+      Update an account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#update</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    PUT /api/v1/accounts/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:PUT|/api/v1/accounts/:id</code>
+  </div>
+
+
+<p>Update an existing account.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>account[name]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Updates the account name</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[sis_account_id]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Updates the account sis_account_id Must have manage_sis permission and must not be a root_account.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[default_time_zone]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The default time zone of the account. Allowed time zones are <a href="http://www.iana.org/time-zones" target="_parent" title="IANA time zones">IANA time zones</a> or friendlier <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html" target="_parent" title="Ruby on Rails time zones">Ruby on Rails time zones</a>.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[default_storage_quota_mb]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The default course storage quota to be used, if not otherwise specified.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[default_user_storage_quota_mb]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The default user storage quota to be used, if not otherwise specified.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[default_group_storage_quota_mb]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The default group storage quota to be used, if not otherwise specified.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[course_template_id]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The ID of a course to be used as a template for all newly created courses. Empty means to inherit the setting from parent account, 0 means to not use a template even if a parent account has one set. The course must be marked as a template.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[parent_account_id]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The ID of a parent account to move the account to. The new parent account must be in the same root account as the original. The hierarchy of sub-accounts will be preserved in the new parent account. The caller must be an administrator in both the original parent account and the new parent account.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][restrict_student_past_view][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Restrict students from viewing courses after end date</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][restrict_student_past_view][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Lock this setting for sub-accounts and courses</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][restrict_student_future_view][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Restrict students from viewing courses before start date</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][microsoft_sync_enabled]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Determines whether this account has Microsoft Teams Sync enabled or not.</p>
+
+<p>Note that if you are altering Microsoft Teams sync settings you must enable the Microsoft Group enrollment syncing feature flag. In addition, if you are enabling Microsoft Teams sync, you must also specify a tenant, login attribute, and a remote attribute. Specifying a suffix to use is optional.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][microsoft_sync_tenant]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The tenant this account should use when using Microsoft Teams Sync. This should be an Azure Active Directory domain name.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][microsoft_sync_login_attribute]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The attribute this account should use to lookup users when using Microsoft Teams Sync. Must be one of âsubâ, âemailâ, âoidâ, âpreferred_usernameâ, or âintegration_idâ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][microsoft_sync_login_attribute_suffix]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>A suffix that will be appended to the result of the login attribute when associating Canvas users with Microsoft users. Must be under 255 characters and contain no whitespace. This field is optional.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][microsoft_sync_remote_attribute]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The Active Directory attribute to use when associating Canvas users with Microsoft users. Must be one of âmailâ, âmailNicknameâ, or âuserPrincipalNameâ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][restrict_student_future_view][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Lock this setting for sub-accounts and courses</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][lock_all_announcements][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Disable comments on announcements</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][lock_all_announcements][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Lock this setting for sub-accounts and courses</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][usage_rights_required][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Copyright and license information must be provided for files before they are published.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][usage_rights_required][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Lock this setting for sub-accounts and courses</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][restrict_student_future_listing][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Restrict students from viewing future enrollments in course list</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][restrict_student_future_listing][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Lock this setting for sub-accounts and courses</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][conditional_release][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Enable or disable individual learning paths for students based on assessment</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][conditional_release][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Lock this setting for sub-accounts and courses</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][password_policy]</td>
+      <td>
+        
+      </td>
+      <td>Hash</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Hash of optional password policy configuration parameters for a root account</p>
+<dl class="rdoc-list note-list"><dt><code>allow_login_suspension</code> boolean</dt>
+<dd>
+<p>Allow suspension of user logins upon reaching maximum_login_attempts</p>
+</dd><dt><code>require_number_characters</code> boolean</dt>
+<dd>
+<p>Require the use of number characters when setting up a new password</p>
+</dd><dt><code>require_symbol_characters</code> boolean</dt>
+<dd>
+<p>Require the use of symbol characters when setting up a new password</p>
+</dd><dt><code>minimum_character_length</code> integer</dt>
+<dd>
+<p>Minimum number of characters required for a new password</p>
+</dd><dt><code>maximum_login_attempts</code> integer</dt>
+<dd>
+<p>Maximum number of login attempts before a user is locked out</p>
+</dd></dl>
+
+<p><em>Required</em> feature option:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Enhance</span> <span class='id identifier rubyid_password'>password</span> <span class='id identifier rubyid_options'>options</span>
+</code></pre>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][enable_as_k5_account][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Enable or disable Canvas for Elementary for this account</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][use_classic_font_in_k5][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Whether or not the classic font is used on the dashboard. Only applies if enable_as_k5_account is true.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][horizon_account][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Enable or disable Canvas Career for this account</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>override_sis_stickiness</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Default is true. If false, any fields containing âstickyâ changes will not be updated. See SIS CSV Format documentation for information on which fields can have SIS stickiness</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][lock_outcome_proficiency][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        <dl class="rdoc-list label-list"><dt>DEPRECATED</dt>
+<dd>
+<p>Restrict instructors from changing mastery scale</p>
+</dd></dl>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[lock_outcome_proficiency][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        <dl class="rdoc-list label-list"><dt>DEPRECATED</dt>
+<dd>
+<p>Lock this setting for sub-accounts and courses</p>
+</dd></dl>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[settings][lock_proficiency_calculation][value]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        <dl class="rdoc-list label-list"><dt>DEPRECATED</dt>
+<dd>
+<p>Restrict instructors from changing proficiency calculation method</p>
+</dd></dl>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[lock_proficiency_calculation][locked]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        <dl class="rdoc-list label-list"><dt>DEPRECATED</dt>
+<dd>
+<p>Lock this setting for sub-accounts and courses</p>
+</dd></dl>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[services]</td>
+      <td>
+        
+      </td>
+      <td>Hash</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Give this a set of keys and boolean values to enable or disable services matching the keys</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/&lt;account_id&gt; \
+  -X PUT \
+  -H &#39;Authorization: Bearer &lt;token&gt;&#39; \
+  -d &#39;account[name]=New account name&#39; \
+  -d &#39;account[default_time_zone]=Mountain Time (US &amp; Canada)&#39; \
+  -d &#39;account[default_storage_quota_mb]=450&#39;</code></pre>
+    
+  </div>
+
+
+
+  Returns an
+
+<a href='accounts_(lti).html#Account'>Account</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.remove_user' data-subtopic='Accounts'>
+    <a name='method.accounts.remove_user' href='#method.accounts.remove_user'>
+      Delete a user from the root account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#remove_user</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    DELETE /api/v1/accounts/:account_id/users/:user_id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:DELETE|/api/v1/accounts/:account_id/users/:user_id</code>
+  </div>
+
+
+<p>Delete a user record from a Canvas root account. If a user is associated with multiple root accounts (in a multi-tenant instance of Canvas), this action will NOT remove them from the other accounts.</p>
+
+<p>WARNING: This API will allow a user to remove themselves from the account. If they do this, they wonât be able to make API calls or log into Canvas at that account.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/3/users/5 \
+  -H &#39;Authorization: Bearer &lt;ACCESS_TOKEN&gt;&#39; \
+  -X DELETE</code></pre>
+    
+  </div>
+
+
+
+  Returns an
+
+<a href='users.html#User'>User</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.accounts.restore_user' data-subtopic='Accounts'>
+    <a name='method.accounts.restore_user' href='#method.accounts.restore_user'>
+      Restore a deleted user from a root account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/accounts_controller.rb">AccountsController#restore_user</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    PUT /api/v1/accounts/:account_id/users/:user_id/restore
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:PUT|/api/v1/accounts/:account_id/users/:user_id/restore</code>
+  </div>
+
+
+<p>Restore a user record along with the most recently deleted pseudonym from a Canvas root account.</p>
+
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl https://&lt;canvas&gt;/api/v1/accounts/3/users/5/restore \
+  -H &#39;Authorization: Bearer &lt;ACCESS_TOKEN&gt;&#39; \
+  -X PUT</code></pre>
+    
+  </div>
+
+
+
+  Returns an
+
+<a href='users.html#User'>User</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.sub_accounts.create' data-subtopic='Subaccounts'>
+    <a name='method.sub_accounts.create' href='#method.sub_accounts.create'>
+      Create a new sub-account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/sub_accounts_controller.rb">SubAccountsController#create</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/accounts/:account_id/sub_accounts
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/accounts/:account_id/sub_accounts</code>
+  </div>
+
+
+<p>Add a new sub-account to a given account.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>account[name]</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The name of the new sub-account.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[sis_account_id]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The accountâs identifier in the Student Information System.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[default_storage_quota_mb]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The default course storage quota to be used, if not otherwise specified.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[default_user_storage_quota_mb]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The default user storage quota to be used, if not otherwise specified.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>account[default_group_storage_quota_mb]</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The default group storage quota to be used, if not otherwise specified.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns an
+
+<a href='accounts_(lti).html#Account'>Account</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.sub_accounts.destroy' data-subtopic='Subaccounts'>
+    <a name='method.sub_accounts.destroy' href='#method.sub_accounts.destroy'>
+      Delete a sub-account
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/sub_accounts_controller.rb">SubAccountsController#destroy</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    DELETE /api/v1/accounts/:account_id/sub_accounts/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:DELETE|/api/v1/accounts/:account_id/sub_accounts/:id</code>
+  </div>
+
+
+<p>Cannot delete an account with active courses or active sub_accounts. Cannot delete a root_account</p>
+
+
+
+
+  Returns an
+
+<a href='accounts_(lti).html#Account'>Account</a>
+object
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:45 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

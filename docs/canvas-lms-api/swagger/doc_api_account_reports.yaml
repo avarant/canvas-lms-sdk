@@ -1,0 +1,274 @@
+openapi: 3.0.0
+info:
+  title: "Canvas LMS Account Reports API"
+  version: "1.0.0"
+paths:
+  /api/v1/accounts/{account_id}/reports:
+    get:
+      summary: "List Available Reports"
+      description: "Returns a paginated list of reports for the current context."
+      tags:
+        - "Account Reports"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "Canvas account ID"
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "A list of available reports"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AvailableReport'
+
+  /api/v1/accounts/{account_id}/reports/{report}:
+    get:
+      summary: "Index of Reports"
+      description: "Shows all reports that have been run for the account of a specific type."
+      tags:
+        - "Account Reports"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "Canvas account ID"
+          required: true
+          schema:
+            type: integer
+        - name: report
+          in: path
+          description: "The type of report"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "A list of report instances"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+
+    post:
+      summary: "Start a Report"
+      description: "Generates a report instance for the account. Report name must match one of the available report names."
+      tags:
+        - "Account Reports"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "Canvas account ID"
+          required: true
+          schema:
+            type: integer
+        - name: report
+          in: path
+          description: "The type of report"
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              description: "Parameters for the report; will vary depending on report."
+              additionalProperties: true
+      responses:
+        '200':
+          description: "Report created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+  /api/v1/accounts/{account_id}/reports/{report}/{id}:
+    get:
+      summary: "Status of a Report"
+      description: "Returns the status of a report."
+      tags:
+        - "Account Reports"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "Canvas account ID"
+          required: true
+          schema:
+            type: integer
+        - name: report
+          in: path
+          description: "The type of report"
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: "The unique identifier for the report instance"
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Report status"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+    delete:
+      summary: "Delete a Report"
+      description: "Deletes a generated report instance."
+      tags:
+        - "Account Reports"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "Canvas account ID"
+          required: true
+          schema:
+            type: integer
+        - name: report
+          in: path
+          description: "The type of report"
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: "The unique identifier for the report instance"
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Deleted report instance"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+  /api/v1/accounts/{account_id}/reports/{report}/{id}/abort:
+    put:
+      summary: "Abort a Report"
+      description: "Abort a report in progress."
+      tags:
+        - "Account Reports"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: "Canvas account ID"
+          required: true
+          schema:
+            type: integer
+        - name: report
+          in: path
+          description: "The type of report"
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: "The unique identifier for the report instance"
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Aborted report instance"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    AvailableReport:
+      type: object
+      properties:
+        report:
+          type: string
+          description: "The name of the report."
+        title:
+          type: string
+          description: "The human-readable title of the report."
+        parameters:
+          type: object
+          nullable: true
+          description: "The parameters will vary for each report."
+          additionalProperties:
+            type: object
+            properties:
+              description:
+                type: string
+              required:
+                type: boolean
+
+    Report:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "The unique identifier for the report."
+        report:
+          type: string
+          description: "The type of report."
+        file_url:
+          type: string
+          format: uri
+          description: "The URL to download the report."
+        attachment:
+          type: object
+          nullable: true
+          description: "The attachment API object of the report. Only available after the report has completed."
+        status:
+          type: string
+          description: "The status of the report."
+        created_at:
+          type: string
+          format: date-time
+          description: "The date and time the report was created."
+        started_at:
+          type: string
+          format: date-time
+          description: "The date and time the report started processing."
+        ended_at:
+          type: string
+          format: date-time
+          description: "The date and time the report finished processing."
+        parameters:
+          type: object
+          description: "The report parameters."
+          additionalProperties: true
+        progress:
+          type: integer
+          description: "The progress of the report."
+        current_line:
+          type: integer
+          description: "The current line count being written to the report. It updates every 1000 records."
+security:
+  - BearerAuth: []

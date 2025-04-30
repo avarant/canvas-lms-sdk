@@ -1,0 +1,450 @@
+openapi: 3.0.0
+info:
+  title: Outcome Imports API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/{account_id}/outcome_imports:
+    post:
+      summary: Import outcomes into Canvas
+      description: |
+        Import outcomes into Canvas. For more information on the expected format, see the “Outcomes CSV” section in the API docs.
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: import_type
+          in: query
+          description: >-
+            Choose the data format for reading outcome data. With a standard
+            Canvas install, this option can only be ‘instructure_csv’, and if
+            unprovided, will be assumed to be so.
+          required: false
+          schema:
+            type: string
+        - name: extension
+          in: query
+          description: >-
+            Recommended for raw post request style imports. This field will be
+            used to distinguish between csv and other file format extensions
+            that would usually be provided with the filename in the multipart
+            post request scenario. If not provided, this value will be inferred
+            from the Content-Type, falling back to csv-file format if all else fails.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  format: binary
+                  description: >
+                    File upload field named “attachment” containing outcome data.
+                import_type:
+                  type: string
+                extension:
+                  type: string
+          text/csv:
+            schema:
+              type: string
+              format: binary
+            description: >
+              Raw CSV post. Provide a suitable Content-Type header.
+      responses:
+        '200':
+          description: OutcomeImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeImport'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account or resource not found
+
+  /api/v1/accounts/{account_id}/outcome_imports/group/{learning_outcome_group_id}:
+    post:
+      summary: Import outcomes into a specific learning outcome group
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: learning_outcome_group_id
+          in: path
+          description: ID of the learning outcome group
+          required: true
+          schema:
+            type: integer
+        - name: import_type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: extension
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  format: binary
+                import_type:
+                  type: string
+                extension:
+                  type: string
+          text/csv:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OutcomeImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeImport'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account, group, or resource not found
+
+  /api/v1/courses/{course_id}/outcome_imports:
+    post:
+      summary: Import outcomes into Canvas
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: import_type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: extension
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  format: binary
+                import_type:
+                  type: string
+                extension:
+                  type: string
+          text/csv:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OutcomeImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeImport'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Course or resource not found
+
+  /api/v1/courses/{course_id}/outcome_imports/group/{learning_outcome_group_id}:
+    post:
+      summary: Import outcomes into a specific learning outcome group
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: learning_outcome_group_id
+          in: path
+          description: ID of the learning outcome group
+          required: true
+          schema:
+            type: integer
+        - name: import_type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: extension
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  format: binary
+                import_type:
+                  type: string
+                extension:
+                  type: string
+          text/csv:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OutcomeImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeImport'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Course, group, or resource not found
+
+  /api/v1/accounts/{account_id}/outcome_imports/{id}:
+    get:
+      summary: Get outcome import status
+      description: |
+        Get the status of an already created Outcome import. Pass ‘latest’ for the outcome import id for the latest import.
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the outcome import (or ‘latest’)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OutcomeImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeImport'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account or import not found
+
+  /api/v1/courses/{course_id}/outcome_imports/{id}:
+    get:
+      summary: Get outcome import status
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the outcome import (or ‘latest’)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OutcomeImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeImport'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Course or import not found
+
+  /api/v1/accounts/{account_id}/outcome_imports/{id}/created_group_ids:
+    get:
+      summary: Get IDs of outcome groups created after successful import
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the outcome import (or ‘latest’)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of outcome group IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account or import not found
+
+  /api/v1/courses/{course_id}/outcome_imports/{id}/created_group_ids:
+    get:
+      summary: Get IDs of outcome groups created after successful import
+      tags:
+        - Outcome Imports
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the outcome import (or ‘latest’)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of outcome group IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+        '401':
+          description: Unauthorized
+        '404':
+          description: Course or import not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    OutcomeImportData:
+      type: object
+      properties:
+        import_type:
+          type: string
+          description: The type of outcome import
+    OutcomeImport:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the outcome import
+        learning_outcome_group_id:
+          type: integer
+          nullable: true
+          description: The ID of the group into which the outcomes will be imported
+        created_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+        workflow_state:
+          type: string
+          description: |
+            The current state of the outcome import:
+            - 'created': The outcome import has been created.
+            - 'importing': The outcome import is currently processing.
+            - 'succeeded': The outcome import has completed successfully.
+            - 'failed': The outcome import failed.
+        data:
+          $ref: '#/components/schemas/OutcomeImportData'
+          nullable: true
+        progress:
+          type: string
+          description: The progress of the outcome import as a percentage
+        user:
+          type: object
+          nullable: true
+          description: The user that initiated the outcome import
+        processing_errors:
+          type: array
+          description: An array of row number / error message pairs (first 25 errors)
+          items:
+            type: array
+            items:
+              oneOf:
+                - type: integer
+                - type: string

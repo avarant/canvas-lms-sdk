@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: Canvas Analytics API
+  version: 1.0.0
+servers:
+  - url: https://{{canvas_domain}}
+    description: Canvas instance
+paths:
+  /api/v1/accounts/{account_id}/analytics/current/activity:
+    get:
+      summary: Get department-level participation data for the default (current) term
+      description: >
+        Returns page view hits summed across all courses in the department
+        for the default term. Two groupings of these counts are returned;
+        one by day (`by_date`), the other by category (`by_category`).
+      tags:
+        - Analytics
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account (department)
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with participation counts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  by_date:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                      description: Page views on that date
+                  by_category:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                      description: Page views in that category
+              example:
+                by_date:
+                  "2012-01-24": 1240
+                  "2012-01-27": 912
+                by_category:
+                  announcements: 54
+                  assignments: 256
+                  collaborations: 18
+                  conferences: 26
+                  discussions: 354
+                  files: 132
+                  general: 59
+                  grades: 177
+                  groups: 132
+                  modules: 71
+                  other: 412
+                  pages: 105
+                  quizzes: 356
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized—invalid or missing token
+        '403':
+          description: Forbidden—insufficient permissions
+        '500':
+          description: Internal server error
+  /api/v1/accounts/{account_id}/analytics/completed/activity:
+    get:
+      summary: Get department-level participation data for concluded courses in the default term
+      description: >
+        Returns page view hits summed across all concluded courses in the department
+        for the default term.
+      tags:
+        - Analytics
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account (department)
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/paths/~1api~1v1~1accounts~1{account_id}~1analytics~1current~1activity/get/responses/200'
+  /api/v1/accounts/{account_id}/analytics/terms/{term_id}/activity:
+    get:
+      summary: Get department-level participation data for a specific term
+      description: >
+        Returns page view hits summed across all courses in the department
+        for the specified term.
+      tags:
+        - Analytics
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account (department)
+          required: true
+          schema:
+            type: integer
+        - name: term_id
+          in: path
+          description: ID of the academic term
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/paths/~1api~1v1~1accounts~1{account_id}~1analytics~1current~1activity/get/responses/200'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

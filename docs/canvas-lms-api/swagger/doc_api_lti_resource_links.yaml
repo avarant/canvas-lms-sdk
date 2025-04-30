@@ -1,0 +1,306 @@
+openapi: 3.0.0
+info:
+  title: Canvas LTI Resource Links API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/lti_resource_links:
+    get:
+      summary: Returns all Resource Links in the specified course
+      description: |
+        Returns all Resource Links in the specified course. This includes links that are associated with
+        Assignments, Module Items, Collaborations, and that are embedded in rich content. This endpoint
+        is paginated and will return 50 links per page by default. Links are sorted by creation order.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas identifier for the course.
+        - name: include_deleted
+          in: query
+          schema:
+            type: boolean
+          description: Include deleted resource links and links associated with deleted content in response. Default is false.
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+          description: The number of registrations to return per page. Defaults to 50.
+      responses:
+        '200':
+          description: A list of LTI Resource Link objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourceLink'
+    post:
+      summary: Create an LTI Resource Link
+      description: |
+        Create a new LTI Resource Link in the specified course with the provided parameters.
+        Links created via this API cannot be associated with specific Canvas content and are suitable only
+        for embedding in rich content using the canvas_launch_url provided in the response.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas identifier for the course.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                  description: The launch URL for this resource link.
+                title:
+                  type: string
+                  description: The title of the resource link.
+                custom:
+                  type: object
+                  description: Custom parameters to be sent to the tool when launching this link.
+                  additionalProperties:
+                    type: string
+      responses:
+        '200':
+          description: The created LTI Resource Link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLink'
+
+  /api/v1/courses/{course_id}/lti_resource_links/bulk:
+    post:
+      summary: Bulk Create LTI Resource Links
+      description: |
+        Create up to 100 new LTI Resource Links in the specified course with the provided parameters.
+        If any parameters are invalid or a matching tool is not found, no links will be created.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas identifier for the course.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              description: Array of objects containing the parameters for each link to create.
+              items:
+                type: object
+                required:
+                  - url
+                properties:
+                  url:
+                    type: string
+                    description: The launch URL for this resource link.
+                  title:
+                    type: string
+                    description: The title of the resource link.
+                  custom:
+                    type: object
+                    description: Custom parameters to be sent to the tool when launching this link.
+                    additionalProperties:
+                      type: string
+      responses:
+        '200':
+          description: A list of created LTI Resource Link objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourceLink'
+
+  /api/v1/courses/{course_id}/lti_resource_links/{id}:
+    get:
+      summary: Show an LTI Resource Link
+      description: |
+        Return details about the specified resource link. The ID can be in the standard Canvas format,
+        or in the special formats `resource_link_uuid:<uuid>` or `lookup_uuid:<uuid>`.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas identifier for the course.
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The LTI Resource Link identifier or special lookup format.
+        - name: include_deleted
+          in: query
+          schema:
+            type: boolean
+          description: Include deleted resource links in search. Default is false.
+      responses:
+        '200':
+          description: An LTI Resource Link object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLink'
+
+    put:
+      summary: Update an LTI Resource Link
+      description: |
+        Update the specified resource link with the provided parameters.
+        Changing existing links may result in launch errors.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas identifier for the course.
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The LTI Resource Link identifier or special lookup format.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: |
+                    The launch URL for this resource link. Must match the URL or domain of the associated tool.
+                custom:
+                  type: object
+                  description: Custom parameters to be sent to the tool when launching this link.
+                  additionalProperties:
+                    type: string
+                include_deleted:
+                  type: boolean
+                  description: Update link even if it is deleted. Default is false.
+                context_external_tool_id:
+                  type: integer
+                  description: |
+                    The Canvas identifier for the LTI 1.3 External Tool that the resource link was originally installed from.
+      responses:
+        '200':
+          description: The updated LTI Resource Link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLink'
+
+    delete:
+      summary: Delete an LTI Resource Link
+      description: |
+        Delete the specified resource link. Only links not associated with Assignments, Module Items,
+        or Collaborations can be deleted.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The Canvas identifier for the course.
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The LTI Resource Link identifier or special lookup format.
+      responses:
+        '200':
+          description: The deleted LTI Resource Link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLink'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth 2.0
+  schemas:
+    ResourceLink:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The Canvas identifier for the LTI Resource Link.
+        context_id:
+          type: integer
+          description: The Canvas identifier for the context associated with the LTI Resource Link.
+        context_type:
+          type: string
+          description: The type of the context associated with the LTI Resource Link.
+        context_external_tool_id:
+          type: integer
+          description: The Canvas identifier for the LTI 1.3 External Tool originally installed from.
+        resource_type:
+          type: string
+          description: The Canvas content type for the resource link.
+        canvas_launch_url:
+          type: string
+          format: uri
+          description: The Canvas URL that launches the LTI Resource Link.
+        resource_link_uuid:
+          type: string
+          description: The LTI identifier for the Resource Link included on launch.
+        lookup_uuid:
+          type: string
+          description: A unique identifier for content migration, remains the same across migrations.
+        title:
+          type: string
+          description: The title of the LTI Resource Link.
+        url:
+          type: string
+          format: uri
+          description: The tool URL to which the LTI Resource Link will launch.
+        lti_1_1_id:
+          type: string
+          description: The LTI 1.1 identifier for backward compatibility.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the resource link's creation.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of the resource link's last update.
+        workflow_state:
+          type: string
+          description: The state of the resource link.
+        associated_content_type:
+          type: string
+          description: The type of associated content if present.
+        associated_content_id:
+          type: integer
+          description: The Canvas identifier of the associated content if present.

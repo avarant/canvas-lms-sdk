@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: Canvas LMS Accounts (LTI) API
+  version: 1.0.0
+paths:
+  /api/lti/accounts/{account_id}:
+    get:
+      summary: Retrieve information on an individual account via LTI dev key
+      description: |
+        Retrieve information on an individual account, given by local or global ID.
+        Requires the account lookup scope on the LTI key.
+      tags:
+        - Accounts (LTI)
+      parameters:
+        - name: account_id
+          in: path
+          description: The ID of the account to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+              example:
+                id: 2
+                name: "Canvas Account"
+                uuid: "WvAHhY5FINzq5IyRIJybGeiXyFkG3SqHUPb7jZY5"
+                parent_account_id: 1
+                root_account_id: 1
+                workflow_state: "active"
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the Account object
+        name:
+          type: string
+          description: The display name of the account
+        uuid:
+          type: string
+          description: The UUID of the account
+        parent_account_id:
+          type: integer
+          nullable: true
+          description: The account's parent ID, or null if this is the root account
+        root_account_id:
+          type: integer
+          nullable: true
+          description: The ID of the root account, or null if this is the root account
+        workflow_state:
+          type: string
+          enum:
+            - active
+            - deleted
+          description: The state of the account
+      required:
+        - id
+        - name
+        - uuid
+        - workflow_state

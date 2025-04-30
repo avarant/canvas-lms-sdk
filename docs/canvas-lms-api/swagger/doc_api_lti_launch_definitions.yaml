@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS LTI Launch Definitions API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/lti_apps/launch_definitions:
+    get:
+      summary: List LTI Launch Definitions
+      description: >-
+        List all tools available in this course context for the given placements,
+        in the form of Launch Definitions. Used primarily by the Canvas frontend.
+        API users should consider using the External Tools API instead. This
+        endpoint is cached for 10 minutes.
+      parameters:
+        - name: course_id
+          in: path
+          description: The ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: placements
+          in: query
+          description: >-
+            The placements to return launch definitions for. If not provided,
+            an empty list will be returned.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: only_visible
+          in: query
+          description: >-
+            If true, only return launch definitions that are visible to the
+            current user. Defaults to true.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of LTI launch definition objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LtiLaunchDefinition'
+  /api/v1/accounts/{account_id}/lti_apps/launch_definitions:
+    get:
+      summary: List LTI Launch Definitions
+      description: >-
+        List all tools available in this account context for the given placements,
+        in the form of Launch Definitions. Used primarily by the Canvas frontend.
+        API users should consider using the External Tools API instead. This
+        endpoint is cached for 10 minutes.
+      parameters:
+        - name: account_id
+          in: path
+          description: The ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: placements
+          in: query
+          description: >-
+            The placements to return launch definitions for. If not provided,
+            an empty list will be returned.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: only_visible
+          in: query
+          description: >-
+            If true, only return launch definitions that are visible to the
+            current user. Defaults to true.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of LTI launch definition objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LtiLaunchDefinition'
+components:
+  schemas:
+    LtiLaunchDefinition:
+      type: object
+      properties:
+        definition_type:
+          type: string
+          description: The type of the launch definition. Always 'ContextExternalTool'
+        definition_id:
+          type: string
+          description: The Canvas ID of the tool
+        name:
+          type: string
+          description: The display name of the tool for the given placement
+        description:
+          type: string
+          description: The description of the tool for the given placement
+        url:
+          type: string
+          format: uri
+          description: The launch URL for the tool
+        domain:
+          type: string
+          description: The domain of the tool
+        placements:
+          type: object
+          description: Placement-specific configuration for given placements
+          additionalProperties:
+            $ref: '#/components/schemas/LtiPlacementLaunchDefinition'
+      example:
+        definition_type: "ContextExternalTool"
+        definition_id: "123"
+        name: "My Tool"
+        description: "This is a tool that does things."
+        url: "https://www.example.com/launch"
+        domain: "example.com"
+        placements:
+          assignment_selection:
+            message_type: "LtiResourceLinkRequest"
+            url: "https://www.example.com/launch?placement=assignment_selection"
+            title: "My Tool (Assignment Selection)"
+    LtiPlacementLaunchDefinition:
+      type: object
+      properties:
+        message_type:
+          type: string
+          description: The LTI launch message type
+        url:
+          type: string
+          format: uri
+          description: The launch URL for this placement
+        title:
+          type: string
+          description: The title of the tool for this placement
+      example:
+        message_type: "LtiResourceLinkRequest"
+        url: "https://www.example.com/launch?placement=assignment_selection"
+        title: "My Tool (Assignment Selection)"
+security:
+  - oauth2: []
+securitySchemes:
+  oauth2:
+    type: oauth2
+    flows:
+      clientCredentials:
+        tokenUrl: /login/oauth2/token
+        scopes: {}

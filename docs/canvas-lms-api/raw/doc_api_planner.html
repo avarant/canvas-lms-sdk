@@ -1,0 +1,2360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title>Planner - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="current" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div class="service">
+  
+    <h1>Planner API</h1>
+  
+  
+  <table id='quicklinks'>
+  </table>
+  <p>API for listing learning objects to display on the student planner and calendar</p>
+
+<p>API for creating, accessing and updating Planner Notes. PlannerNote are used
+to set reminders and notes to self about courses or general events.</p>
+
+<p>API for creating, accessing and updating planner override. PlannerOverrides are used
+to control the visibility of objects displayed on the Planner.</p>
+
+
+
+
+
+  <div class='object_definition'>
+  <h3><a name="PlannerNote">A PlannerNote object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">// A planner note
+{
+  // The ID of the planner note
+  &quot;id&quot;: 234,
+  // The title for a planner note
+  &quot;title&quot;: &quot;Bring books tomorrow&quot;,
+  // The description of the planner note
+  &quot;description&quot;: &quot;I need to bring books tomorrow for my course on biology&quot;,
+  // The id of the associated user creating the planner note
+  &quot;user_id&quot;: 1578941,
+  // The current published state of the planner note
+  &quot;workflow_state&quot;: &quot;active&quot;,
+  // The course that the note is in relation too, if applicable
+  &quot;course_id&quot;: 1578941,
+  // The datetime of when the planner note should show up on their planner
+  &quot;todo_date&quot;: &quot;2017-05-09T10:12:00Z&quot;,
+  // the type of the linked learning object
+  &quot;linked_object_type&quot;: &quot;assignment&quot;,
+  // the id of the linked learning object
+  &quot;linked_object_id&quot;: 131072,
+  // the Canvas web URL of the linked learning object
+  &quot;linked_object_html_url&quot;: &quot;https://canvas.example.com/courses/1578941/assignments/131072&quot;,
+  // the API URL of the linked learning object
+  &quot;linked_object_url&quot;: &quot;https://canvas.example.com/api/v1/courses/1578941/assignments/131072&quot;
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="PlannerOverride">A PlannerOverride object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">// User-controlled setting for whether an item should be displayed on the
+// planner or not
+{
+  // The ID of the planner override
+  &quot;id&quot;: 234,
+  // The type of the associated object for the planner override
+  &quot;plannable_type&quot;: &quot;Assignment&quot;,
+  // The id of the associated object for the planner override
+  &quot;plannable_id&quot;: 1578941,
+  // The id of the associated user for the planner override
+  &quot;user_id&quot;: 1578941,
+  // The id of the plannable&#39;s associated assignment, if it has one
+  &quot;assignment_id&quot;: 1578941,
+  // The current published state of the item, synced with the associated object
+  &quot;workflow_state&quot;: &quot;published&quot;,
+  // Controls whether or not the associated plannable item is marked complete on
+  // the planner
+  &quot;marked_complete&quot;: false,
+  // Controls whether or not the associated plannable item shows up in the
+  // opportunities list
+  &quot;dismissed&quot;: false,
+  // The datetime of when the planner override was created
+  &quot;created_at&quot;: &quot;2017-05-09T10:12:00Z&quot;,
+  // The datetime of when the planner override was updated
+  &quot;updated_at&quot;: &quot;2017-05-09T10:12:00Z&quot;,
+  // The datetime of when the planner override was deleted, if applicable
+  &quot;deleted_at&quot;: &quot;2017-05-15T12:12:00Z&quot;
+}</code></pre>
+  </div>
+  
+
+<div id="Services" class="method_details_list">
+
+  <div class="method_details first">
+  <h2 class='api_method_name' name='method.planner.index' data-subtopic='Planner'>
+    <a name='method.planner.index' href='#method.planner.index'>
+      List planner items
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_controller.rb">PlannerController#index</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/planner/items
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/planner/items</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    GET /api/v1/users/:user_id/planner/items
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/users/:user_id/planner/items</code>
+  </div>
+
+
+<p>Retrieve the paginated list of objects to be shown on the planner for the current user with the associated planner override to override an itemâs visibility if set.</p>
+
+<p>Planner items for a student may also be retrieved by a linked observer. Use the path that accepts a user_id and supply the studentâs id.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>start_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return items starting from the given date. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>end_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return items up to the given date. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>context_codes[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>List of context codes of courses and/or groups whose items you want to see. If not specified, defaults to all contexts associated to the current user. Note that concluded courses will be ignored unless specified in the includes[] parameter. The format of this field is the context type, followed by an underscore, followed by the context id. For example: course_42, group_123</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>observed_user_id</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Return planner items for the given observed user. Must be accompanied by context_codes[]. The user making the request must be observing the observed user in all the courses specified by context_codes[].</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>filter</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return items that have new or unread activity</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>new_activity</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">[
+ {
+   &quot;context_type&quot;: &quot;Course&quot;,
+   &quot;course_id&quot;: 1,
+   &quot;planner_override&quot;: { ... planner override object ... }, // Associated PlannerOverride object if user has toggled visibility for the object on the planner
+   &quot;submissions&quot;: false, // The statuses of the user&#39;s submissions for this object
+   &quot;plannable_id&quot;: &quot;123&quot;,
+   &quot;plannable_type&quot;: &quot;discussion_topic&quot;,
+   &quot;plannable&quot;: { ... discussion topic object },
+   &quot;html_url&quot;: &quot;/courses/1/discussion_topics/8&quot;
+ },
+ {
+   &quot;context_type&quot;: &quot;Course&quot;,
+   &quot;course_id&quot;: 1,
+   &quot;planner_override&quot;: {
+       &quot;id&quot;: 3,
+       &quot;plannable_type&quot;: &quot;Assignment&quot;,
+       &quot;plannable_id&quot;: 1,
+       &quot;user_id&quot;: 2,
+       &quot;workflow_state&quot;: &quot;active&quot;,
+       &quot;marked_complete&quot;: true, // A user-defined setting for marking items complete in the planner
+       &quot;dismissed&quot;: false, // A user-defined setting for hiding items from the opportunities list
+       &quot;deleted_at&quot;: null,
+       &quot;created_at&quot;: &quot;2017-05-18T18:35:55Z&quot;,
+       &quot;updated_at&quot;: &quot;2017-05-18T18:35:55Z&quot;
+   },
+   &quot;submissions&quot;: { // The status as it pertains to the current user
+     &quot;excused&quot;: false,
+     &quot;graded&quot;: false,
+     &quot;late&quot;: false,
+     &quot;missing&quot;: true,
+     &quot;needs_grading&quot;: false,
+     &quot;with_feedback&quot;: false
+   },
+   &quot;plannable_id&quot;: &quot;456&quot;,
+   &quot;plannable_type&quot;: &quot;assignment&quot;,
+   &quot;plannable&quot;: { ... assignment object ...  },
+   &quot;html_url&quot;: &quot;http://canvas.instructure.com/courses/1/assignments/1#submit&quot;
+ },
+ {
+   &quot;planner_override&quot;: null,
+   &quot;submissions&quot;: false, // false if no associated assignment exists for the plannable item
+   &quot;plannable_id&quot;: &quot;789&quot;,
+   &quot;plannable_type&quot;: &quot;planner_note&quot;,
+   &quot;plannable&quot;: {
+     &quot;id&quot;: 1,
+     &quot;todo_date&quot;: &quot;2017-05-30T06:00:00Z&quot;,
+     &quot;title&quot;: &quot;hello&quot;,
+     &quot;details&quot;: &quot;world&quot;,
+     &quot;user_id&quot;: 2,
+     &quot;course_id&quot;: null,
+     &quot;workflow_state&quot;: &quot;active&quot;,
+     &quot;created_at&quot;: &quot;2017-05-30T16:29:04Z&quot;,
+     &quot;updated_at&quot;: &quot;2017-05-30T16:29:15Z&quot;
+   },
+   &quot;html_url&quot;: &quot;http://canvas.instructure.com/api/v1/planner_notes.1&quot;
+ }
+]</code></pre>
+    
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_notes.index' data-subtopic='Planner Notes'>
+    <a name='method.planner_notes.index' href='#method.planner_notes.index'>
+      List planner notes
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_notes_controller.rb">PlannerNotesController#index</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/planner_notes
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/planner_notes</code>
+  </div>
+
+
+<p>Retrieve the paginated list of planner notes</p>
+
+<p>Retrieve planner note for a user</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>start_date</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return notes with todo dates since the start_date (inclusive). No default. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>end_date</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return notes with todo dates before the end_date (inclusive). No default. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ. If end_date and start_date are both specified and equivalent, then only notes with todo dates on that day are returned.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>context_codes[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>List of context codes of courses whose notes you want to see. If not specified, defaults to all contexts that the user belongs to. The format of this field is the context type, followed by an underscore, followed by the context id. For example: course_42 Including a code matching the userâs own context code (e.g. user_1) will include notes that are not associated with any particular course.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+  <div class="examples example_response">
+    <h4>Example Response:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-js">[
+  {
+    &#39;id&#39;: 4,
+    &#39;title&#39;: &#39;Bring bio book&#39;,
+    &#39;description&#39;: &#39;bring bio book for friend tomorrow&#39;,
+    &#39;user_id&#39;: 1238,
+    &#39;course_id&#39;: 4567,  // If the user assigns a note to a course
+    &#39;todo_date&#39;: &quot;2017-05-09T10:12:00Z&quot;,
+    &#39;workflow_state&#39;: &quot;active&quot;,
+  },
+  {
+    &#39;id&#39;: 5,
+    &#39;title&#39;: &#39;Bring english book&#39;,
+    &#39;description&#39;: &#39;bring english book to class tomorrow&#39;,
+    &#39;user_id&#39;: 1234,
+    &#39;todo_date&#39;: &quot;2017-05-09T10:12:00Z&quot;,
+    &#39;workflow_state&#39;: &quot;active&quot;,
+  },
+]</code></pre>
+    
+  </div>
+
+
+  Returns a list of 
+
+<a href='planner.html#PlannerNote'>PlannerNote</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_notes.show' data-subtopic='Planner Notes'>
+    <a name='method.planner_notes.show' href='#method.planner_notes.show'>
+      Show a planner note
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_notes_controller.rb">PlannerNotesController#show</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/planner_notes/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/planner_notes/:id</code>
+  </div>
+
+
+<p>Retrieve a planner note for the current user</p>
+
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerNote'>PlannerNote</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_notes.update' data-subtopic='Planner Notes'>
+    <a name='method.planner_notes.update' href='#method.planner_notes.update'>
+      Update a planner note
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_notes_controller.rb">PlannerNotesController#update</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    PUT /api/v1/planner_notes/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:PUT|/api/v1/planner_notes/:id</code>
+  </div>
+
+
+<p>Update a planner note for the current user</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>title</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The title of the planner note.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>details</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Text of the planner note.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>todo_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The date where this planner note should appear in the planner. The value should be formatted as: yyyy-mm-dd.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>course_id</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The ID of the course to associate with the planner note. The caller must be able to view the course in order to associate it with a planner note. Use a null or empty value to remove a planner note from a course. Note that if the planner note is linked to a learning object, its course_id cannot be changed.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerNote'>PlannerNote</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_notes.create' data-subtopic='Planner Notes'>
+    <a name='method.planner_notes.create' href='#method.planner_notes.create'>
+      Create a planner note
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_notes_controller.rb">PlannerNotesController#create</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/planner_notes
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/planner_notes</code>
+  </div>
+
+
+<p>Create a planner note for the current user</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>title</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The title of the planner note.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>details</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Text of the planner note.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>todo_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The date where this planner note should appear in the planner. The value should be formatted as: yyyy-mm-dd.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>course_id</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The ID of the course to associate with the planner note. The caller must be able to view the course in order to associate it with a planner note.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>linked_object_type</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The type of a learning object to link to this planner note. Must be used in conjunction wtih linked_object_id and course_id. Valid linked_object_type values are: âannouncementâ, âassignmentâ, âdiscussion_topicâ, âwiki_pageâ, âquizâ</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>linked_object_id</td>
+      <td>
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The id of a learning object to link to this planner note. Must be used in conjunction with linked_object_type and course_id. The object must be in the same course as specified by course_id. If the title argument is not provided, the planner note will use the learning objectâs title as its title. Only one planner note may be linked to a specific learning object.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerNote'>PlannerNote</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_notes.destroy' data-subtopic='Planner Notes'>
+    <a name='method.planner_notes.destroy' href='#method.planner_notes.destroy'>
+      Delete a planner note
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_notes_controller.rb">PlannerNotesController#destroy</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    DELETE /api/v1/planner_notes/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:DELETE|/api/v1/planner_notes/:id</code>
+  </div>
+
+
+<p>Delete a planner note for the current user</p>
+
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerNote'>PlannerNote</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_overrides.index' data-subtopic='Planner Overrides'>
+    <a name='method.planner_overrides.index' href='#method.planner_overrides.index'>
+      List planner overrides
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_overrides_controller.rb">PlannerOverridesController#index</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/planner/overrides
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/planner/overrides</code>
+  </div>
+
+
+<p>Retrieve a planner override for the current user</p>
+
+
+
+
+  Returns a list of 
+
+<a href='planner.html#PlannerOverride'>PlannerOverride</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_overrides.show' data-subtopic='Planner Overrides'>
+    <a name='method.planner_overrides.show' href='#method.planner_overrides.show'>
+      Show a planner override
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_overrides_controller.rb">PlannerOverridesController#show</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/planner/overrides/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/planner/overrides/:id</code>
+  </div>
+
+
+<p>Retrieve a planner override for the current user</p>
+
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerOverride'>PlannerOverride</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_overrides.update' data-subtopic='Planner Overrides'>
+    <a name='method.planner_overrides.update' href='#method.planner_overrides.update'>
+      Update a planner override
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_overrides_controller.rb">PlannerOverridesController#update</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    PUT /api/v1/planner/overrides/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:PUT|/api/v1/planner/overrides/:id</code>
+  </div>
+
+
+<p>Update a planner overrideâs visibilty for the current user</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>marked_complete</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>determines whether the planner item is marked as completed</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>dismissed</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>determines whether the planner item shows in the opportunities list</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerOverride'>PlannerOverride</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_overrides.create' data-subtopic='Planner Overrides'>
+    <a name='method.planner_overrides.create' href='#method.planner_overrides.create'>
+      Create a planner override
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_overrides_controller.rb">PlannerOverridesController#create</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/planner/overrides
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/planner/overrides</code>
+  </div>
+
+
+<p>Create a planner override for the current user</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>plannable_type</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Type of the item that you are overriding in the planner</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>announcement</code>, <code class=enum>assignment</code>, <code class=enum>discussion_topic</code>, <code class=enum>quiz</code>, <code class=enum>wiki_page</code>, <code class=enum>planner_note</code>, <code class=enum>calendar_event</code>, <code class=enum>assessment_request</code>, <code class=enum>sub_assignment</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>plannable_id</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>integer</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>ID of the item that you are overriding in the planner</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>marked_complete</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If this is true, the item will show in the planner as completed</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>dismissed</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If this is true, the item will not show in the opportunities list</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerOverride'>PlannerOverride</a>
+object
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.planner_overrides.destroy' data-subtopic='Planner Overrides'>
+    <a name='method.planner_overrides.destroy' href='#method.planner_overrides.destroy'>
+      Delete a planner override
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/planner_overrides_controller.rb">PlannerOverridesController#destroy</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    DELETE /api/v1/planner/overrides/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:DELETE|/api/v1/planner/overrides/:id</code>
+  </div>
+
+
+<p>Delete a planner override for the current user</p>
+
+
+
+
+  Returns a
+
+<a href='planner.html#PlannerOverride'>PlannerOverride</a>
+object
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:49 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,485 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Enrollments API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/enrollments:
+    get:
+      summary: Return a paginated list of enrollments in a course
+      description: |
+        Depending on the URL given, return a paginated list of either (1) all of the enrollments in a course.
+        Includes student, teacher, TA, and observer enrollments. Inactive enrollments are included by default for account admins.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the course.
+        - name: type[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: |
+            A list of enrollment types to return. Accepted values are
+            'StudentEnrollment', 'TeacherEnrollment', 'TaEnrollment',
+            'DesignerEnrollment', and 'ObserverEnrollment'.
+            Ignored if `role[]` is given.
+        - name: role[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: |
+            A list of enrollment roles to return. Accepted values include
+            custom course-level roles and base enrollment types.
+        - name: state[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: |
+            Filter by enrollment state. If omitted, 'active' and 'invited'
+            are returned. Synthetic states (e.g. current_and_invited) only
+            apply when querying a user's enrollments.
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: |
+            Array of additional information to include. Allowed values:
+            avatar_url, group_ids, locked, observed_users, can_be_removed,
+            uuid, current_points.
+        - name: user_id
+          in: query
+          schema:
+            type: string
+          description: Filter by user_id (only valid for course enrollment queries).
+        - name: grading_period_id
+          in: query
+          schema:
+            type: integer
+          description: Return grades for the given grading period.
+        - name: enrollment_term_id
+          in: query
+          schema:
+            type: integer
+          description: |
+            Returns only enrollments for the specified enrollment term.
+            Only applies to user enrollments path.
+        - name: sis_account_id[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: Filter by SIS account ID(s).
+        - name: sis_course_id[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: Filter by SIS course ID(s).
+        - name: sis_section_id[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: Filter by SIS section ID(s).
+        - name: sis_user_id[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+            style: form
+          description: Filter by SIS user ID(s).
+        - name: created_for_sis_id[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: boolean
+            style: form
+          description: |
+            If sis_user_id is present and this is true, returns only enrollments
+            created via that SIS import.
+      responses:
+        '200':
+          description: A list of Enrollment objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Enrollment'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Enroll a user in a course
+      description: Create a new user enrollment for a course.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                enrollment:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      description: The ID of the user to enroll.
+                    type:
+                      type: string
+                      enum:
+                        - StudentEnrollment
+                        - TeacherEnrollment
+                        - TaEnrollment
+                        - ObserverEnrollment
+                        - DesignerEnrollment
+                      description: Enrollment type.
+                    enrollment_state:
+                      type: string
+                      enum:
+                        - active
+                        - invited
+                        - inactive
+                      description: Enrollment state; defaults to 'invited'.
+                    course_section_id:
+                      type: integer
+                      description: Section ID to enroll the student in.
+                    limit_privileges_to_course_section:
+                      type: boolean
+                      description: Restrict privileges to the section.
+                    notify:
+                      type: boolean
+                      description: Send notification to user.
+                    self_enrollment_code:
+                      type: string
+                      description: Self-enrollment code.
+                    self_enrolled:
+                      type: boolean
+                      description: Marks as self-enrollment.
+                    associated_user_id:
+                      type: integer
+                      description: For observer enrollments, the student to observe.
+                    sis_user_id:
+                      type: string
+                      description: SIS user ID (with root_account).
+                    integration_id:
+                      type: string
+                      description: Integration ID (with root_account).
+                root_account:
+                  type: string
+                  description: Domain of account for SIS lookup.
+              required:
+                - enrollment
+      responses:
+        '200':
+          description: The created Enrollment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/sections/{section_id}/enrollments:
+    get:
+      summary: Return a paginated list of enrollments in a section
+      description: Same behavior as course enrollments, scoped to a section.
+      parameters:
+        - name: section_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the section.
+        # Query parameters same as /courses/{course_id}/enrollments#get
+      responses:
+        '200':
+          description: A list of Enrollment objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Enrollment'
+  /api/v1/users/{user_id}/enrollments:
+    get:
+      summary: Return a paginated list of a user's enrollments
+      description: Returns all of a user's enrollments across courses and sections.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the user.
+        # Query parameters same as /courses/{course_id}/enrollments#get
+      responses:
+        '200':
+          description: A list of Enrollment objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Enrollment'
+  /api/v1/accounts/{account_id}/enrollments/{id}:
+    get:
+      summary: Get an Enrollment by ID
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the account.
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the enrollment.
+      responses:
+        '200':
+          description: An Enrollment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+  /api/v1/courses/{course_id}/enrollments/{id}:
+    delete:
+      summary: Conclude, deactivate, or delete an enrollment
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: string
+                  enum:
+                    - conclude
+                    - delete
+                    - inactivate
+                    - deactivate
+                  description: Action to take on the enrollment.
+      responses:
+        '200':
+          description: The updated Enrollment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+  /api/v1/courses/{course_id}/enrollments/{id}/accept:
+    post:
+      summary: Accept a pending course invitation
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Invitation accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+  /api/v1/courses/{course_id}/enrollments/{id}/reject:
+    post:
+      summary: Reject a pending course invitation
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Invitation rejected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+  /api/v1/courses/{course_id}/enrollments/{id}/reactivate:
+    put:
+      summary: Re-activate an inactive enrollment
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The reactivated Enrollment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+  /api/v1/courses/{course_id}/users/{user_id}/last_attended:
+    put:
+      summary: Add last attended date to a student enrollment
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  description: The last attended date in ISO8601 format.
+      responses:
+        '200':
+          description: The updated Enrollment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+  /api/v1/users/{user_id}/temporary_enrollment_status:
+    get:
+      summary: Show temporary enrollment recipient and provider status
+      description: Returns whether the user is a temporary enrollment provider or recipient.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: account_id
+          in: query
+          schema:
+            type: string
+          description: Account ID to check; defaults to root account.
+      responses:
+        '200':
+          description: Temporary enrollment status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_provider:
+                    type: boolean
+                  is_recipient:
+                    type: boolean
+                  can_provide:
+                    type: boolean
+components:
+  schemas:
+    Enrollment:
+      type: object
+      description: A user's enrollment in a course or section.
+      properties:
+        id:
+          type: integer
+        course_id:
+          type: integer
+        type:
+          type: string
+        user_id:
+          type: integer
+        enrollment_state:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        last_activity_at:
+          type: string
+          format: date-time
+        html_url:
+          type: string
+        grades:
+          type: object
+        user:
+          type: object
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer

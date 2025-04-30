@@ -1,0 +1,76 @@
+openapi: 3.0.1
+info:
+  title: Account Domain Lookups API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/search:
+    get:
+      summary: Search account domains
+      description: |
+        Returns a list of up to 5 matching account domains.
+        Partial match on name / domain are supported.
+      tags:
+        - Account Domain Lookups
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: name
+          in: query
+          description: campus name
+          required: false
+          schema:
+            type: string
+        - name: domain
+          in: query
+          description: no description
+          required: false
+          schema:
+            type: string
+        - name: latitude
+          in: query
+          description: no description
+          required: false
+          schema:
+            type: number
+        - name: longitude
+          in: query
+          description: no description
+          required: false
+          schema:
+            type: number
+      responses:
+        '200':
+          description: A list of matching account domains.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    domain:
+                      type: string
+                    distance:
+                      type: number
+                      nullable: true
+                      description: distance is always null but preserved for backwards compatibility
+                    authentication_provider:
+                      type: string
+                      nullable: true
+                      description: which authentication_provider param to pass to the oauth flow; may be null
+                  required:
+                    - name
+                    - domain
+              example:
+                - name: "University of Utah"
+                  domain: "utah.edu"
+                  distance: null
+                  authentication_provider: "canvas"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

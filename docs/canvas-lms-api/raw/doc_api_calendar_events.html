@@ -1,0 +1,3287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title>Calendar Events - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="current" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div class="service">
+  
+    <h1>Calendar Events API</h1>
+  
+  
+  <table id='quicklinks'>
+  </table>
+  <p>API for creating, accessing and updating calendar events.</p>
+
+
+
+
+
+  <div class='object_definition'>
+  <h3><a name="CalendarEvent">A CalendarEvent object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // The ID of the calendar event
+  &quot;id&quot;: 234,
+  // The title of the calendar event
+  &quot;title&quot;: &quot;Paintball Fight!&quot;,
+  // The start timestamp of the event
+  &quot;start_at&quot;: &quot;2012-07-19T15:00:00-06:00&quot;,
+  // The end timestamp of the event
+  &quot;end_at&quot;: &quot;2012-07-19T16:00:00-06:00&quot;,
+  // The HTML description of the event
+  &quot;description&quot;: &quot;&lt;b&gt;It&#39;s that time again!&lt;/b&gt;&quot;,
+  // The location name of the event
+  &quot;location_name&quot;: &quot;Greendale Community College&quot;,
+  // The address where the event is taking place
+  &quot;location_address&quot;: &quot;Greendale, Colorado&quot;,
+  // the context code of the calendar this event belongs to (course, group, user,
+  // or account)
+  &quot;context_code&quot;: &quot;course_123&quot;,
+  // if specified, it indicates which calendar this event should be displayed on.
+  // for example, a section-level event would have the course&#39;s context code here,
+  // while the section&#39;s context code would be returned above)
+  &quot;effective_context_code&quot;: null,
+  // the context name of the calendar this event belongs to (course, user or
+  // group)
+  &quot;context_name&quot;: &quot;Chemistry 101&quot;,
+  // a comma-separated list of all calendar contexts this event is part of
+  &quot;all_context_codes&quot;: &quot;course_123,course_456&quot;,
+  // Current state of the event (&#39;active&#39;, &#39;locked&#39; or &#39;deleted&#39;) &#39;locked&#39;
+  // indicates that start_at/end_at cannot be changed (though the event could be
+  // deleted). Normally only reservations or time slots with reservations are
+  // locked (see the Appointment Groups API)
+  &quot;workflow_state&quot;: &quot;active&quot;,
+  // Whether this event should be displayed on the calendar. Only true for
+  // course-level events with section-level child events.
+  &quot;hidden&quot;: false,
+  // Normally null. If this is a reservation (see the Appointment Groups API), the
+  // id will indicate the time slot it is for. If this is a section-level event,
+  // this will be the course-level parent event.
+  &quot;parent_event_id&quot;: null,
+  // The number of child_events. See child_events (and parent_event_id)
+  &quot;child_events_count&quot;: 0,
+  // Included by default, but may be excluded (see include[] option). If this is a
+  // time slot (see the Appointment Groups API) this will be a list of any
+  // reservations. If this is a course-level event, this will be a list of
+  // section-level events (if any)
+  &quot;child_events&quot;: null,
+  // URL for this calendar event (to update, delete, etc.)
+  &quot;url&quot;: &quot;https://example.com/api/v1/calendar_events/234&quot;,
+  // URL for a user to view this event
+  &quot;html_url&quot;: &quot;https://example.com/calendar?event_id=234&amp;include_contexts=course_123&quot;,
+  // The date of this event
+  &quot;all_day_date&quot;: &quot;2012-07-19&quot;,
+  // Boolean indicating whether this is an all-day event (midnight to midnight)
+  &quot;all_day&quot;: false,
+  // When the calendar event was created
+  &quot;created_at&quot;: &quot;2012-07-12T10:55:20-06:00&quot;,
+  // When the calendar event was last updated
+  &quot;updated_at&quot;: &quot;2012-07-12T10:55:20-06:00&quot;,
+  // Various Appointment-Group-related fields.These fields are only pertinent to
+  // time slots (appointments) and reservations of those time slots. See the
+  // Appointment Groups API. The id of the appointment group
+  &quot;appointment_group_id&quot;: null,
+  // The API URL of the appointment group
+  &quot;appointment_group_url&quot;: null,
+  // If the event is a reservation, this a boolean indicating whether it is the
+  // current user&#39;s reservation, or someone else&#39;s
+  &quot;own_reservation&quot;: false,
+  // If the event is a time slot, the API URL for reserving it
+  &quot;reserve_url&quot;: null,
+  // If the event is a time slot, a boolean indicating whether the user has
+  // already made a reservation for it
+  &quot;reserved&quot;: false,
+  // The type of participant to sign up for a slot: &#39;User&#39; or &#39;Group&#39;
+  &quot;participant_type&quot;: &quot;User&quot;,
+  // If the event is a time slot, this is the participant limit
+  &quot;participants_per_appointment&quot;: null,
+  // If the event is a time slot and it has a participant limit, an integer
+  // indicating how many slots are available
+  &quot;available_slots&quot;: null,
+  // If the event is a user-level reservation, this will contain the user
+  // participant JSON (refer to the Users API).
+  &quot;user&quot;: null,
+  // If the event is a group-level reservation, this will contain the group
+  // participant JSON (refer to the Groups API).
+  &quot;group&quot;: null,
+  // Boolean indicating whether this has important dates.
+  &quot;important_dates&quot;: true,
+  // Identifies the recurring event series this event may belong to.
+  &quot;series_uuid&quot;: null,
+  // An iCalendar RRULE for defining how events in a recurring event series
+  // repeat.
+  &quot;rrule&quot;: null,
+  // Boolean indicating if is the first event in the series of recurring events.
+  &quot;series_head&quot;: null,
+  // A natural language expression of how events occur in the series.
+  &quot;series_natural_language&quot;: &quot;Daily 5 times&quot;,
+  // Boolean indicating whether this has blackout date.
+  &quot;blackout_date&quot;: true
+}</code></pre>
+  </div>
+  
+
+
+
+  <div class='object_definition'>
+  <h3><a name="AssignmentEvent">An AssignmentEvent object looks like:</a></h3>
+  <pre class="example code prettyprint"><code class="language-js">{
+  // A synthetic ID for the assignment
+  &quot;id&quot;: &quot;assignment_987&quot;,
+  // The title of the assignment
+  &quot;title&quot;: &quot;Essay&quot;,
+  // The due_at timestamp of the assignment
+  &quot;start_at&quot;: &quot;2012-07-19T23:59:00-06:00&quot;,
+  // The due_at timestamp of the assignment
+  &quot;end_at&quot;: &quot;2012-07-19T23:59:00-06:00&quot;,
+  // The HTML description of the assignment
+  &quot;description&quot;: &quot;&lt;b&gt;Write an essay. Whatever you want.&lt;/b&gt;&quot;,
+  // the context code of the (course) calendar this assignment belongs to
+  &quot;context_code&quot;: &quot;course_123&quot;,
+  // Current state of the assignment (&#39;published&#39; or &#39;deleted&#39;)
+  &quot;workflow_state&quot;: &quot;published&quot;,
+  // URL for this assignment (note that updating/deleting should be done via the
+  // Assignments API)
+  &quot;url&quot;: &quot;https://example.com/api/v1/calendar_events/assignment_987&quot;,
+  // URL for a user to view this assignment
+  &quot;html_url&quot;: &quot;http://example.com/courses/123/assignments/987&quot;,
+  // The due date of this assignment
+  &quot;all_day_date&quot;: &quot;2012-07-19&quot;,
+  // Boolean indicating whether this is an all-day event (e.g. assignment due at
+  // midnight)
+  &quot;all_day&quot;: true,
+  // When the assignment was created
+  &quot;created_at&quot;: &quot;2012-07-12T10:55:20-06:00&quot;,
+  // When the assignment was last updated
+  &quot;updated_at&quot;: &quot;2012-07-12T10:55:20-06:00&quot;,
+  // The full assignment JSON data (See the Assignments API)
+  &quot;assignment&quot;: null,
+  // The list of AssignmentOverrides that apply to this event (See the Assignments
+  // API). This information is useful for determining which students or sections
+  // this assignment-due event applies to.
+  &quot;assignment_overrides&quot;: null,
+  // Boolean indicating whether this has important dates.
+  &quot;important_dates&quot;: true,
+  // An iCalendar RRULE for defining how events in a recurring event series
+  // repeat.
+  &quot;rrule&quot;: &quot;FREQ=DAILY;INTERVAL=1;COUNT=5&quot;,
+  // Trueif this is the first event in the series of recurring events.
+  &quot;series_head&quot;: null,
+  // A natural language expression of how events occur in the series.
+  &quot;series_natural_language&quot;: &quot;Daily 5 times&quot;
+}</code></pre>
+  </div>
+  
+
+<div id="Services" class="method_details_list">
+
+  <div class="method_details first">
+  <h2 class='api_method_name' name='method.calendar_events_api.index' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.index' href='#method.calendar_events_api.index'>
+      List calendar events
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#index</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/calendar_events
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/calendar_events</code>
+  </div>
+
+
+<p>Retrieve the paginated list of calendar events or assignments for the current user</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>type</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to âeventâ</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>event</code>, <code class=enum>assignment</code>, <code class=enum>sub_assignment</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>start_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return events since the start_date (inclusive). Defaults to today. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>end_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return events before the end_date (inclusive). Defaults to start_date. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ. If end_date is the same as start_date, then only events on that day are returned.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>undated</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false (dated events only). If true, only return undated events and ignore start_date and end_date.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>all_events</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false (uses start_date, end_date, and undated criteria). If true, all events are returned, ignoring start_date, end_date, and undated criteria.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>context_codes[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>List of context codes of courses, groups, users, or accounts whose events you want to see. If not specified, defaults to the current user (i.e personal calendar, no course/group events). Limited to 10 context codes, additional ones are ignored. The format of this field is the context type, followed by an underscore, followed by the context id. For example: course_42</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>excludes[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Array of attributes to exclude. Possible values are âdescriptionâ, âchild_eventsâ and âassignmentâ</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>includes[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Array of optional attributes to include. Possible values are âweb_conferenceâ and âseries_natural_languageâ</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>important_dates</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false. If true, only events with important dates set to true will be returned.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>blackout_date</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false. If true, only events with blackout date set to true will be returned.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a list of 
+
+<a href='calendar_events.html#CalendarEvent'>CalendarEvent</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.user_index' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.user_index' href='#method.calendar_events_api.user_index'>
+      List calendar events for a user
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#user_index</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/users/:user_id/calendar_events
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/users/:user_id/calendar_events</code>
+  </div>
+
+
+<p>Retrieve the paginated list of calendar events or assignments for the specified user. To view calendar events for a user other than yourself, you must either be an observer of that user or an administrator.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>type</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to âeventâ</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>event</code>, <code class=enum>assignment</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>start_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return events since the start_date (inclusive). Defaults to today. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>end_date</td>
+      <td>
+        
+      </td>
+      <td>Date</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Only return events before the end_date (inclusive). Defaults to start_date. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ. If end_date is the same as start_date, then only events on that day are returned.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>undated</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false (dated events only). If true, only return undated events and ignore start_date and end_date.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>all_events</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false (uses start_date, end_date, and undated criteria). If true, all events are returned, ignoring start_date, end_date, and undated criteria.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>context_codes[]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>List of context codes of courses, groups, users, or accounts whose events you want to see. If not specified, defaults to the current user (i.e personal calendar, no course/group events). Limited to 10 context codes, additional ones are ignored. The format of this field is the context type, followed by an underscore, followed by the context id. For example: course_42</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>excludes[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Array of attributes to exclude. Possible values are âdescriptionâ, âchild_eventsâ and âassignmentâ</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>submission_types[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When type is âassignmentâ, specifies the allowable submission types for returned assignments. Ignored if type is not âassignmentâ or if exclude_submission_types is provided.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>exclude_submission_types[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When type is âassignmentâ, specifies the submission types to be excluded from the returned assignments. Ignored if type is not âassignmentâ.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>includes[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Array of optional attributes to include. Possible values are âweb_conferenceâ and âseries_natural_languageâ</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>important_dates</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false If true, only events with important dates set to true will be returned.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>blackout_date</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false If true, only events with blackout date set to true will be returned.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+  Returns a list of 
+
+<a href='calendar_events.html#CalendarEvent'>CalendarEvent</a>
+objects
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.create' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.create' href='#method.calendar_events_api.create'>
+      Create a calendar event
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#create</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/calendar_events
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/calendar_events</code>
+  </div>
+
+
+<p>Create and return a new calendar event</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>calendar_event[context_code]</td>
+      <td>
+        
+        Required
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Context code of the course, group, user, or account whose calendar this event should be added to.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[title]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Short title for the calendar event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[description]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Longer HTML description of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[start_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Start date/time of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[end_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>End date/time of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[location_name]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Location name of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[location_address]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Location address</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[time_zone_edited]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Time zone of the user editing the event. Allowed time zones are <a href="http://www.iana.org/time-zones" target="_parent" title="IANA time zones">IANA time zones</a> or friendlier <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html" target="_parent" title="Ruby on Rails time zones">Ruby on Rails time zones</a>.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[all_day]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When true event is considered to span the whole day and times are ignored.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[child_event_data][X][start_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Section-level start time(s) if this is a course event. X can be any identifier, provided that it is consistent across the start_at, end_at and context_code</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[child_event_data][X][end_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Section-level end time(s) if this is a course event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[child_event_data][X][context_code]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Context code(s) corresponding to the section-level start and end time(s).</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[duplicate][count]</td>
+      <td>
+        
+      </td>
+      <td>number</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Number of times to copy/duplicate the event.  Count cannot exceed 200.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[duplicate][interval]</td>
+      <td>
+        
+      </td>
+      <td>number</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to 1 if duplicate âcount` is set.  The interval between the duplicated events.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[duplicate][frequency]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to âweeklyâ.  The frequency at which to duplicate the event</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>daily</code>, <code class=enum>weekly</code>, <code class=enum>monthly</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[duplicate][append_iterator]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false.  If set to âtrue`, an increasing counter number will be appended to the event title when the event is duplicated.  (e.g. Event 1, Event 2, Event 3, etc)</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[rrule]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>The recurrence rule to create a series of recurring events. Its value is the <a href="https://icalendar.org/iCalendar-RFC-5545/3-8-5-3-recurrence-rule.html" target="_parent" title="iCalendar RRULE">iCalendar RRULE</a> defining how the event repeats. Unending series not supported.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[blackout_date]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If the blackout_date is true, this event represents a holiday or some other special day that does not count in course pacing.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/v1/calendar_events.json&#39; \
+     -X POST \
+     -F &#39;calendar_event[context_code]=course_123&#39; \
+     -F &#39;calendar_event[title]=Paintball Fight!&#39; \
+     -F &#39;calendar_event[start_at]=2012-07-19T21:00:00Z&#39; \
+     -F &#39;calendar_event[end_at]=2012-07-19T22:00:00Z&#39; \
+     -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+    
+  </div>
+
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.show' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.show' href='#method.calendar_events_api.show'>
+      Get a single calendar event or assignment
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#show</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/calendar_events/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/calendar_events/:id</code>
+  </div>
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.reserve' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.reserve' href='#method.calendar_events_api.reserve'>
+      Reserve a time slot
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#reserve</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/calendar_events/:id/reservations
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/calendar_events/:id/reservations</code>
+  </div>
+
+  
+  <h3 class='endpoint'>
+    POST /api/v1/calendar_events/:id/reservations/:participant_id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/calendar_events/:id/reservations/:participant_id</code>
+  </div>
+
+
+<p>Reserves a particular time slot and return the new reservation</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>participant_id</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>User or group id for whom you are making the reservation (depends on the participant type). Defaults to the current user (or userâs candidate group).</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>comments</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Comments to associate with this reservation</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>cancel_existing</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Defaults to false. If true, cancel any previous reservation(s) for this participant and appointment group.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/v1/calendar_events/345/reservations.json&#39; \
+     -X POST \
+     -F &#39;cancel_existing=true&#39; \
+     -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+    
+  </div>
+
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.update' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.update' href='#method.calendar_events_api.update'>
+      Update a calendar event
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#update</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    PUT /api/v1/calendar_events/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:PUT|/api/v1/calendar_events/:id</code>
+  </div>
+
+
+<p>Update and return a calendar event</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>calendar_event[context_code]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Context code of the course, group, user, or account to move this event to. Scheduler appointments and events with section-specific times cannot be moved between calendars.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[title]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Short title for the calendar event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[description]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Longer HTML description of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[start_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Start date/time of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[end_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>End date/time of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[location_name]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Location name of the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[location_address]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Location address</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[time_zone_edited]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Time zone of the user editing the event. Allowed time zones are <a href="http://www.iana.org/time-zones" target="_parent" title="IANA time zones">IANA time zones</a> or friendlier <a href="http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html" target="_parent" title="Ruby on Rails time zones">Ruby on Rails time zones</a>.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[all_day]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>When true event is considered to span the whole day and times are ignored.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[child_event_data][X][start_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Section-level start time(s) if this is a course event. X can be any identifier, provided that it is consistent across the start_at, end_at and context_code</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[child_event_data][X][end_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Section-level end time(s) if this is a course event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[child_event_data][X][context_code]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Context code(s) corresponding to the section-level start and end time(s).</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[rrule]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Valid if the event whose ID is in the URL is part of a series. This defines the shape of the recurring event series after itâs updated. Its value is the iCalendar RRULE. Unending series are not supported.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>which</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Valid if the event whose ID is in the URL is part of a series. Update just the event whose ID is in in the URL, all events in the series, or the given event and all those following. Some updates may create a new series. For example, changing the start time of this and all following events from the middle of a series.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>one</code>, <code class=enum>all</code>, <code class=enum>following</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>calendar_event[blackout_date]</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>If the blackout_date is true, this event represents a holiday or some other special day that does not count in course pacing.</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/v1/calendar_events/234&#39; \
+     -X PUT \
+     -F &#39;calendar_event[title]=Epic Paintball Fight!&#39; \
+     -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+    
+  </div>
+
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.destroy' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.destroy' href='#method.calendar_events_api.destroy'>
+      Delete a calendar event
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#destroy</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    DELETE /api/v1/calendar_events/:id
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:DELETE|/api/v1/calendar_events/:id</code>
+  </div>
+
+
+<p>Delete an event from the calendar and return the deleted event</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>cancel_reason</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Reason for deleting/canceling the event.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>which</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Valid if the event whose ID is in the URL is part of a series. Delete just the event whose ID is in in the URL, all events in the series, or the given event and all those following.</p>
+
+        
+        <p class="param-values">
+          <span class="allowed">Allowed values:</span> <code class=enum>one</code>, <code class=enum>all</code>, <code class=enum>following</code>
+        </p>
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/v1/calendar_events/234&#39; \
+     -X DELETE \
+     -F &#39;cancel_reason=Greendale layed off the janitorial staff :(&#39; \
+     -F &#39;which=following&#39;
+     -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+    
+  </div>
+
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.save_enabled_account_calendars' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.save_enabled_account_calendars' href='#method.calendar_events_api.save_enabled_account_calendars'>
+      Save enabled account calendars
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#save_enabled_account_calendars</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/calendar_events/save_enabled_account_calendars
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/calendar_events/save_enabled_account_calendars</code>
+  </div>
+
+
+<p>Creates and updates the enabled_account_calendars and mark_feature_as_seen user preferences</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>mark_feature_as_seen</td>
+      <td>
+        
+      </td>
+      <td>boolean</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Flag to mark account calendars feature as seen</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>enabled_account_calendars[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>An array of account Ids to remember in the calendars list of the user</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/v1/calendar_events/save_enabled_account_calendars&#39; \
+     -X POST \
+     -F &#39;mark_feature_as_seen=true&#39; \
+     -F &#39;enabled_account_calendars[]=1&#39; \
+     -F &#39;enabled_account_calendars[]=2&#39; \
+     -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+    
+  </div>
+
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.set_course_timetable' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.set_course_timetable' href='#method.calendar_events_api.set_course_timetable'>
+      Set a course timetable
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#set_course_timetable</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/courses/:course_id/calendar_events/timetable
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/courses/:course_id/calendar_events/timetable</code>
+  </div>
+
+
+<p>Creates and updates âtimetableâ events for a course. Can automaticaly generate a series of calendar events based on simple schedules (e.g. âMonday and Wednesday at 2:00pmâ )</p>
+
+<p>Existing timetable events for the course and course sections will be updated if they still are part of the timetable. Otherwise, they will be deleted.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>timetables[course_section_id][]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>An array of timetable objects for the course section specified by course_section_id. If course_section_id is set to âallâ, events will be created for the entire course.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>timetables[course_section_id][][weekdays]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>A comma-separated list of abbreviated weekdays (Mon-Monday, Tue-Tuesday, Wed-Wednesday, Thu-Thursday, Fri-Friday, Sat-Saturday, Sun-Sunday)</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>timetables[course_section_id][][start_time]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Time to start each event at (e.g. â9:00 amâ)</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>timetables[course_section_id][][end_time]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Time to end each event at (e.g. â9:00 amâ)</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>timetables[course_section_id][][location_name]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>A location name to set for each event</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+  <div class="examples">
+    <h4>Example Request:</h4>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code prettyprint"><code class="language-bash">curl &#39;https://&lt;canvas&gt;/api/v1/calendar_events/timetable&#39; \
+     -X POST \
+     -F &#39;timetables[all][][weekdays]=Mon,Wed,Fri&#39; \
+     -F &#39;timetables[all][][start_time]=11:00 am&#39; \
+     -F &#39;timetables[all][][end_time]=11:50 am&#39; \
+     -F &#39;timetables[all][][location_name]=Room 237&#39; \
+     -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+    
+  </div>
+
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.get_course_timetable' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.get_course_timetable' href='#method.calendar_events_api.get_course_timetable'>
+      Get course timetable
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#get_course_timetable</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    GET /api/v1/courses/:course_id/calendar_events/timetable
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:GET|/api/v1/courses/:course_id/calendar_events/timetable</code>
+  </div>
+
+
+<p>Returns the last timetable set by the <a href="calendar_events.html#method.calendar_events_api.set_course_timetable" title="Set a course timetable">Set a course timetable</a> endpoint</p>
+
+
+
+
+</div>
+
+
+  <div class="method_details ">
+  <h2 class='api_method_name' name='method.calendar_events_api.set_course_timetable_events' data-subtopic='Calendar Events'>
+    <a name='method.calendar_events_api.set_course_timetable_events' href='#method.calendar_events_api.set_course_timetable_events'>
+      Create or update events directly for a course timetable
+    </a>
+    
+      <span class='defined-in'><a href="https://github.com/instructure/canvas-lms/blob/master/app/controllers/calendar_events_api_controller.rb">CalendarEventsApiController#set_course_timetable_events</a></span>
+    
+  </h2>
+
+  
+
+  
+  
+  
+  <h3 class='endpoint'>
+    POST /api/v1/courses/:course_id/calendar_events/timetable_events
+  </h3>
+  <div>
+    <strong>Scope: </strong>
+    <code class="scope">url:POST|/api/v1/courses/:course_id/calendar_events/timetable_events</code>
+  </div>
+
+
+<p>Creates and updates âtimetableâ events for a course or course section. Similar to <a href="calendar_events.html#method.calendar_events_api.set_course_timetable" title="setting a course timetable">setting a course timetable</a>, but instead of generating a list of events based on a timetable schedule, this endpoint expects a complete list of events.</p>
+
+<h4>Request Parameters:</h4>
+<table class="request-params">
+  <thead>
+    <tr>
+      <th class="param-name">Parameter</th>
+      <th class="param-req"></th>
+      <th class="param-type">Type</th>
+      
+      <th class="param-desc">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr class="request-param ">
+      <td>course_section_id</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Events will be created for the course section specified by course_section_id. If not present, events will be created for the entire course.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>events[]</td>
+      <td>
+        
+      </td>
+      <td>Array</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>An array of event objects to use.</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>events[][start_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Start time for the event</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>events[][end_at]</td>
+      <td>
+        
+      </td>
+      <td>DateTime</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>End time for the event</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>events[][location_name]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Location name for the event</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>events[][code]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>A unique identifier that can be used to update the event at a later time If one is not specified, an identifier will be generated based on the start and end times</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr class="request-param ">
+      <td>events[][title]</td>
+      <td>
+        
+      </td>
+      <td>string</td>
+
+      
+
+      <td class="param-desc">
+        
+<p>Title for the meeting. If not present, will default to the associated courseâs name</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:45 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

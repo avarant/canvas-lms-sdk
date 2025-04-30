@@ -1,0 +1,293 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LMS Account Notifications API
+  version: "1.0.0"
+servers:
+  - url: https://{canvas}/api/v1
+    variables:
+      canvas:
+        default: canvas.example.com
+        description: Canvas domain
+paths:
+  /accounts/{account_id}/account_notifications:
+    get:
+      tags:
+        - Account Notifications
+      summary: Index of active global notifications for the user
+      description: >
+        Returns a list of all global notifications in the account for the current user.
+        Notifications closed by the user will not be returned unless include_past is true.
+        Admins can request all notifications by passing include_all=true.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account
+          schema:
+            type: integer
+        - name: include_past
+          in: query
+          required: false
+          description: Include past and dismissed global announcements.
+          schema:
+            type: boolean
+        - name: include_all
+          in: query
+          required: false
+          description: Include all global announcements, regardless of user’s role or availability date. Only available to account admins.
+          schema:
+            type: boolean
+        - name: show_is_closed
+          in: query
+          required: false
+          description: Include a flag for each notification indicating whether it has been read by the user.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of AccountNotification objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountNotification'
+    post:
+      tags:
+        - Account Notifications
+      summary: Create a global notification
+      description: Create and return a new global notification for an account.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                account_notification[subject]:
+                  type: string
+                  description: The subject of the notification.
+                account_notification[message]:
+                  type: string
+                  description: The message body of the notification.
+                account_notification[start_at]:
+                  type: string
+                  format: date-time
+                  description: The start date and time of the notification in ISO8601 format.
+                account_notification[end_at]:
+                  type: string
+                  format: date-time
+                  description: The end date and time of the notification in ISO8601 format.
+                account_notification[icon]:
+                  type: string
+                  description: The icon to display with the notification. Defaults to warning.
+                  enum:
+                    - warning
+                    - information
+                    - question
+                    - error
+                    - calendar
+                account_notification_roles[]:
+                  type: array
+                  items:
+                    type: string
+                  description: The role(s) to send global notification to. Omitting this field will send to everyone.
+              required:
+                - account_notification[subject]
+                - account_notification[message]
+                - account_notification[start_at]
+                - account_notification[end_at]
+      responses:
+        '200':
+          description: The created AccountNotification object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotification'
+  /accounts/{account_id}/account_notifications/{id}:
+    get:
+      tags:
+        - Account Notifications
+      summary: Show a global notification
+      description: Returns a global notification for the current user. A notification that has been closed by the user will not be returned.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: ID of the notification
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An AccountNotification object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotification'
+    put:
+      tags:
+        - Account Notifications
+      summary: Update a global notification
+      description: Update global notification for an account.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: ID of the notification
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                account_notification[subject]:
+                  type: string
+                  description: The subject of the notification.
+                account_notification[message]:
+                  type: string
+                  description: The message body of the notification.
+                account_notification[start_at]:
+                  type: string
+                  format: date-time
+                  description: The start date and time of the notification in ISO8601 format.
+                account_notification[end_at]:
+                  type: string
+                  format: date-time
+                  description: The end date and time of the notification in ISO8601 format.
+                account_notification[icon]:
+                  type: string
+                  description: The icon to display with the notification.
+                  enum:
+                    - warning
+                    - information
+                    - question
+                    - error
+                    - calendar
+                account_notification_roles[]:
+                  type: array
+                  items:
+                    type: string
+                  description: The role(s) to send global notification to. Omitting this field will send to everyone.
+      responses:
+        '200':
+          description: The updated AccountNotification object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotification'
+    delete:
+      tags:
+        - Account Notifications
+      summary: Close notification for user or destroy notification for admin
+      description: >
+        If the current user no longer wants to see this account notification, it can be closed with this call (affects current user only).
+        If the current user is an admin and passes remove=true, the account notification will be destroyed (affects all users).
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: ID of the notification
+          schema:
+            type: integer
+        - name: remove
+          in: query
+          required: false
+          description: Destroy the account notification.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: The AccountNotification object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountNotification'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+  schemas:
+    AccountNotification:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: The subject of the notifications.
+        message:
+          type: string
+          description: The message to be sent in the notification.
+        start_at:
+          type: string
+          format: date-time
+          description: When to send out the notification.
+        end_at:
+          type: string
+          format: date-time
+          description: When to expire the notification.
+        icon:
+          type: string
+          description: The icon to display with the message.
+          enum:
+            - warning
+            - information
+            - question
+            - error
+            - calendar
+        roles:
+          type: array
+          items:
+            type: string
+          description: (Deprecated) The roles to send the notification to.
+        role_ids:
+          type: array
+          items:
+            type: integer
+          description: The roles to send the notification to.
+        author:
+          type: object
+          description: The author of the notification. Only available to admins when include_all is used.
+          properties:
+            id:
+              type: integer
+            name:
+              type: string

@@ -1,0 +1,259 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Quiz Question Groups API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/groups/{id}:
+    get:
+      summary: Get a single quiz group
+      description: Returns details of the quiz group with the given id.
+      tags:
+        - QuizQuestionGroups
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A QuizGroup object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizGroup'
+        '404':
+          description: Quiz group not found
+    put:
+      summary: Update a question group
+      description: Update a question group
+      tags:
+        - QuizQuestionGroups
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Fields to update in the question group
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                quiz_groups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the question group.
+                      pick_count:
+                        type: integer
+                        description: The number of questions to randomly select for this group.
+                      question_points:
+                        type: integer
+                        description: The number of points to assign to each question in the group.
+              required: []
+      responses:
+        '200':
+          description: The updated QuizGroup(s)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizGroup'
+        '400':
+          description: Bad request
+    delete:
+      summary: Delete a question group
+      description: Delete a question group
+      tags:
+        - QuizQuestionGroups
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content – deletion successful
+        '404':
+          description: Quiz group not found
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/groups:
+    post:
+      summary: Create a question group
+      description: Create a new question group for this quiz.
+      tags:
+        - QuizQuestionGroups
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: The question group(s) to create
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                quiz_groups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the question group.
+                      pick_count:
+                        type: integer
+                        description: The number of questions to randomly select for this group.
+                      question_points:
+                        type: integer
+                        description: The number of points to assign to each question in the group.
+                      assessment_question_bank_id:
+                        type: integer
+                        description: The id of the assessment question bank to pull questions from.
+              required: []
+      responses:
+        '201':
+          description: Quiz group created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizGroup'
+        '400':
+          description: Bad request
+  /api/v1/courses/{course_id}/quizzes/{quiz_id}/groups/{id}/reorder:
+    post:
+      summary: Reorder question groups
+      description: Change the order of the quiz questions within the group.
+      tags:
+        - QuizQuestionGroups
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: quiz_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: New order of items in the group
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: integer
+                        description: The associated item's unique identifier.
+                      type:
+                        type: string
+                        enum: [question]
+                        description: The type of item; always "question" for a group.
+      responses:
+        '204':
+          description: No Content – reorder successful
+        '400':
+          description: Bad request
+components:
+  schemas:
+    QuizGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the question group.
+        quiz_id:
+          type: integer
+          description: The ID of the Quiz the question group belongs to.
+        name:
+          type: string
+          description: The name of the question group.
+        pick_count:
+          type: integer
+          description: The number of questions to pick from the group to display to the student.
+        question_points:
+          type: integer
+          description: The amount of points allotted to each question in the group.
+        assessment_question_bank_id:
+          type: integer
+          description: The ID of the Assessment question bank to pull questions from.
+        position:
+          type: integer
+          description: The order in which the question group will be retrieved and displayed.
+      required:
+        - id
+        - quiz_id
+        - name
+        - pick_count
+        - question_points
+        - position

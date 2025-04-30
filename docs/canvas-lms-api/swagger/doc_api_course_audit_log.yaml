@@ -1,0 +1,167 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LMS Course Audit Log API
+  version: "1.0.0"
+tags:
+  - name: Course Audit log
+    description: Endpoints for querying course audit logs
+paths:
+  /api/v1/audit/course/courses/{course_id}:
+    get:
+      summary: List course change events for a given course
+      description: |
+        Query audit log of course events. For each endpoint, a compound document is returned.
+        The primary collection of event objects is paginated, ordered by date descending.
+        Secondary collections of courses, users and page_views related to the returned events are also included.
+      tags:
+        - Course Audit log
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: start_time
+          in: query
+          description: The beginning of the time range from which you want events.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: The end of the time range from which you want events.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Successful response. A list of CourseEvent objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseEvent'
+                  included:
+                    type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Course not found
+      security:
+        - oauth2:
+          - "url:GET|/api/v1/audit/course/courses/:course_id"
+  /api/v1/audit/course/accounts/{account_id}:
+    get:
+      summary: List course change events for a given account
+      description: |
+        Query audit log of course events. For each endpoint, a compound document is returned.
+        The primary collection of event objects is paginated, ordered by date descending.
+        Secondary collections of courses, users and page_views related to the returned events are also included.
+      tags:
+        - Course Audit log
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: integer
+        - name: start_time
+          in: query
+          description: The beginning of the time range from which you want events.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: The end of the time range from which you want events.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Successful response. A list of CourseEvent objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseEvent'
+                  included:
+                    type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Account not found
+      security:
+        - oauth2:
+          - "url:GET|/api/v1/audit/course/accounts/:account_id"
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://canvas.instructure.com/login/oauth2/token
+          scopes:
+            "url:GET|/api/v1/audit/course/courses/:course_id": Query by course
+            "url:GET|/api/v1/audit/course/accounts/:account_id": Query by account
+  schemas:
+    CourseEventLink:
+      type: object
+      properties:
+        course:
+          type: integer
+          description: ID of the course for the event
+        user:
+          type: integer
+          description: ID of the user for the event
+        page_view:
+          type: string
+          description: ID of the page view during the event if it exists
+        copied_from:
+          type: integer
+          description: ID of the course that this course was copied from (copied_from events only)
+        copied_to:
+          type: integer
+          description: ID of the course that this course was copied to (copied_to events only)
+        sis_batch:
+          type: integer
+          description: ID of the SIS batch that triggered the event
+    CourseEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the event
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the event
+        event_type:
+          type: string
+          description: Course event type
+        event_data:
+          type: object
+          description: Event data object, schema varies by event_type
+        event_source:
+          type: string
+          description: Source of the event (manual, sis, api)
+        links:
+          $ref: '#/components/schemas/CourseEventLink'

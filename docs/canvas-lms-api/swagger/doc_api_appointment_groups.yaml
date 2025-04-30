@@ -1,0 +1,343 @@
+openapi: 3.0.0
+info:
+  title: Appointment Groups API
+  version: "1.0"
+servers:
+  - url: https://canvas.example.com
+paths:
+  /api/v1/appointment_groups:
+    get:
+      summary: Retrieve paginated list of appointment groups that can be reserved or managed by the current user.
+      parameters:
+        - name: scope
+          in: query
+          description: Defaults to “reservable”
+          required: false
+          schema:
+            type: string
+            enum:
+              - reservable
+              - manageable
+            default: reservable
+        - name: context_codes
+          in: query
+          description: Array of context codes used to limit returned results.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: include_past_appointments
+          in: query
+          description: If true, includes past appointment groups.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: include
+          in: query
+          description: Array of additional information to include.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - appointments
+                - child_events
+                - participant_count
+                - reserved_times
+                - all_context_codes
+      responses:
+        '200':
+          description: A list of appointment groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create and return a new appointment group.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                appointment_group:
+                  type: object
+                  required:
+                    - context_codes
+                    - title
+                  properties:
+                    context_codes:
+                      type: array
+                      items:
+                        type: string
+                      description: Array of context codes this group should be linked to.
+                    sub_context_codes:
+                      type: array
+                      items:
+                        type: string
+                      description: Array of sub context codes limiting the appointment group.
+                    title:
+                      type: string
+                      description: Short title for the appointment group.
+                    description:
+                      type: string
+                    location_name:
+                      type: string
+                    location_address:
+                      type: string
+                    publish:
+                      type: boolean
+                      description: Whether this appointment group should be published.
+                    participants_per_appointment:
+                      type: integer
+                    min_appointments_per_participant:
+                      type: integer
+                    max_appointments_per_participant:
+                      type: integer
+                    new_appointments:
+                      type: array
+                      items:
+                        type: array
+                        items:
+                          type: string
+                      description: Start/end time pairs indicating time slots.
+                    participant_visibility:
+                      type: string
+                      enum:
+                        - private
+                        - protected
+                    allow_observer_signup:
+                      type: boolean
+              required:
+                - appointment_group
+      responses:
+        '200':
+          description: The created appointment group
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        - bearerAuth: []
+  /api/v1/appointment_groups/{id}:
+    get:
+      summary: Returns information for a single appointment group.
+      parameters:
+        - name: id
+          in: path
+          description: Appointment group identifier
+          required: true
+          schema:
+            type: string
+        - name: include
+          in: query
+          description: Array of additional information to include.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - child_events
+                - appointments
+                - all_context_codes
+      responses:
+        '200':
+          description: An appointment group object
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        - bearerAuth: []
+    put:
+      summary: Update and return an appointment group.
+      parameters:
+        - name: id
+          in: path
+          description: Appointment group identifier
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                appointment_group:
+                  type: object
+                  required:
+                    - context_codes
+                  properties:
+                    context_codes:
+                      type: array
+                      items:
+                        type: string
+                      description: Array of context codes this group should be linked to.
+                    sub_context_codes:
+                      type: array
+                      items:
+                        type: string
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    location_name:
+                      type: string
+                    location_address:
+                      type: string
+                    publish:
+                      type: boolean
+                    participants_per_appointment:
+                      type: integer
+                    min_appointments_per_participant:
+                      type: integer
+                    max_appointments_per_participant:
+                      type: integer
+                    new_appointments:
+                      type: array
+                      items:
+                        type: array
+                        items:
+                          type: string
+                    participant_visibility:
+                      type: string
+                      enum:
+                        - private
+                        - protected
+                    allow_observer_signup:
+                      type: boolean
+              required:
+                - appointment_group
+      responses:
+        '200':
+          description: The updated appointment group
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Delete an appointment group and return the deleted group.
+      parameters:
+        - name: id
+          in: path
+          description: Appointment group identifier
+          required: true
+          schema:
+            type: string
+        - name: cancel_reason
+          in: query
+          description: Reason for deleting/canceling the appointment group.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The deleted appointment group
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        - bearerAuth: []
+  /api/v1/appointment_groups/{id}/users:
+    get:
+      summary: A paginated list of users participating in this appointment group.
+      parameters:
+        - name: id
+          in: path
+          description: Appointment group identifier
+          required: true
+          schema:
+            type: string
+        - name: registration_status
+          in: query
+          description: Limits results to a given participation status, defaults to “all”.
+          required: false
+          schema:
+            type: string
+            enum:
+              - all
+              - registered
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      security:
+        - bearerAuth: []
+  /api/v1/appointment_groups/{id}/groups:
+    get:
+      summary: A paginated list of student groups participating in this appointment group.
+      parameters:
+        - name: id
+          in: path
+          description: Appointment group identifier
+          required: true
+          schema:
+            type: string
+        - name: registration_status
+          in: query
+          description: Limits results to a given participation status, defaults to “all”.
+          required: false
+          schema:
+            type: string
+            enum:
+              - all
+              - registered
+      responses:
+        '200':
+          description: A list of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      security:
+        - bearerAuth: []
+  /api/v1/appointment_groups/next_appointment:
+    get:
+      summary: Return the next appointment available to sign up for.
+      parameters:
+        - name: appointment_group_ids
+          in: query
+          description: List of ids of appointment groups to search.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: A one-element array with the next available appointment, or empty if none.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

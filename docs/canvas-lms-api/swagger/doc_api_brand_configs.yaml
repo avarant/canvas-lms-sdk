@@ -1,0 +1,18 @@
+/api/v1/brand_variables:
+  get:
+    summary: Get the brand config variables that should be used for this domain
+    description: >
+      Will redirect to a static JSON file that has all of the brand variables used by this account.
+      Even though this is a redirect, do not store the redirected URL since if the account makes any changes
+      it will redirect to a new URL. Needs no authentication.
+    tags:
+      - Brand Configs
+    security: [] 
+    responses:
+      '302':
+        description: Redirect to a static JSON file containing the brand variables.
+        headers:
+          Location:
+            description: URL of the static JSON file
+            schema:
+              type: string

@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS JWTs API
+  version: "1.0"
+paths:
+  /api/v1/jwts:
+    post:
+      summary: Create JWT
+      description: |
+        Create a unique JWT for use with other Canvas services.
+        Generates a different JWT each time it's called.
+        Each JWT expires after a short window (1 hour).
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                workflows:
+                  type: array
+                  items:
+                    type: string
+                  description: Adds additional data to the JWT to be used by the consuming service workflow.
+                context_type:
+                  type: string
+                  description: The type of the context to generate the JWT for, in case the workflow requires it. Case insensitive.
+                  enum:
+                    - Course
+                    - User
+                    - Account
+                context_id:
+                  type: integer
+                  description: The id of the context to generate the JWT for, in case the workflow requires it.
+                context_uuid:
+                  type: string
+                  description: >-
+                    The uuid of the context to generate the JWT for, in case the workflow requires it.
+                    Mutually exclusive with context_id.
+                canvas_audience:
+                  type: boolean
+                  description: >-
+                    Defaults to true. If false, the JWT will be signed but not encrypted,
+                    for use in downstream services.
+              example:
+                workflows:
+                  - example_workflow
+                context_type: Course
+                context_id: 42
+                canvas_audience: true
+      responses:
+        '200':
+          description: JWT created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+        '400':
+          description: Bad Request
+  /api/v1/jwts/refresh:
+    post:
+      summary: Refresh JWT
+      description: |
+        Refresh a JWT for use with other Canvas services.
+        Generates a different JWT each time it's called, each one expires after a short window (1 hour).
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                jwt:
+                  type: string
+                  description: >-
+                    An existing JWT token to be refreshed. The new token will have the same
+                    context and workflows as the existing token.
+              required:
+                - jwt
+              example:
+                jwt: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      responses:
+        '200':
+          description: JWT refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+        '400':
+          description: Bad Request
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    JWT:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The signed, encrypted, base64 encoded JWT.
+      required:
+        - token
+      example:
+        token: ZXlKaGJHY2lPaUprYVhJaUxDSmxibU1pT2lKQk1qVTJSME5OSW4wLi5QbnAzS1QzLUJkZ3lQZHgtLm5JT0pOV01iZmdtQ0g3WWtybjhLeHlMbW13cl9yZExXTXF3Y0IwbXkzZDd3V1NDd0JYQkV0UTRtTVNJSVRrX0FJcG0zSU1DeThMcW5NdzA0ckdHVTkweDB3MmNJbjdHeWxOUXdveU5ZZ3UwOEN4TkZteUpCeW5FVktrdU05QlRyZXZ3Y1ZTN2hvaC1WZHRqM19PR3duRm5yUVgwSFhFVFc4R28tUGxoQVUtUnhKT0pNakx1OUxYd2NDUzZsaW9ZMno5NVU3T0hLSGNpaDBmSGVjN2FzekVJT3g4NExUeHlReGxYU3BtbFZ5LVNuYWdfbVJUeU5yNHNsMmlDWFcwSzZCNDhpWHJ1clJVVm1LUkVlVTl4ZVVJcTJPaWNpSHpfemJ0X3FrMjhkdzRyajZXRnBHSlZPNWcwTlUzVHlSWk5qdHg1S2NrTjVSQjZ1X2FzWTBScjhTY2VhNFk3Y2JFX01wcm54cFZTNDFIekVVSVRNdzVMTk1GLVpQZy52LVVDTkVJYk8zQ09EVEhPRnFXLUFR

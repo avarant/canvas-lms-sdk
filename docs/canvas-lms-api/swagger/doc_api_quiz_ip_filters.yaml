@@ -1,0 +1,55 @@
+/api/v1/courses/{course_id}/quizzes/{quiz_id}/ip_filters:
+  get:
+    summary: Get a list of available IP filters for this Quiz
+    description: |
+      Retrieves all IP filters defined for the specified quiz.
+      Requires authentication and appropriate permissions to view quiz settings.
+    parameters:
+      - name: course_id
+        in: path
+        description: ID of the course
+        required: true
+        schema:
+          type: integer
+      - name: quiz_id
+        in: path
+        description: ID of the quiz
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: A list of IP filters for the quiz
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quiz_ip_filters:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/QuizIPFilter'
+            examples:
+              example:
+                value:
+                  quiz_ip_filters:
+                    - name: "Current Filter"
+                      account: "Some Quiz"
+                      filter: "192.168.1.1/24"
+components:
+  schemas:
+    QuizIPFilter:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A unique name for the filter
+        account:
+          type: string
+          description: Name of the Account (or Quiz) the IP filter is defined in
+        filter:
+          type: string
+          description: An IP address (or range mask) this filter embodies
+      required:
+        - name
+        - filter

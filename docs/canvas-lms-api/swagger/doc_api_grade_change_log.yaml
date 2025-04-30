@@ -1,0 +1,243 @@
+openapi: "3.0.0"
+info:
+  title: Grade Change Log API
+  version: "1.0.0"
+paths:
+  /api/v1/audit/grade_change/assignments/{assignment_id}:
+    get:
+      summary: List grade change events for a given assignment.
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the assignment.
+        - name: start_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The beginning of the time range from which you want events.
+        - name: end_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The end of the time range from which you want events.
+      responses:
+        '200':
+          description: A list of GradeChangeEvent objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GradeChangeEvent'
+  /api/v1/audit/grade_change/courses/{course_id}:
+    get:
+      summary: List grade change events for a given course.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course.
+        - name: start_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The beginning of the time range from which you want events.
+        - name: end_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The end of the time range from which you want events.
+      responses:
+        '200':
+          description: A list of GradeChangeEvent objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GradeChangeEvent'
+  /api/v1/audit/grade_change/students/{student_id}:
+    get:
+      summary: List grade change events for a given student.
+      parameters:
+        - name: student_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the student.
+        - name: start_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The beginning of the time range from which you want events.
+        - name: end_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The end of the time range from which you want events.
+      responses:
+        '200':
+          description: A list of GradeChangeEvent objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GradeChangeEvent'
+  /api/v1/audit/grade_change/graders/{grader_id}:
+    get:
+      summary: List grade change events for a given grader.
+      parameters:
+        - name: grader_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the grader.
+        - name: start_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The beginning of the time range from which you want events.
+        - name: end_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The end of the time range from which you want events.
+      responses:
+        '200':
+          description: A list of GradeChangeEvent objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GradeChangeEvent'
+  /api/v1/audit/grade_change:
+    get:
+      summary: Advanced query for grade change events.
+      description: |
+        List grade change events satisfying all given parameters. Teachers may query for events in courses they teach.
+        Queries without course_id require account administrator rights.
+        At least one of course_id, assignment_id, student_id, or grader_id must be specified.
+      parameters:
+        - name: course_id
+          in: query
+          schema:
+            type: integer
+          description: Restrict query to events in the specified course.
+        - name: assignment_id
+          in: query
+          schema:
+            type: integer
+          description: Restrict query to the given assignment. If "override" is given, query the course final grade override instead.
+        - name: student_id
+          in: query
+          schema:
+            type: integer
+          description: User id of a student to search grading events for.
+        - name: grader_id
+          in: query
+          schema:
+            type: integer
+          description: User id of a grader to search grading events for.
+        - name: start_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The beginning of the time range from which you want events.
+        - name: end_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: The end of the time range from which you want events.
+      responses:
+        '200':
+          description: A list of GradeChangeEvent objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GradeChangeEvent'
+components:
+  schemas:
+    GradeChangeEventLinks:
+      type: object
+      properties:
+        assignment:
+          type: integer
+          description: ID of the assignment associated with the event.
+        course:
+          type: integer
+          description: ID of the course associated with the event.
+        student:
+          type: integer
+          description: ID of the student associated with the event.
+        grader:
+          type: integer
+          description: ID of the grader associated with the event.
+        page_view:
+          type: string
+          description: ID of the page view during the event, if it exists.
+    GradeChangeEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the event.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the event.
+        event_type:
+          type: string
+          description: Grade change event type.
+        excused_after:
+          type: boolean
+          description: Whether the submission was excused after the change.
+        excused_before:
+          type: boolean
+          description: Whether the submission was excused before the change.
+        grade_after:
+          type: string
+          description: The grade after the change.
+        grade_before:
+          type: string
+          description: The grade before the change.
+        graded_anonymously:
+          type: boolean
+          nullable: true
+          description: Whether the student name was visible when the grade was given.
+        version_number:
+          type: string
+          description: Version number of the grade change submission.
+        request_id:
+          type: string
+          description: The unique request id of the request during the grade change.
+        links:
+          $ref: '#/components/schemas/GradeChangeEventLinks'
+      required:
+        - id
+        - created_at
+        - event_type
+        - grade_after
+        - grade_before
+        - version_number
+        - request_id

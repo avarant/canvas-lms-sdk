@@ -1,0 +1,223 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Conferences API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/conferences:
+    get:
+      summary: Retrieve the paginated list of conferences for a course
+      description: Returns a JSON object containing the list of conferences for the specified course. The key for the list is "conferences".
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of Conference objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conferences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conference'
+        '401':
+          description: Unauthorized – invalid or missing authentication token
+        '403':
+          description: Forbidden – you do not have permission to access this resource
+  /api/v1/groups/{group_id}/conferences:
+    get:
+      summary: Retrieve the paginated list of conferences for a group
+      description: Returns a JSON object containing the list of conferences for the specified group. The key for the list is "conferences".
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of Conference objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conferences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conference'
+        '401':
+          description: Unauthorized – invalid or missing authentication token
+        '403':
+          description: Forbidden – you do not have permission to access this resource
+  /api/v1/conferences:
+    get:
+      summary: Retrieve the paginated list of conferences for the current user
+      description: Returns a JSON object containing the list of conferences for all courses and groups the current user belongs to. The key for the list is "conferences".
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: state
+          in: query
+          description: If set to "live", returns only conferences that are live (have started and not finished yet). If omitted, returns all conferences.
+          required: false
+          schema:
+            type: string
+            enum:
+              - live
+      responses:
+        '200':
+          description: A list of Conference objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conferences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conference'
+        '401':
+          description: Unauthorized – invalid or missing authentication token
+        '403':
+          description: Forbidden – you do not have permission to access this resource
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ConferenceRecording:
+      type: object
+      description: A recording of a conference
+      properties:
+        duration_minutes:
+          type: integer
+          description: Duration of the recording in minutes
+        title:
+          type: string
+          description: Title of the recording
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the recording was last updated
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the recording was created
+        playback_url:
+          type: string
+          format: uri
+          description: URL to play back the recording
+      required:
+        - duration_minutes
+        - title
+        - updated_at
+        - created_at
+        - playback_url
+    Conference:
+      type: object
+      description: A conference session
+      properties:
+        id:
+          type: integer
+          description: The ID of the conference
+        conference_type:
+          type: string
+          description: The type of conference (e.g., AdobeConnect)
+        conference_key:
+          type: string
+          description: The third party's ID for the conference
+        description:
+          type: string
+          description: The description for the conference
+        duration:
+          type: integer
+          description: Expected duration of the conference in minutes
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the conference ended, null if not ended
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Timestamp when the conference started, null if not started
+        title:
+          type: string
+          description: Title of the conference
+        users:
+          type: array
+          description: Array of user IDs that are participants in the conference
+          items:
+            type: integer
+        invitees:
+          type: array
+          description: Array of user IDs that are invitees in the conference
+          items:
+            type: integer
+        attendees:
+          type: array
+          description: Array of user IDs that are attendees in the conference
+          items:
+            type: integer
+        has_advanced_settings:
+          type: boolean
+          description: True if the conference type has advanced settings
+        long_running:
+          type: boolean
+          description: True if the conference is long running and has no expected end time
+        user_settings:
+          type: object
+          description: Settings specific to the conference type
+          additionalProperties: true
+        recordings:
+          type: array
+          description: List of recordings for the conference
+          items:
+            $ref: '#/components/schemas/ConferenceRecording'
+          nullable: true
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL for the conference
+        join_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to join the conference
+        context_type:
+          type: string
+          nullable: true
+          description: The type of this conference's context (e.g., 'Course' or 'Group')
+        context_id:
+          type: integer
+          nullable: true
+          description: The ID of this conference's context
+      required:
+        - id
+        - conference_type
+        - conference_key
+        - description
+        - duration
+        - title
+        - users
+        - invitees
+        - attendees
+        - has_advanced_settings
+        - long_running
+        - user_settings

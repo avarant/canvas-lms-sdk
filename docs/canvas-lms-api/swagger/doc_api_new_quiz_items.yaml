@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: New Quiz Items API
+  version: 1.0.0
+paths:
+  /api/quiz/v1/courses/{course_id}/quizzes/{assignment_id}/items/{item_id}:
+    get:
+      summary: Get a quiz item
+      description: Get details about a single item in a new quiz.
+      tags:
+        - New Quiz Items
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: The id of the assignment associated with the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: item_id
+          in: path
+          description: The id of the item associated with the quiz.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: QuizItem object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizItem'
+        default:
+          description: Unexpected error
+    patch:
+      summary: Update a quiz item
+      description: Update a single quiz item in a new quiz. Only QuestionItem types can be updated.
+      tags:
+        - New Quiz Items
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: The id of the assignment associated with the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: item_id
+          in: path
+          description: The id of the item associated with the quiz.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Fields to update for the quiz item
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: QuizItem object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizItem'
+        default:
+          description: Unexpected error
+    delete:
+      summary: Delete a quiz item
+      description: Delete a single quiz item in a new quiz.
+      tags:
+        - New Quiz Items
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: The id of the assignment associated with the quiz.
+          required: true
+          schema:
+            type: integer
+        - name: item_id
+          in: path
+          description: The id of the item associated with the quiz.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: QuizItem object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizItem'
+        default:
+          description: Unexpected error
+
+  /api/quiz/v1/courses/{course_id}/quizzes/{assignment_id}/items:
+    get:
+      summary: List quiz items
+      description: Get a list of items in a new quiz.
+      tags:
+        - New Quiz Items
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of QuizItem objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuizItem'
+        default:
+          description: Unexpected error
+    post:
+      summary: Create a quiz item
+      description: Create a quiz item in a new quiz. Only QuestionItem types can be created.
+      tags:
+        - New Quiz Items
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: The id of the assignment associated with the quiz.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Quiz item to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: QuizItem object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizItem'
+        default:
+          description: Unexpected error
+
+  /api/quiz/v1/courses/{course_id}/quizzes/{assignment_id}/items/media_upload_url:
+    get:
+      summary: Get items media_upload_url
+      description: Get a url for uploading media for use in hot-spot question types.
+      tags:
+        - New Quiz Items
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: no description
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Upload URL for media
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaUploadUrl'
+        default:
+          description: Unexpected error
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    QuizItem:
+      type: object
+      description: Individual items within a quiz (questions, stimuli, bank entries, or banks).
+    MediaUploadUrl:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Pre-signed URL for uploading media.

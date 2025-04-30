@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Collaborations API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/collaborations:
+    get:
+      summary: List collaborations
+      description: |
+        A paginated list of collaborations the current user has access to in the context of the course.
+        Only returns ExternalToolCollaboration type collaborations.
+      parameters:
+        - name: course_id
+          in: path
+          description: The Canvas course ID.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of Collaboration objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collaboration'
+  /api/v1/groups/{group_id}/collaborations:
+    get:
+      summary: List collaborations
+      description: |
+        A paginated list of collaborations the current user has access to in the context of the group.
+        Only returns ExternalToolCollaboration type collaborations.
+      parameters:
+        - name: group_id
+          in: path
+          description: The Canvas group ID.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of Collaboration objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collaboration'
+  /api/v1/collaborations/{id}/members:
+    get:
+      summary: List members of a collaboration
+      description: A paginated list of the collaborators of a given collaboration.
+      parameters:
+        - name: id
+          in: path
+          description: The Canvas collaboration ID.
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: |
+            Optional information to include with each member.
+            Allowed values: collaborator_lti_id, avatar_image_url.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - collaborator_lti_id
+                - avatar_image_url
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: A list of Collaborator objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collaborator'
+  /api/v1/courses/{course_id}/potential_collaborators:
+    get:
+      summary: List potential members
+      description: |
+        A paginated list of the users who can potentially be added to a collaboration in the given course.
+        Consists of all enrolled users.
+      parameters:
+        - name: course_id
+          in: path
+          description: The Canvas course ID.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of User objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /api/v1/groups/{group_id}/potential_collaborators:
+    get:
+      summary: List potential members
+      description: |
+        A paginated list of the users who can potentially be added to a collaboration in the given group.
+        For groups, comprised of group members plus the admins of the containing course.
+      parameters:
+        - name: group_id
+          in: path
+          description: The Canvas group ID.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of User objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+components:
+  schemas:
+    Collaboration:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the collaboration.
+        collaboration_type:
+          type: string
+          description: A name for the type of collaboration.
+        document_id:
+          type: string
+          description: The collaboration document identifier for the provider.
+        user_id:
+          type: integer
+          description: The Canvas user ID of the creator.
+        context_id:
+          type: integer
+          description: The Canvas ID of the course or group.
+        context_type:
+          type: string
+          description: The Canvas type of the course or group.
+        url:
+          type: string
+          nullable: true
+          description: The LTI launch URL to view the collaboration.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the collaboration was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the collaboration was last modified.
+        description:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        type:
+          type: string
+          description: Another representation of the collaboration type.
+        update_url:
+          type: string
+          nullable: true
+          description: The LTI launch URL to edit the collaboration.
+        user_name:
+          type: string
+          description: The name of the user who owns the collaboration.
+    Collaborator:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique user or group identifier for the collaborator.
+        type:
+          type: string
+          description: The type of collaborator (user or group).
+        name:
+          type: string
+          description: The name of the collaborator.
+    User:
+      type: object
+      description: A Canvas user object.

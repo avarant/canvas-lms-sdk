@@ -1,0 +1,173 @@
+openapi: "3.0.0"
+info:
+  title: "Canvas LMS Names and Role API"
+  version: "v2"
+  description: |
+    API for IMS Names and Role Provisioning Service version 2.
+    Requires JWT OAuth2 Access Tokens with the scope 
+    `https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly`.
+    Response Content-Type is `application/vnd.ims.lti-nrps.v2.membershipcontainer+json`.
+paths:
+  /api/lti/courses/{course_id}/names_and_roles:
+    get:
+      summary: "List Course Memberships"
+      description: "Return active NamesAndRoleMemberships in the given course."
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          description: "Canvas course ID"
+          schema:
+            type: string
+        - name: rlid
+          in: query
+          required: false
+          description: |
+            If specified only NamesAndRoleMemberships with access to the LTI link 
+            referenced by this `rlid` will be included. Also causes the `message` 
+            attribute to be included for each returned membership. And-ed with `role` if present.
+          schema:
+            type: string
+        - name: role
+          in: query
+          required: false
+          description: |
+            If specified only NamesAndRoleMemberships having this role in the given 
+            course will be included. Value must be a fully-qualified LTI/LIS role URN. 
+            And-ed with `rlid` if present.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: "May be used to limit the number of memberships returned in a page. Defaults to 50."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "A NamesAndRoleMemberships object"
+          content:
+            application/vnd.ims.lti-nrps.v2.membershipcontainer+json:
+              schema:
+                $ref: '#/components/schemas/NamesAndRoleMemberships'
+      security:
+        - OAuth2: [ "https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly" ]
+  /api/lti/groups/{group_id}/names_and_roles:
+    get:
+      summary: "List Group Memberships"
+      description: "Return active NamesAndRoleMemberships in the given group."
+      parameters:
+        - name: group_id
+          in: path
+          required: true
+          description: "Canvas group ID"
+          schema:
+            type: string
+        - name: rlid
+          in: query
+          required: false
+          description: |
+            If specified only NamesAndRoleMemberships with access to the LTI link 
+            referenced by this `rlid` will be included. Also causes the `message` 
+            attribute to be included for each returned membership. And-ed with `role` if present.
+          schema:
+            type: string
+        - name: role
+          in: query
+          required: false
+          description: |
+            If specified only NamesAndRoleMemberships having this role in the given 
+            group will be included. Value must be a fully-qualified LTI/LIS role URN.
+            Only `Member` and `Manager` are supported. And-ed with `rlid` if present.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: "May be used to limit the number of memberships returned in a page. Defaults to 50."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "A NamesAndRoleMemberships object"
+          content:
+            application/vnd.ims.lti-nrps.v2.membershipcontainer+json:
+              schema:
+                $ref: '#/components/schemas/NamesAndRoleMemberships'
+      security:
+        - OAuth2: [ "https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly" ]
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: "https://canvas.instructure.com/login/oauth2/token"
+          scopes:
+            https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly: "Read LTI context memberships"
+  schemas:
+    NamesAndRoleContext:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "LTI Context unique identifier"
+        label:
+          type: string
+          description: "LTI Context short name or code"
+        title:
+          type: string
+          description: "LTI Context full name"
+      required: [ id, label, title ]
+    NamesAndRoleMessage:
+      type: object
+      description: |
+        Additional attributes which would appear in the LTI launch message.
+      additionalProperties: true
+    NamesAndRoleMembership:
+      type: object
+      properties:
+        status:
+          type: string
+          description: "Membership state"
+        name:
+          type: string
+          description: "Member’s full name"
+        picture:
+          type: string
+          description: "URL to the member’s avatar"
+        given_name:
+          type: string
+        family_name:
+          type: string
+        email:
+          type: string
+        lis_person_sourcedid:
+          type: string
+        user_id:
+          type: string
+          description: "Member’s unique LTI identifier"
+        roles:
+          type: array
+          items:
+            type: string
+          description: "Member’s roles in the current Context, as LTI/LIS URNs"
+        message:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamesAndRoleMessage'
+          description: "Only present when `rlid` is specified"
+      required: [ status, user_id, roles ]
+    NamesAndRoleMemberships:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Invocation URL"
+        context:
+          $ref: '#/components/schemas/NamesAndRoleContext'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamesAndRoleMembership'
+      required: [ id, context, members ]

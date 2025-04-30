@@ -1,0 +1,289 @@
+openapi: "3.0.0"
+info:
+  title: "Content Security Policy Settings API"
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/csp_settings:
+    get:
+      summary: "Get current settings for course"
+      description: "Retrieve the current Content Security Policy (CSP) settings for the specified course."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Current CSP settings"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+    put:
+      summary: "Enable, disable, or clear explicit CSP setting for course"
+      description: "Explicitly set CSP to enabled, disabled, or inherited for the specified course."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  description: >
+                    "If set to 'enabled', CSP will be enabled for this course. 
+                    If 'disabled', CSP will be disabled. 
+                    If 'inherited', this course will reset to inherit CSP settings from its parent account."
+                  enum:
+                    - enabled
+                    - disabled
+                    - inherited
+      responses:
+        "200":
+          description: "Updated CSP settings"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+
+  /api/v1/accounts/{account_id}/csp_settings:
+    get:
+      summary: "Get current settings for account"
+      description: "Retrieve the current Content Security Policy (CSP) settings for the specified account."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account"
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Current CSP settings"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+    put:
+      summary: "Enable, disable, or clear explicit CSP setting for account"
+      description: "Explicitly set CSP to enabled, disabled, or inherited for the specified account."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  description: >
+                    "If set to 'enabled', CSP will be enabled for this account and its courses/sub-accounts.
+                    If 'disabled', CSP will be disabled.
+                    If 'inherited', this account will inherit CSP settings from its parent account."
+                  enum:
+                    - enabled
+                    - disabled
+                    - inherited
+      responses:
+        "200":
+          description: "Updated CSP settings"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+
+  /api/v1/accounts/{account_id}/csp_settings/lock:
+    put:
+      summary: "Lock or unlock CSP settings for sub-accounts and courses"
+      description: "Prevent or allow sub-accounts and courses from overriding this account's CSP settings."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - settings_locked
+              properties:
+                settings_locked:
+                  type: boolean
+                  description: "Whether sub-accounts and courses can override inherited CSP settings."
+      responses:
+        "200":
+          description: "Updated CSP lock setting"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+
+  /api/v1/accounts/{account_id}/csp_settings/domains:
+    post:
+      summary: "Add an allowed domain to account"
+      description: "Add a domain to the account's CSP whitelist (effective only when CSP is enabled)."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - domain
+              properties:
+                domain:
+                  type: string
+                  description: "Domain to allow"
+      responses:
+        "200":
+          description: "Domain added"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+    delete:
+      summary: "Remove a domain from account"
+      description: "Remove a domain from the account's CSP whitelist."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - domain
+              properties:
+                domain:
+                  type: string
+                  description: "Domain to remove"
+      responses:
+        "200":
+          description: "Domain removed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+
+  /api/v1/accounts/{account_id}/csp_settings/domains/batch_create:
+    post:
+      summary: "Add multiple allowed domains to account"
+      description: "Add multiple domains to the account's CSP whitelist (effective only when CSP is enabled)."
+      tags:
+        - "Content Security Policy Settings"
+      parameters:
+        - name: account_id
+          in: path
+          description: "ID of the account"
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: string
+                  description: "List of domains to allow"
+      responses:
+        "200":
+          description: "Domains added"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CSPSettings"
+
+components:
+  schemas:
+    CSPSettings:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: "Whether CSP is enabled."
+        inherited:
+          type: boolean
+          description: "Whether settings are inherited from a parent account."
+        settings_locked:
+          type: boolean
+          description: "Whether settings are locked for sub-accounts and courses."
+        effective_whitelist:
+          type: array
+          items:
+            type: string
+          description: "List of currently allowed domains (including those from external tools)."
+        tools_whitelist:
+          type: array
+          items:
+            type: string
+          description: "(Account-only) Domains automatically allowed through external tools."
+        current_account_whitelist:
+          type: array
+          items:
+            type: string
+          description: "(Account-only) Domains explicitly allowed by this account."
+      required:
+        - enabled
+        - inherited
+        - settings_locked
+        - effective_whitelist

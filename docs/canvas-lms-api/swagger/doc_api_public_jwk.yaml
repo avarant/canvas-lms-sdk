@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Canvas Public JWK API
+  version: "1.0.0"
+paths:
+  /api/lti/developer_key/update_public_jwk:
+    put:
+      summary: Rotate the public key in jwk format when using LTI services
+      description: Rotate the public key in JWK format for the current tool.
+      tags:
+        - Public JWK
+      security:
+        - oauth2:
+          - "url:PUT|/api/lti/developer_key/update_public_jwk"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                public_jwk:
+                  type: object
+                  description: The new public JWK that will be set to the tool’s current public JWK.
+              required:
+                - public_jwk
+      responses:
+        "200":
+          description: A DeveloperKey object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeveloperKey"
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://canvas.example.com/login/oauth2/token
+          scopes:
+            url:PUT|/api/lti/developer_key/update_public_jwk: Rotate the public key in JWK format
+  schemas:
+    DeveloperKey:
+      type: object
+      description: Canvas DeveloperKey resource
+      # Properties of DeveloperKey are defined elsewhere in the Canvas API schema.

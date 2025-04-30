@@ -1,0 +1,141 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Courses API
+  version: "1.0"
+paths:
+  /api/v1/courses:
+    get:
+      summary: List your courses
+      description: Returns the paginated list of active courses for the current user.
+      tags:
+        - Courses
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: enrollment_type
+          in: query
+          description: >-
+            When set, only return courses where the user is enrolled as this
+            type. Ignored if enrollment_role is given.
+          required: false
+          schema:
+            type: string
+            enum:
+              - teacher
+              - student
+              - ta
+              - observer
+              - designer
+        - name: enrollment_role
+          in: query
+          description: >-
+            Deprecated. Only return courses where the user is enrolled with the
+            specified course‐level role.
+          required: false
+          schema:
+            type: string
+        - name: enrollment_role_id
+          in: query
+          description: >-
+            Only return courses where the user is enrolled with the specified
+            course‐level role ID.
+          required: false
+          schema:
+            type: integer
+        - name: enrollment_state
+          in: query
+          description: >-
+            Only return courses where the user has an enrollment with the given
+            state.
+          required: false
+          schema:
+            type: string
+            enum:
+              - active
+              - invited_or_pending
+              - completed
+        - name: exclude_blueprint_courses
+          in: query
+          description: When set, only return courses that are not blueprint courses.
+          required: false
+          schema:
+            type: boolean
+        - name: include[]
+          in: query
+          description: >-
+            Optional extra information to include with each Course. Allowed
+            values: needs_grading_count, syllabus_body, public_description,
+            total_scores, current_grading_period_scores, grading_periods, term,
+            account, course_progress, sections, storage_quota_used_mb,
+            total_students, passback_status, favorites, teachers, observed_users,
+            tabs, course_image, banner_image, concluded, post_manually.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - needs_grading_count
+                - syllabus_body
+                - public_description
+                - total_scores
+                - current_grading_period_scores
+                - grading_periods
+                - term
+                - account
+                - course_progress
+                - sections
+                - storage_quota_used_mb
+                - total_students
+                - passback_status
+                - favorites
+                - teachers
+                - observed_users
+                - tabs
+                - course_image
+                - banner_image
+                - concluded
+                - post_manually
+        - name: state[]
+          in: query
+          description: >-
+            If set, only return courses that are in the given state(s).
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - unpublished
+                - available
+                - completed
+                - deleted
+      responses:
+        '200':
+          description: A list of Course objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Course:
+      type: object
+      description: A Canvas Course object.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string

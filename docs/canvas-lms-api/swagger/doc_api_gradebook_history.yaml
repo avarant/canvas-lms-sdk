@@ -1,0 +1,251 @@
+openapi: 3.0.0
+info:
+  title: Gradebook History API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/gradebook_history/days:
+    get:
+      summary: Days in gradebook history for this course
+      description: Returns a map of dates to grader/assignment groups
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the contextual course for this API call
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of Day objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Day'
+  /api/v1/courses/{course_id}/gradebook_history/{date}:
+    get:
+      summary: Details for a given date in gradebook history for this course
+      description: >-
+        Returns the graders who worked on this day, along with the assignments
+        they worked on. More details can be obtained by selecting a grader and
+        assignment and calling the ‘submissions’ API endpoint for a given date.
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the contextual course for this API call
+          required: true
+          schema:
+            type: integer
+        - name: date
+          in: path
+          description: The date for which you would like to see detailed information
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of Grader objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Grader'
+  /api/v1/courses/{course_id}/gradebook_history/{date}/graders/{grader_id}/assignments/{assignment_id}/submissions:
+    get:
+      summary: Lists submissions
+      description: Gives a nested list of submission versions
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the contextual course for this API call
+          required: true
+          schema:
+            type: integer
+        - name: date
+          in: path
+          description: The date for which you would like to see submissions
+          required: true
+          schema:
+            type: string
+        - name: grader_id
+          in: path
+          description: The ID of the grader for which you want to see submissions
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: The ID of the assignment for which you want to see submissions
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of SubmissionHistory objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubmissionHistory'
+  /api/v1/courses/{course_id}/gradebook_history/feed:
+    get:
+      summary: List uncollated submission versions
+      description: >-
+        Gives a paginated, uncollated list of submission versions for all
+        matching submissions in the context. These SubmissionVersion objects will
+        not include the `new_grade` or `previous_grade` keys, only the `grade`;
+        same for `graded_at` and `grader`.
+      parameters:
+        - name: course_id
+          in: path
+          description: The id of the contextual course for this API call
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: query
+          description: >-
+            The ID of the assignment for which you want to see submissions. If
+            absent, versions of submissions from any assignment in the course
+            are included.
+          required: false
+          schema:
+            type: integer
+        - name: user_id
+          in: query
+          description: >-
+            The ID of the user for which you want to see submissions. If absent,
+            versions of submissions from any user in the course are included.
+          required: false
+          schema:
+            type: integer
+        - name: ascending
+          in: query
+          description: >-
+            Returns submission versions in ascending date order (oldest first). If
+            absent, returns submission versions in descending date order (newest
+            first).
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of SubmissionVersion objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubmissionVersion'
+components:
+  schemas:
+    Day:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date represented by this entry
+        graders:
+          type: array
+          description: >
+            An array of the graders who were responsible for the submissions in
+            this response. The submissions are grouped according to the person who
+            graded them and the assignment they were submitted for.
+          items:
+            $ref: '#/components/schemas/Grader'
+      required:
+        - date
+        - graders
+    Grader:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user_id of the user who graded the contained submissions
+        name:
+          type: string
+          description: The name of the user who graded the contained submissions
+        assignments:
+          type: array
+          description: >
+            The assignment IDs for all submissions in this response that were
+            graded by this user.
+          items:
+            type: integer
+      required:
+        - id
+        - name
+        - assignments
+    SubmissionVersion:
+      type: object
+      properties:
+        assignment_id:
+          type: integer
+        assignment_name:
+          type: string
+        body:
+          type: string
+        current_grade:
+          type: string
+        current_graded_at:
+          type: string
+          format: date-time
+        current_grader:
+          type: string
+        grade_matches_current_submission:
+          type: boolean
+        graded_at:
+          type: string
+          format: date-time
+        grader:
+          type: string
+        grader_id:
+          type: integer
+        id:
+          type: integer
+        new_grade:
+          type: string
+        new_graded_at:
+          type: string
+          format: date-time
+        new_grader:
+          type: string
+        previous_grade:
+          type: string
+        previous_graded_at:
+          type: string
+          format: date-time
+        previous_grader:
+          type: string
+        score:
+          type: integer
+        user_name:
+          type: string
+        submission_type:
+          type: string
+        url:
+          type: string
+          nullable: true
+        user_id:
+          type: integer
+        workflow_state:
+          type: string
+      required:
+        - assignment_id
+        - assignment_name
+        - id
+    SubmissionHistory:
+      type: object
+      properties:
+        submission_id:
+          type: integer
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionVersion'
+      required:
+        - submission_id
+        - versions

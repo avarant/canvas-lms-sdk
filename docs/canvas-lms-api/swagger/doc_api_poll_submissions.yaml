@@ -1,0 +1,102 @@
+paths:
+  /api/v1/polls/{poll_id}/poll_sessions/{poll_session_id}/poll_submissions/{id}:
+    get:
+      summary: Returns the poll submission with the given id
+      tags:
+        - PollSubmissions
+      parameters:
+        - name: poll_id
+          in: path
+          description: The ID of the poll
+          required: true
+          schema:
+            type: integer
+        - name: poll_session_id
+          in: path
+          description: The ID of the poll session
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: The ID of the poll submission
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A poll submission
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSubmission'
+  /api/v1/polls/{poll_id}/poll_sessions/{poll_session_id}/poll_submissions:
+    post:
+      summary: Create a new poll submission for this poll session
+      tags:
+        - PollSubmissions
+      parameters:
+        - name: poll_id
+          in: path
+          description: The ID of the poll
+          required: true
+          schema:
+            type: integer
+        - name: poll_session_id
+          in: path
+          description: The ID of the poll session
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                poll_submissions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      poll_choice_id:
+                        type: integer
+                        description: The chosen poll choice for this submission.
+                    required:
+                      - poll_choice_id
+      responses:
+        '200':
+          description: The created poll submission
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  poll_submissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PollSubmission'
+components:
+  schemas:
+    PollSubmission:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier for the poll submission.
+        poll_choice_id:
+          type: integer
+          description: The unique identifier of the poll choice chosen for this submission.
+        user_id:
+          type: integer
+          description: The unique identifier of the user who submitted this poll submission.
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the poll submission was submitted.

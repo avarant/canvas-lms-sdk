@@ -1,0 +1,277 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Outcomes API
+  version: 1.0.0
+paths:
+  /api/v1/outcomes/{id}:
+    get:
+      summary: Show an outcome
+      description: Returns the details of the outcome with the given id.
+      tags:
+        - Outcomes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: add_defaults
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: >
+            If defaults are requested, then color and mastery level defaults will
+            be added to outcome ratings in the result. This will only take effect
+            if the Account Level Mastery Scales FF is DISABLED.
+      responses:
+        '200':
+          description: Outcome object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Outcome'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Outcome not found
+      security:
+        - bearerAuth: []
+    put:
+      summary: Update an outcome
+      description: |
+        Modify an existing outcome. Fields not provided are left as is; unrecognized
+        fields are ignored.
+
+        If any new ratings are provided, the combination of all new ratings provided
+        completely replace any existing embedded rubric criterion; it is not possible
+        to tweak the ratings of the embedded rubric criterion.
+
+        A new embedded rubric criterion’s mastery_points default to the maximum
+        points in the highest rating if not specified in the mastery_points parameter.
+        Any new ratings lacking a description are given a default of “No description”.
+        Any new ratings lacking a point value are given a default of 0.
+      tags:
+        - Outcomes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The new outcome title.
+                display_name:
+                  type: string
+                  description: A friendly name shown in reports for outcomes with cryptic titles.
+                description:
+                  type: string
+                  description: The new outcome description.
+                vendor_guid:
+                  type: string
+                  description: A custom GUID for the learning standard.
+                mastery_points:
+                  type: integer
+                  description: The new mastery threshold for the embedded rubric criterion.
+                calculation_method:
+                  type: string
+                  description: >
+                    The new calculation method. If the Outcomes New Decaying Average
+                    Calculation Method FF is ENABLED then “weighted_average” can be used
+                    and it is same as previous “decaying_average” and new “decaying_average”
+                    will have improved version of calculation.
+                  enum:
+                    - weighted_average
+                    - decaying_average
+                    - n_mastery
+                    - latest
+                    - highest
+                    - average
+                calculation_int:
+                  type: integer
+                  description: Only applies if the calculation_method is “decaying_average” or “n_mastery”.
+                add_defaults:
+                  type: boolean
+                  description: >
+                    If defaults are requested, then color and mastery level defaults will
+                    be added to outcome ratings in the result. This will only take effect
+                    if the Account Level Mastery Scales FF is DISABLED.
+                ratings:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                        description: The description of a new rating level for the embedded rubric criterion.
+                      points:
+                        type: integer
+                        description: The points corresponding to a new rating level for the embedded rubric criterion.
+              example:
+                title: Outcome Title
+                display_name: Title for reporting
+                description: Outcome description
+                vendor_guid: customid9001
+                mastery_points: 3
+                calculation_method: decaying_average
+                calculation_int: 65
+                ratings:
+                  - description: Exceeds Expectations
+                    points: 5
+                  - description: Meets Expectations
+                    points: 3
+                  - description: Does Not Meet Expectations
+                    points: 0
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                display_name:
+                  type: string
+                description:
+                  type: string
+                vendor_guid:
+                  type: string
+                mastery_points:
+                  type: integer
+                calculation_method:
+                  type: string
+                  enum:
+                    - weighted_average
+                    - decaying_average
+                    - n_mastery
+                    - latest
+                    - highest
+                    - average
+                calculation_int:
+                  type: integer
+                add_defaults:
+                  type: boolean
+                ratings:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                      points:
+                        type: integer
+      responses:
+        '200':
+          description: Updated outcome object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Outcome'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Outcome not found
+      security:
+        - bearerAuth: []
+
+  /api/v1/courses/{course_id}/outcome_alignments:
+    get:
+      summary: Get aligned assignments for an outcome in a course for a particular student
+      tags:
+        - Outcomes
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of aligned assignments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutcomeAlignment'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Course not found
+      security:
+        - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Outcome:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        context_id:
+          type: integer
+        context_type:
+          type: string
+        title:
+          type: string
+        display_name:
+          type: string
+        description:
+          type: string
+        vendor_guid:
+          type: string
+        points_possible:
+          type: integer
+        mastery_points:
+          type: integer
+        calculation_method:
+          type: string
+        calculation_int:
+          type: integer
+        ratings:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+              points:
+                type: integer
+        can_edit:
+          type: boolean
+        can_unlink:
+          type: boolean
+        assessed:
+          type: boolean
+        has_updateable_rubrics:
+          type: boolean
+    OutcomeAlignment:
+      type: object
+      properties:
+        id:
+          type: integer
+        assignment_id:
+          type: integer
+        assessment_id:
+          type: integer
+        submission_types:
+          type: string
+        url:
+          type: string
+        title:
+          type: string

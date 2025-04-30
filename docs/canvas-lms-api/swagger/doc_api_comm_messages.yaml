@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: CommMessages API
+  version: 1.0.0
+paths:
+  /api/v1/comm_messages:
+    get:
+      summary: Retrieve a paginated list of messages sent to a user
+      description: |
+        Retrieve a paginated list of messages sent to a user.
+        Requires OAuth2 scope: url:GET|/api/v1/comm_messages
+      parameters:
+        - name: user_id
+          in: query
+          description: The user id for whom you want to retrieve CommMessages
+          required: true
+          schema:
+            type: string
+        - name: start_time
+          in: query
+          description: The beginning of the time range you want to retrieve messages from. Up to a year prior to the current date is available.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: The end of the time range you want to retrieve messages for. Up to a year prior to the current date is available.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A list of CommMessage objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommMessage'
+components:
+  schemas:
+    CommMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the CommMessage
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time this message was created
+        sent_at:
+          type: string
+          format: date-time
+          description: The date and time this message was sent
+        workflow_state:
+          type: string
+          description: |
+            The workflow state of the message.
+            Possible values: 'created', 'staged', 'sending', 'sent', 'bounced',
+            'dashboard', 'closed', 'cancelled'
+          enum:
+            - created
+            - staged
+            - sending
+            - sent
+            - bounced
+            - dashboard
+            - closed
+            - cancelled
+        from:
+          type: string
+          description: The address that was put in the 'from' field of the message
+        from_name:
+          type: string
+          description: The display name for the from address
+        to:
+          type: string
+          description: The address the message was sent to
+        reply_to:
+          type: string
+          description: The reply_to header of the message
+        subject:
+          type: string
+          description: The message subject
+        body:
+          type: string
+          description: The plain text body of the message
+        html_body:
+          type: string
+          description: The HTML body of the message

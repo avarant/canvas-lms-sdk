@@ -1,0 +1,225 @@
+openapi: "3.0.0"
+paths:
+  /api/v1/quiz_submissions/{quiz_submission_id}/questions:
+    get:
+      summary: Get a list of all the question records for this quiz submission.
+      parameters:
+        - name: quiz_submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Associations to include with the quiz submission question.
+          schema:
+            type: string
+            enum:
+              - quiz_question
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_submission_questions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuizSubmissionQuestion'
+    post:
+      summary: Provide or update an answer to one or more QuizQuestions.
+      parameters:
+        - name: quiz_submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - attempt
+                - validation_token
+              properties:
+                attempt:
+                  type: integer
+                  description: The attempt number of the quiz submission being taken.
+                validation_token:
+                  type: string
+                  description: The unique validation token you received when the Quiz Submission was created.
+                access_code:
+                  type: string
+                  nullable: true
+                  description: Access code for the Quiz, if any.
+                quiz_questions:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/QuizSubmissionQuestionInput'
+      responses:
+        '200':
+          description: A list of QuizSubmissionQuestion objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuizSubmissionQuestion'
+
+  /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/formatted_answer:
+    get:
+      summary: Matches the intended behavior of the UI when a numerical answer is entered and returns the resulting formatted number.
+      parameters:
+        - name: quiz_submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: answer
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Formatted numerical answer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  formatted_answer:
+                    type: number
+
+  /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/flag:
+    put:
+      summary: Set a flag on a quiz question to indicate that you want to return to it later.
+      parameters:
+        - name: quiz_submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - attempt
+                - validation_token
+              properties:
+                attempt:
+                  type: integer
+                  description: The attempt number of the quiz submission being taken.
+                validation_token:
+                  type: string
+                  description: The unique validation token you received when the Quiz Submission was created.
+                access_code:
+                  type: string
+                  nullable: true
+                  description: Access code for the Quiz, if any.
+      responses:
+        '200':
+          description: Question flagged successfully
+
+  /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/unflag:
+    put:
+      summary: Remove the flag that you previously set on a quiz question after you’ve returned to it.
+      parameters:
+        - name: quiz_submission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - attempt
+                - validation_token
+              properties:
+                attempt:
+                  type: integer
+                  description: The attempt number of the quiz submission being taken.
+                validation_token:
+                  type: string
+                  description: The unique validation token you received when the Quiz Submission was created.
+                access_code:
+                  type: string
+                  nullable: true
+                  description: Access code for the Quiz, if any.
+      responses:
+        '200':
+          description: Question unflagged successfully
+
+components:
+  schemas:
+    QuizSubmissionQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the QuizQuestion this answer is for.
+        flagged:
+          type: boolean
+          description: Whether this question is flagged.
+        answer:
+          description: >
+            The provided answer (if any) for this question.
+            The format of this parameter depends on the type of the question.
+          nullable: true
+          oneOf:
+            - type: string
+            - type: number
+            - type: object
+            - type: array
+        answers:
+          description: >
+            The possible answers for this question when those possible answers are necessary.
+            The presence of this parameter is dependent on permissions.
+          nullable: true
+          oneOf:
+            - type: array
+            - type: object
+
+    QuizSubmissionQuestionInput:
+      type: object
+      required:
+        - id
+        - answer
+      properties:
+        id:
+          type: string
+          description: The ID of the QuizQuestion this answer is for.
+        answer:
+          description: The provided answer. Format depends on the question type.
+          nullable: true
+          oneOf:
+            - type: string
+            - type: number
+            - type: object
+            - type: array

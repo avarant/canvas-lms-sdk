@@ -1,0 +1,331 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Authentication Providers API
+  version: 1.0.0
+servers:
+  - url: https://{canvas_host}
+    variables:
+      canvas_host:
+        default: api.canvas.example.com
+paths:
+  /api/v1/accounts/{account_id}/authentication_providers:
+    get:
+      tags:
+        - Authentication Providers
+      summary: List authentication providers
+      description: Returns a paginated list of authentication providers for the account.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of AuthenticationProvider objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthenticationProvider'
+    post:
+      tags:
+        - Authentication Providers
+      summary: Add authentication provider
+      description: |
+        Add external authentication provider(s) for the account.  
+        See provider-specific parameters (auth_type required, plus other fields depending on auth_type).
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: ID of the account
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                auth_type:
+                  type: string
+                  description: Type of provider (apple, cas, facebook, github, google, ldap, linkedin, microsoft, openid_connect, saml, etc.)
+                position:
+                  type: integer
+                  description: Position/order of this provider (1 = default)
+                jit_provisioning:
+                  type: boolean
+                  description: Enable just-in-time provisioning (not for Canvas type)
+                mfa_required:
+                  type: boolean
+                  description: Require MFA on login via this provider
+                # Provider-specific parameters may be supplied here
+              required:
+                - auth_type
+      responses:
+        '200':
+          description: The created AuthenticationProvider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationProvider'
+  /api/v1/accounts/{account_id}/authentication_providers/{id}:
+    get:
+      tags:
+        - Authentication Providers
+      summary: Get authentication provider
+      description: Retrieve the specified authentication provider.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: ID of the authentication provider
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An AuthenticationProvider object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationProvider'
+    put:
+      tags:
+        - Authentication Providers
+      summary: Update authentication provider
+      description: Update an authentication provider. Cannot change auth_type.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              description: Same parameters as create; only supplied fields will be updated.
+      responses:
+        '200':
+          description: The updated AuthenticationProvider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationProvider'
+    delete:
+      tags:
+        - Authentication Providers
+      summary: Delete authentication provider
+      description: Delete the specified authentication provider configuration.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Authentication provider deleted
+  /api/v1/accounts/{account_id}/authentication_providers/{id}/restore:
+    put:
+      tags:
+        - Authentication Providers
+      summary: Restore a deleted authentication provider
+      description: Restore a previously deleted provider. Requires manage_account_settings permission on the root account.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The restored AuthenticationProvider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationProvider'
+  /api/v1/accounts/{account_id}/sso_settings:
+    get:
+      tags:
+        - Authentication Providers
+      summary: Show account auth settings
+      description: Get the current state of account-level SSO settings.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: SSOSettings object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSOSettings'
+    put:
+      tags:
+        - Authentication Providers
+      summary: Update account auth settings
+      description: |
+        Set account-level SSO settings. Only supplied fields are updated; blank or null values unset the setting.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                sso_settings[login_handle_name]:
+                  type: string
+                  description: Label used for unique login identifiers
+                sso_settings[change_password_url]:
+                  type: string
+                  description: URL for password resets (blank for default)
+                sso_settings[auth_discovery_url]:
+                  type: string
+                  description: Discovery URL for login selection
+                sso_settings[unknown_user_url]:
+                  type: string
+                  description: URL for unknown-user redirection
+      responses:
+        '200':
+          description: The updated SSOSettings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSOSettings'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AuthenticationProvider:
+      type: object
+      properties:
+        id:
+          type: integer
+        auth_type:
+          type: string
+        identifier_format:
+          type: string
+        log_in_url:
+          type: string
+        log_out_url:
+          type: string
+        certificate_fingerprint:
+          type: string
+        requested_authn_context:
+          type: string
+          nullable: true
+        auth_host:
+          type: string
+        auth_filter:
+          type: string
+        auth_over_tls:
+          type: string
+          nullable: true
+        auth_base:
+          type: string
+          nullable: true
+        auth_username:
+          type: string
+        auth_port:
+          type: integer
+          nullable: true
+        position:
+          type: integer
+        idp_entity_id:
+          type: string
+        login_attribute:
+          type: string
+        sig_alg:
+          type: string
+        jit_provisioning:
+          type: boolean
+          nullable: true
+        federated_attributes:
+          $ref: '#/components/schemas/FederatedAttributesConfig'
+        mfa_required:
+          type: boolean
+          nullable: true
+    SSOSettings:
+      type: object
+      properties:
+        login_handle_name:
+          type: string
+        change_password_url:
+          type: string
+          nullable: true
+        auth_discovery_url:
+          type: string
+          nullable: true
+        unknown_user_url:
+          type: string
+          nullable: true
+    FederatedAttributesConfig:
+      type: object
+      additionalProperties:
+        oneOf:
+          - type: string
+          - $ref: '#/components/schemas/FederatedAttributeConfig'
+    FederatedAttributeConfig:
+      type: object
+      properties:
+        attribute:
+          type: string
+        provisioning_only:
+          type: boolean
+        autoconfirm:
+          type: boolean

@@ -1,0 +1,155 @@
+openapi: "3.0.0"
+info:
+  title: Canvas External Tools API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/external_tools:
+    get:
+      summary: List external tools
+      description: >
+        Returns the paginated list of external tools for the current context.
+        See the Get a single external tool endpoint for a list of properties on an external tool.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: string
+        - name: search_term
+          in: query
+          description: The partial name of the tools to match and return
+          required: false
+          schema:
+            type: string
+        - name: selectable
+          in: query
+          description: If true, then only tools that are meant to be selectable are returned
+          required: false
+          schema:
+            type: boolean
+        - name: include_parents
+          in: query
+          description: If true, then include tools installed in all accounts above the current context
+          required: false
+          schema:
+            type: boolean
+        - name: placement
+          in: query
+          description: The placement type to filter by
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of external tools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    domain:
+                      type: string
+                    url:
+                      type: string
+                    consumer_key:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                    privacy_level:
+                      type: string
+                    custom_fields:
+                      type: object
+                      additionalProperties:
+                        type: string
+                    is_rce_favorite:
+                      type: boolean
+                    is_top_nav_favorite:
+                      type: boolean
+                    account_navigation:
+                      type: object
+                    assignment_selection:
+                      nullable: true
+                      type: object
+                    course_navigation:
+                      nullable: true
+                      type: object
+                    editor_button:
+                      nullable: true
+                      type: object
+                    selection_width:
+                      type: integer
+                    selection_height:
+                      type: integer
+                    icon_url:
+                      type: string
+                    not_selectable:
+                      type: boolean
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/accounts/{account_id}/external_tools:
+    get:
+      summary: List external tools (account)
+      description: >
+        Returns the paginated list of external tools for the specified account context.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: ID of the account
+          required: true
+          schema:
+            type: string
+        - name: search_term
+          in: query
+          schema:
+            type: string
+        - name: selectable
+          in: query
+          schema:
+            type: boolean
+        - name: include_parents
+          in: query
+          schema:
+            type: boolean
+        - name: placement
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of external tools
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1courses~1{course_id}~1external_tools/get/responses/200/content/application~1json/schema'
+        default:
+          $ref: '#/paths/~1api~1v1~1courses~1{course_id}~1external_tools/get/responses/default'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

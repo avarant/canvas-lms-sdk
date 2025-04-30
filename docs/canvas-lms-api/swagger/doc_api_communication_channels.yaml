@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  title: Communication Channels API
+  version: 1.0.0
+paths:
+  /api/v1/users/{user_id}/communication_channels:
+    get:
+      summary: List user communication channels
+      description: Returns a paginated list of communication channels for the specified user, sorted by position.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user or "self" for the current user
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of CommunicationChannel objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommunicationChannel'
+    post:
+      summary: Create a communication channel
+      description: Creates a new communication channel for the specified user.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user or "self" for the current user
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                communication_channel:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                      description: An email address or SMS number. Not required for "push" type channels.
+                    type:
+                      type: string
+                      description: The type of communication channel.
+                      enum:
+                        - email
+                        - sms
+                        - push
+                    token:
+                      type: string
+                      description: A registration token for push notification providers. Only valid for "push" type channels.
+                  required:
+                    - address
+                    - type
+                skip_confirmation:
+                  type: boolean
+                  description: If true and the requester is an admin, the channel is automatically validated without confirmation.
+      responses:
+        '200':
+          description: The created CommunicationChannel object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunicationChannel'
+  /api/v1/users/{user_id}/communication_channels/{id}:
+    delete:
+      summary: Delete a communication channel
+      description: Delete an existing communication channel identified by ID.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user or "self" for the current user
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ID of the communication channel
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: The deleted CommunicationChannel object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunicationChannel'
+  /api/v1/users/{user_id}/communication_channels/{type}/{address}:
+    delete:
+      summary: Delete a communication channel
+      description: Delete an existing communication channel identified by type and address.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user or "self" for the current user
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: path
+          description: The type of communication channel.
+          required: true
+          schema:
+            type: string
+            enum:
+              - email
+              - sms
+              - push
+        - name: address
+          in: path
+          description: The address or path of the communication channel.
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: The deleted CommunicationChannel object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunicationChannel'
+  /api/v1/users/self/communication_channels/push:
+    delete:
+      summary: Delete a push notification endpoint
+      description: Deletes the push notification endpoint for the current user.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                push_token:
+                  type: string
+                  description: The push token to delete.
+              required:
+                - push_token
+      responses:
+        '204':
+          description: Push notification endpoint deleted
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    CommunicationChannel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the communication channel.
+        address:
+          type: string
+          description: The address or path of the communication channel.
+        type:
+          type: string
+          description: The type of communication channel.
+          enum:
+            - email
+            - push
+            - sms
+        position:
+          type: integer
+          description: The position of this communication channel relative to the user's other channels.
+        user_id:
+          type: integer
+          description: The ID of the user that owns this communication channel.
+        bounce_count:
+          type: integer
+          description: The number of bounces the channel has experienced.
+        last_bounce_at:
+          type: string
+          format: date-time
+          description: The time the last bounce occurred.
+        workflow_state:
+          type: string
+          description: The current state of the communication channel.
+          enum:
+            - unconfirmed
+            - active
+      required:
+        - id
+        - address
+        - type
+        - position
+        - user_id
+        - bounce_count
+        - workflow_state

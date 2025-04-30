@@ -1,0 +1,237 @@
+openapi: 3.0.0
+info:
+  title: Canvas ePortfolios API
+  version: 1.0.0
+paths:
+  /api/v1/users/{user_id}/eportfolios:
+    get:
+      summary: Get all ePortfolios for a User
+      description: Get a list of all ePortfolios for the specified user.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user whose ePortfolios to fetch.
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          description: Include deleted ePortfolios. Only available to admins who can moderate_user_content.
+          required: false
+          schema:
+            type: string
+            enum:
+              - deleted
+      responses:
+        '200':
+          description: A list of ePortfolio objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EPortfolio'
+    put:
+      summary: Moderate all ePortfolios for a User
+      description: Update the spam_status for all active ePortfolios of a user. Only available to admins who can moderate_user_content.
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user whose ePortfolios to moderate.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                spam_status:
+                  type: string
+                  description: The spam status for all the ePortfolios.
+                  enum:
+                    - marked_as_spam
+                    - marked_as_safe
+              required:
+                - spam_status
+      responses:
+        '200':
+          description: Successfully updated spam_status for all ePortfolios.
+  /api/v1/eportfolios/{id}:
+    get:
+      summary: Get an ePortfolio
+      description: Get details for a single ePortfolio.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ePortfolio to retrieve.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An ePortfolio object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EPortfolio'
+    delete:
+      summary: Delete an ePortfolio
+      description: Mark an ePortfolio as deleted.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ePortfolio to delete.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An ePortfolio object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EPortfolio'
+  /api/v1/eportfolios/{eportfolio_id}/pages:
+    get:
+      summary: Get ePortfolio Pages
+      description: Get details for the pages of an ePortfolio.
+      parameters:
+        - name: eportfolio_id
+          in: path
+          description: ID of the ePortfolio whose pages to fetch.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of ePortfolioPage objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EPortfolioPage'
+  /api/v1/eportfolios/{eportfolio_id}/moderate:
+    put:
+      summary: Moderate an ePortfolio
+      description: Update the spam_status of an ePortfolio. Only available to admins who can moderate_user_content.
+      parameters:
+        - name: eportfolio_id
+          in: path
+          description: ID of the ePortfolio to moderate.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                spam_status:
+                  type: string
+                  description: The spam status for the ePortfolio.
+                  enum:
+                    - marked_as_spam
+                    - marked_as_safe
+              required:
+                - spam_status
+      responses:
+        '200':
+          description: An ePortfolio object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EPortfolio'
+  /api/v1/eportfolios/{eportfolio_id}/restore:
+    put:
+      summary: Restore a deleted ePortfolio
+      description: Restore an ePortfolio back to active that was previously deleted. Only available to admins who can moderate_user_content.
+      parameters:
+        - name: eportfolio_id
+          in: path
+          description: ID of the ePortfolio to restore.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An ePortfolio object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EPortfolio'
+components:
+  schemas:
+    EPortfolio:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        public:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        workflow_state:
+          type: string
+          enum:
+            - active
+            - deleted
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+        spam_status:
+          type: string
+          enum:
+            - flagged_as_possible_spam
+            - marked_as_safe
+            - marked_as_spam
+          nullable: true
+      required:
+        - id
+        - user_id
+        - name
+        - public
+        - created_at
+        - updated_at
+        - workflow_state
+    EPortfolioPage:
+      type: object
+      properties:
+        id:
+          type: integer
+        eportfolio_id:
+          type: integer
+        position:
+          type: integer
+        name:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - eportfolio_id
+        - position
+        - name
+        - content
+        - created_at
+        - updated_at
