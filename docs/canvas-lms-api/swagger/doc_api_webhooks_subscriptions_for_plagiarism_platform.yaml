@@ -47,7 +47,7 @@ paths:
                         - caliper
                     TransportMetadata:
                       type: object
-                      description: An object with a single key: 'Url'.
+                      description: An object with a single key - 'Url'.
                       properties:
                         Url:
                           type: string
@@ -155,9 +155,11 @@ paths:
                         - caliper
                     TransportMetadata:
                       type: object
+                      description: An object with a single key - 'Url'.
                       properties:
                         Url:
                           type: string
+                          description: The endpoint URL or queue identifier to receive events.
                     TransportType:
                       type: string
                       enum:

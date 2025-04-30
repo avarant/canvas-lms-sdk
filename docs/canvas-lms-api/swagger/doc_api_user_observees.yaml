@@ -94,7 +94,8 @@ paths:
   /api/v1/users/{user_id}/observees/{observee_id}:
     get:
       summary: Show an observee
-      description: Gets information about an observed user. Note: all users are allowed to view their own observees.
+      description: |
+        Gets information about an observed user. Note: all users are allowed to view their own observees.
       tags:
         - User Observees
       parameters:
@@ -226,7 +227,9 @@ paths:
   /api/v1/users/{user_id}/observers/{observer_id}:
     get:
       summary: Show an observer
-      description: Gets information about an observer. Note: all users are allowed to view their own observers.
+      description: |
+        Gets information about an observer.
+        Note: all users are allowed to view their own observers.
       tags:
         - User Observees
       parameters:

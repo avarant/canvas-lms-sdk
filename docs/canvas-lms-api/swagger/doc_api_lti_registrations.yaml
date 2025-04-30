@@ -53,7 +53,7 @@ paths:
           in: query
           schema:
             type: string
-          description: The field to sort by. Choices: name, nickname, lti_version, installed, installed_by, updated_by, updated, on. Defaults to installed.
+          description: "The field to sort by. Choices: name, nickname, lti_version, installed, installed_by, updated_by, updated, on. Defaults to installed."
         - name: dir
           in: query
           schema:
