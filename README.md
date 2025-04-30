@@ -46,3 +46,35 @@ Then you can run them directly:
     ```
 
 Refer to the `--help` flag for each script to see available command-line options.
+
+## Viewing API Documentation (Swagger UI)
+
+After generating the Swagger YAML files using `./scripts/generate-swagger-docs.py`, you can view them interactively using Swagger UI locally.
+
+### Prerequisites
+
+*   [Node.js and npm](https://nodejs.org/)
+
+### Steps
+
+1.  **Install `http-server`:**
+    If you don't have `http-server` installed globally, run:
+    ```bash
+    npm install -g http-server
+    ```
+
+2.  **Navigate to the Swagger directory:**
+    ```bash
+    cd docs/canvas-lms-api/swagger
+    ```
+
+3.  **Start the server:**
+    ```bash
+    # The -c-1 flag disables caching
+    http-server -c-1
+    ```
+
+4.  **Open your browser:**
+    Navigate to the URL provided by `http-server` (usually `http://127.0.0.1:8080`).
+
+    You should see the Swagger UI interface with a dropdown menu at the top right allowing you to select and view the different generated API specifications.
