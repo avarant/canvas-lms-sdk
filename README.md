@@ -1,4 +1,7 @@
 # canvas-lms-sdk
+
+[View API Documentation](https://avarant.github.io/canvas-lms-sdk/)
+
 a python sdk for the Canvas LMS API
 
 ## Scripts
