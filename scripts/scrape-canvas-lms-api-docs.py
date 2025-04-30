@@ -1,4 +1,12 @@
-# scripts/scrape-canvas-lms-api-docs.py
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = [
+#   "beautifulsoup4", # For HTML parsing
+#   "requests",        # For HTTP requests
+#   "pandas",         # For CSV handling
+#   "rich",           # For progress bar and console output
+# ]
+# ///
 
 from bs4 import BeautifulSoup
 import requests
@@ -8,7 +16,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
 import time
 import logging
-from tqdm import tqdm
+from rich.progress import Progress, BarColumn, TextColumn, TimeElapsedColumn, MofNCompleteColumn
+import argparse
 
 # Set up logging
 logging.basicConfig(
@@ -33,21 +42,23 @@ def get_safe_filename(url):
         filename += '.html'
     return filename
 
-def scrape_url(url, base_dir):
+def scrape_url(url, base_dir, rate_limit=0.5, force=False):
     """Scrape content from a URL and save it to a file."""
+    filename = get_safe_filename(url)
+    filepath = os.path.join(base_dir, filename)
+    # Skip if file exists and is non-empty unless forced
+    if os.path.exists(filepath) and os.path.getsize(filepath) > 0 and not force:
+        logging.debug(f"Skipping {url}, file already exists at {filepath}")
+        return True
     try:
-        # Add delay to be nice to the server
-        time.sleep(0.5)
-        
+        # Rate limit delay
+        time.sleep(rate_limit)
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        
-        filename = get_safe_filename(url)
-        filepath = os.path.join(base_dir, filename)
-        
+
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(response.text)
-            
+
         logging.debug(f"Successfully scraped and saved: {url}")
         return True
     except Exception as e:
@@ -55,6 +66,11 @@ def scrape_url(url, base_dir):
         return False
 
 def main():
+    parser = argparse.ArgumentParser(description="Scrape Canvas LMS API docs")
+    parser.add_argument("--threads", type=int, default=5, help="Number of threads to use (1 for sequential)")
+    parser.add_argument("--rate", type=float, default=0.5, help="Rate limit delay in seconds between requests")
+    parser.add_argument("--force", action="store_true", help="Force re-download even if file exists")
+    args = parser.parse_args()
     # First, scrape the index page and create CSV if it doesn't exist
     base_url = "https://canvas.instructure.com/doc/api/"
     base_path = "index.html"
@@ -83,24 +99,47 @@ def main():
     successful = 0
     failed = 0
     
-    # Use ThreadPoolExecutor for parallel scraping
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        # Submit all tasks and create a dictionary to track URLs
-        future_to_url = {executor.submit(scrape_url, url, base_dir): url for url in links}
-        
-        # Create progress bar
-        with tqdm(total=len(links), desc="Scraping URLs", unit="page") as pbar:
-            for future in as_completed(future_to_url):
-                url = future_to_url[future]
-                try:
-                    if future.result():
-                        successful += 1
-                    else:
+    # Scrape URLs with optional threading
+    if args.threads > 1:
+        with ThreadPoolExecutor(max_workers=args.threads) as executor:
+            future_to_url = {executor.submit(scrape_url, url, base_dir, args.rate, args.force): url for url in links}
+
+            with Progress(
+                TextColumn("[cyan]Scraping {task.description}"),
+                BarColumn(),
+                MofNCompleteColumn(), # Shows number of completed tasks e.g., "10/50"
+                TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+                TimeElapsedColumn(),
+            ) as progress:
+                task = progress.add_task("URLs", total=len(links))
+                
+                for future in as_completed(future_to_url):
+                    url = future_to_url[future]
+                    try:
+                        if future.result():
+                            successful += 1
+                        else:
+                            failed += 1
+                    except Exception as e:
+                        logging.error(f"Unexpected error with {url}: {str(e)}")
                         failed += 1
-                except Exception as e:
-                    logging.error(f"Unexpected error with {url}: {str(e)}")
+                    progress.update(task, advance=1)
+    else:
+        # Sequential scraping when threads=1
+        with Progress(
+            TextColumn("[cyan]Scraping {task.description}"),
+            BarColumn(),
+            MofNCompleteColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TimeElapsedColumn(),
+        ) as progress:
+            task = progress.add_task("URLs", total=len(links))
+            for url in links:
+                if scrape_url(url, base_dir, args.rate, args.force):
+                    successful += 1
+                else:
                     failed += 1
-                pbar.update(1)
+                progress.update(task, advance=1)
     
     logging.info(f"Scraping completed. Successfully scraped {successful} URLs, failed {failed} URLs")
 
