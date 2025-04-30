@@ -140,7 +140,7 @@ paths:
 
   /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/unflag:
     put:
-      summary: Remove the flag that you previously set on a quiz question after you’ve returned to it.
+      summary: Remove the flag that you previously set on a quiz question after you've returned to it.
       parameters:
         - name: quiz_submission_id
           in: path
@@ -197,6 +197,8 @@ components:
             - type: number
             - type: object
             - type: array
+              items:
+                type: string
         answers:
           description: >
             The possible answers for this question when those possible answers are necessary.
@@ -204,6 +206,8 @@ components:
           nullable: true
           oneOf:
             - type: array
+              items:
+                type: string
             - type: object
 
     QuizSubmissionQuestionInput:
@@ -223,3 +227,5 @@ components:
             - type: number
             - type: object
             - type: array
+              items:
+                type: string

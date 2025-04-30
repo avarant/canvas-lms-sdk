@@ -4,25 +4,26 @@ info:
   version: 1.0.0
 paths:
   /api/v1/courses/{course_id}/enrollments:
+    parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The ID of the course.
     get:
       summary: Return a paginated list of enrollments in a course
       description: |
         Depending on the URL given, return a paginated list of either (1) all of the enrollments in a course.
         Includes student, teacher, TA, and observer enrollments. Inactive enrollments are included by default for account admins.
       parameters:
-        - name: course_id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: The ID of the course.
         - name: type[]
           in: query
           schema:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             A list of enrollment types to return. Accepted values are
             'StudentEnrollment', 'TeacherEnrollment', 'TaEnrollment',
@@ -34,7 +35,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             A list of enrollment roles to return. Accepted values include
             custom course-level roles and base enrollment types.
@@ -44,7 +45,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             Filter by enrollment state. If omitted, 'active' and 'invited'
             are returned. Synthetic states (e.g. current_and_invited) only
@@ -55,7 +56,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             Array of additional information to include. Allowed values:
             avatar_url, group_ids, locked, observed_users, can_be_removed,
@@ -83,7 +84,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS account ID(s).
         - name: sis_course_id[]
           in: query
@@ -91,7 +92,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS course ID(s).
         - name: sis_section_id[]
           in: query
@@ -99,7 +100,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS section ID(s).
         - name: sis_user_id[]
           in: query
@@ -107,7 +108,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS user ID(s).
         - name: created_for_sis_id[]
           in: query
@@ -115,7 +116,7 @@ paths:
             type: array
             items:
               type: boolean
-            style: form
+          style: form
           description: |
             If sis_user_id is present and this is true, returns only enrollments
             created via that SIS import.

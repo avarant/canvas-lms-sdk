@@ -3538,57 +3538,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    domain:
-                      type: string
-                    url:
-                      type: string
-                    consumer_key:
-                      type: string
-                    name:
-                      type: string
-                    description:
-                      type: string
-                    created_at:
-                      type: string
-                      format: date-time
-                    updated_at:
-                      type: string
-                      format: date-time
-                    privacy_level:
-                      type: string
-                    custom_fields:
-                      type: object
-                      additionalProperties:
-                        type: string
-                    is_rce_favorite:
-                      type: boolean
-                    is_top_nav_favorite:
-                      type: boolean
-                    account_navigation:
-                      type: object
-                    assignment_selection:
-                      nullable: true
-                      type: object
-                    course_navigation:
-                      nullable: true
-                      type: object
-                    editor_button:
-                      nullable: true
-                      type: object
-                    selection_width:
-                      type: integer
-                    selection_height:
-                      type: integer
-                    icon_url:
-                      type: string
-                    not_selectable:
-                      type: boolean
+                $ref: '#/components/schemas/ExternalToolList'
         default:
           description: Unexpected error
           content:
@@ -3635,8 +3585,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: >-
-                  #/paths/~1api~1v1~1courses~1{course_id}~1external_tools/get/responses/200/content/application~1json/schema
+                $ref: '#/components/schemas/ExternalToolList'
         default:
           $ref: >-
             #/paths/~1api~1v1~1courses~1{course_id}~1external_tools/get/responses/default
@@ -4558,7 +4507,7 @@ paths:
       summary: Import outcomes into Canvas
       description: >
         Import outcomes into Canvas. For more information on the expected
-        format, see the “Outcomes CSV” section in the API docs.
+        format, see the "Outcomes CSV" section in the API docs.
       tags:
         - Outcome Imports
       security:
@@ -4572,16 +4521,16 @@ paths:
             type: integer
         - name: import_type
           in: query
-          description: >-
+          description: >
             Choose the data format for reading outcome data. With a standard
-            Canvas install, this option can only be ‘instructure_csv’, and if
+            Canvas install, this option can only be 'instructure_csv', and if
             unprovided, will be assumed to be so.
           required: false
           schema:
             type: string
         - name: extension
           in: query
-          description: >-
+          description: >
             Recommended for raw post request style imports. This field will be
             used to distinguish between csv and other file format extensions
             that would usually be provided with the filename in the multipart
@@ -4602,7 +4551,7 @@ paths:
                   type: string
                   format: binary
                   description: >
-                    File upload field named “attachment” containing outcome
+                    File upload field named "attachment" containing outcome
                     data.
                 import_type:
                   type: string
@@ -4612,8 +4561,6 @@ paths:
             schema:
               type: string
               format: binary
-            description: |
-              Raw CSV post. Provide a suitable Content-Type header.
       responses:
         '200':
           description: OutcomeImport object
@@ -4808,7 +4755,7 @@ paths:
     get:
       summary: Get outcome import status
       description: >
-        Get the status of an already created Outcome import. Pass ‘latest’ for
+        Get the status of an already created Outcome import. Pass 'latest' for
         the outcome import id for the latest import.
       tags:
         - Outcome Imports
@@ -4823,7 +4770,7 @@ paths:
             type: integer
         - name: id
           in: path
-          description: ID of the outcome import (or ‘latest’)
+          description: ID of the outcome import (or 'latest')
           required: true
           schema:
             type: string
@@ -4854,7 +4801,7 @@ paths:
             type: integer
         - name: id
           in: path
-          description: ID of the outcome import (or ‘latest’)
+          description: ID of the outcome import (or 'latest')
           required: true
           schema:
             type: string
@@ -4885,7 +4832,7 @@ paths:
             type: integer
         - name: id
           in: path
-          description: ID of the outcome import (or ‘latest’)
+          description: ID of the outcome import (or 'latest')
           required: true
           schema:
             type: string
@@ -4918,7 +4865,7 @@ paths:
             type: integer
         - name: id
           in: path
-          description: ID of the outcome import (or ‘latest’)
+          description: ID of the outcome import (or 'latest')
           required: true
           schema:
             type: string
@@ -5590,6 +5537,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/EnrollmentTerm'
   '/api/v1/courses/{course_id}/enrollments':
+    parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The ID of the course.
     get:
       summary: Return a paginated list of enrollments in a course
       description: >
@@ -5599,19 +5553,13 @@ paths:
         Includes student, teacher, TA, and observer enrollments. Inactive
         enrollments are included by default for account admins.
       parameters:
-        - name: course_id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: The ID of the course.
         - name: 'type[]'
           in: query
           schema:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             A list of enrollment types to return. Accepted values are
             'StudentEnrollment', 'TeacherEnrollment', 'TaEnrollment',
@@ -5623,7 +5571,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             A list of enrollment roles to return. Accepted values include
             custom course-level roles and base enrollment types.
@@ -5633,7 +5581,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             Filter by enrollment state. If omitted, 'active' and 'invited'
             are returned. Synthetic states (e.g. current_and_invited) only
@@ -5644,7 +5592,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: |
             Array of additional information to include. Allowed values:
             avatar_url, group_ids, locked, observed_users, can_be_removed,
@@ -5672,7 +5620,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS account ID(s).
         - name: 'sis_course_id[]'
           in: query
@@ -5680,7 +5628,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS course ID(s).
         - name: 'sis_section_id[]'
           in: query
@@ -5688,7 +5636,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS section ID(s).
         - name: 'sis_user_id[]'
           in: query
@@ -5696,7 +5644,7 @@ paths:
             type: array
             items:
               type: string
-            style: form
+          style: form
           description: Filter by SIS user ID(s).
         - name: 'created_for_sis_id[]'
           in: query
@@ -5704,7 +5652,7 @@ paths:
             type: array
             items:
               type: boolean
-            style: form
+          style: form
           description: |
             If sis_user_id is present and this is true, returns only enrollments
             created via that SIS import.
@@ -6291,7 +6239,7 @@ paths:
   '/api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/unflag':
     put:
       summary: >-
-        Remove the flag that you previously set on a quiz question after you’ve
+        Remove the flag that you previously set on a quiz question after you've
         returned to it.
       parameters:
         - name: quiz_submission_id
@@ -8209,6 +8157,60 @@ components:
     LtiRegistration:
       type: object
       description: A registration of an LTI tool in Canvas
+    ExternalTool:
+      type: object
+      properties:
+        id:
+          type: integer
+        domain:
+          type: string
+        url:
+          type: string
+        consumer_key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        privacy_level:
+          type: string
+        custom_fields:
+          type: object
+          additionalProperties:
+            type: string
+        is_rce_favorite:
+          type: boolean
+        is_top_nav_favorite:
+          type: boolean
+        account_navigation:
+          type: object
+        assignment_selection:
+          nullable: true
+          type: object
+        course_navigation:
+          nullable: true
+          type: object
+        editor_button:
+          nullable: true
+          type: object
+        selection_width:
+          type: integer
+        selection_height:
+          type: integer
+        icon_url:
+          type: string
+        not_selectable:
+          type: boolean
+    ExternalToolList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ExternalTool'
     Course:
       type: object
       description: A Canvas Course object.
@@ -9236,6 +9238,8 @@ components:
             - type: number
             - type: object
             - type: array
+              items:
+                type: string
         answers:
           description: >
             The possible answers for this question when those possible answers
@@ -9244,6 +9248,8 @@ components:
           nullable: true
           oneOf:
             - type: array
+              items:
+                type: string
             - type: object
     QuizSubmissionQuestionInput:
       type: object
@@ -9262,6 +9268,8 @@ components:
             - type: number
             - type: object
             - type: array
+              items:
+                type: string
     ContentShare:
       type: object
       properties:
