@@ -1,0 +1,116 @@
+openapi: "3.0.0"
+info:
+  title: Platform Notification Service API
+  version: "1.0.0"
+paths:
+  /api/lti/notice-handlers/{deployment_id}:
+    put:
+      summary: Register or update a notice handler
+      description: |
+        Register a notice handler endpoint to receive specific notice types.
+        To remove a handler for a notice type, set the handler field to an empty string.
+      tags:
+        - Platform Notification Service
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: deployment_id
+          in: path
+          description: LTI deployment ID from the platform launch claim
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - notice_type
+                - handler
+              properties:
+                notice_type:
+                  type: string
+                  description: The notice type to handle
+                handler:
+                  type: string
+                  description: The public endpoint URL for receiving notices; empty to unregister
+            example:
+              notice_type: LtiContextCopyNotice
+              handler: http://lti-13-test-tool.inseng.test/notice_handlers/106:8865aa05b4b79b64a91a86042e43af5ea8ae79eb
+      responses:
+        "200":
+          description: Notice handler registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notice_type:
+                    type: string
+                  handler:
+                    type: string
+              example:
+                notice_type: LtiContextCopyNotice
+                handler: http://lti-13-test-tool.inseng.test/notice_handlers/106:8865aa05b4b79b64a91a86042e43af5ea8ae79eb
+        "400":
+          description: Invalid request payload
+        "401":
+          description: Unauthorized – invalid or missing token
+        "403":
+          description: Forbidden – missing required scope
+    get:
+      summary: Retrieve registered notice handlers
+      description: Get the list of notice handlers currently registered for the given LTI deployment.
+      tags:
+        - Platform Notification Service
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: deployment_id
+          in: path
+          description: LTI deployment ID from the platform launch claim
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of registered notice handlers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  client_id:
+                    type: integer
+                    description: The OAuth2 client identifier
+                  deployment_id:
+                    type: string
+                  notice_handlers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        notice_type:
+                          type: string
+                        handler:
+                          type: string
+              example:
+                client_id: 10000000000068
+                deployment_id: "106:8865aa05b4b79b64a91a86042e43af5ea8ae79eb"
+                notice_handlers:
+                  - notice_type: LtiContextCopyNotice
+                    handler: http://lti-13-test-tool.inseng.test/notice_handlers/106:8865aa05b4b79b64a91a86042e43af5ea8ae79eb
+                  - notice_type: LtiHelloWorldNotice
+                    handler: ""
+        "401":
+          description: Unauthorized – invalid or missing token
+        "403":
+          description: Forbidden – missing required scope
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,72 @@
+openapi: "3.0.0"
+info:
+  title: "Canvas LMS Services API"
+  version: "1.0.0"
+paths:
+  /api/v1/services/kaltura:
+    get:
+      summary: "Return the config information for the Kaltura plugin in JSON format."
+      tags:
+        - "Services"
+      responses:
+        "200":
+          description: "Kaltura configuration"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    description: "Enabled state of the Kaltura plugin"
+                  domain:
+                    type: string
+                    description: "Main domain of the Kaltura instance (This is the URL where the Kaltura API resides)"
+                  resources_domain:
+                    type: string
+                    description: "Kaltura URL for grabbing thumbnails and other resources"
+                  rtmp_domain:
+                    type: string
+                    description: "Hostname to be used for RTMP recording"
+                  partner_id:
+                    type: string
+                    description: "Partner ID used for communicating with the Kaltura instance"
+                required:
+                  - enabled
+              examples:
+                enabledPlugin:
+                  summary: "For an enabled Kaltura plugin"
+                  value:
+                    domain: "kaltura.example.com"
+                    enabled: true
+                    partner_id: "123456"
+                    resource_domain: "cdn.kaltura.example.com"
+                    rtmp_domain: "rtmp.example.com"
+                disabledPlugin:
+                  summary: "For a disabled or unconfigured Kaltura plugin"
+                  value:
+                    enabled: false
+
+  /api/v1/services/kaltura_session:
+    post:
+      summary: "Start a new Kaltura session, so that new media can be recorded and uploaded to this Canvas instance’s Kaltura instance."
+      tags:
+        - "Services"
+      responses:
+        "200":
+          description: "Kaltura session ID"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ks:
+                    type: string
+                    description: "The Kaltura session id, for use in the Kaltura v3 API."
+                required:
+                  - ks
+              examples:
+                default:
+                  summary: "Example response"
+                  value:
+                    ks: "1e39ad505f30c4fa1af5752b51bd69fe"

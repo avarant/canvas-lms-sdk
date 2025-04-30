@@ -1,0 +1,44 @@
+/api/v1/courses/{course_id}/assignments/{assignment_id}/retry_alignment_clone:
+  post:
+    summary: Manually retry an outcome alignment clone process for an assignment within a course
+    description: |
+      This endpoint triggers the outcomes.retry_outcome_alignment_clone event, emitted anytime an outcome alignment clone process is retried
+      (for example, due to a network issue or missing alignment). The retry is manually initiated by the user.
+    tags:
+      - Outcomes
+    parameters:
+      - name: course_id
+        in: path
+        description: ID of the source course
+        required: true
+        schema:
+          type: integer
+      - name: assignment_id
+        in: path
+        description: ID of the source assignment
+        required: true
+        schema:
+          type: integer
+      - name: target_assignment_id
+        in: query
+        description: ID of the target assignment
+        required: true
+        schema:
+          type: integer
+      - name: target_course_id
+        in: query
+        description: ID of the target course
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: Clone retry event triggered successfully
+      '400':
+        description: Bad request (e.g., missing or invalid parameters)
+      '401':
+        description: Unauthorized (invalid or missing credentials)
+      '403':
+        description: Forbidden (insufficient permissions)
+      '404':
+        description: Not Found (course or assignment not found)

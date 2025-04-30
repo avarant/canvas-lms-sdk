@@ -1,0 +1,86 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LTI xAPI Endpoint
+  version: "1.0.0"
+  description: >
+    External LTI tools can POST xAPI statements to the callback URL provided in the LTI launch
+    parameters (`$Canvas.xapi.url`). Canvas will log the activity time for the user and record
+    a page view in course analytics.
+servers:
+  - url: https://canvas.example.com
+paths:
+  /lti/xapi:
+    post:
+      summary: Log xAPI interaction activity for an LTI tool
+      description: >
+        External tools must POST a valid xAPI Statement (Tin Can API) to this endpoint.
+        The URL for this endpoint is supplied at launch via the `$Canvas.xapi.url` substitution.
+      security:
+        - lti_oauth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/xAPIStatement'
+            example:
+              id: "12345678-1234-5678-1234-567812345678"
+              actor:
+                account:
+                  homePage: "http://www.instructure.com/"
+                  name: "unique_name_for_user_of_some_kind_maybe_lti_user_id"
+              verb:
+                id: "http://adlnet.gov/expapi/verbs/interacted"
+                display:
+                  en-US: "interacted"
+              object:
+                id: "http://example.com/"
+              result:
+                duration: "PT3M0S"
+      responses:
+        '200':
+          description: Statement accepted and activity logged
+        '400':
+          description: Bad Request – invalid xAPI statement
+        '401':
+          description: Unauthorized – invalid or missing OAuth signature
+        '500':
+          description: Internal Server Error
+components:
+  securitySchemes:
+    lti_oauth:
+      type: oauth1
+      description: OAuth 1.0a signature parameters as per LTI 1.1 launch requirements
+  schemas:
+    xAPIStatement:
+      type: object
+      description: >
+        A Tin Can API (xAPI) Statement object. Canvas will extract at minimum `actor`, `verb`,
+        and `object`, and will honor an optional `result.duration` (ISO 8601, capped at 5 minutes).
+      required:
+        - id
+        - actor
+        - verb
+        - object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the statement
+        actor:
+          type: object
+          description: Statement actor; must include an `account` with `homePage` and `name`
+        verb:
+          type: object
+          description: Action verb; typically uses ADL-defined URIs (e.g., “interacted”)
+        object:
+          type: object
+          description: The activity or resource, with at least an `id` (logged as page view URL)
+        result:
+          type: object
+          description: Optional result metadata
+          properties:
+            duration:
+              type: string
+              description: ISO 8601 duration (e.g., “PT3M0S”), capped at 5 minutes
+      additionalProperties: true

@@ -1,0 +1,304 @@
+openapi: 3.0.0
+info:
+  title: User Observees API
+  version: "1.0"
+paths:
+  /api/v1/users/{user_id}/observees:
+    get:
+      summary: List observees
+      description: |
+        A paginated list of the users that the given user is observing.
+        Note: all users are allowed to list their own observees. Administrators can list other users’ observees.
+        The returned observees will include an attribute “observation_link_root_account_ids”, a list of ids for the root accounts the observer and observee are linked on.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the user.
+        - name: include[]
+          in: query
+          schema:
+            type: string
+            enum:
+              - avatar_url
+          description: Optionally include avatar_url.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of observed users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Add an observee with credentials
+      description: |
+        Register the given user to observe another user, given the observee’s credentials.
+        Note: all users are allowed to add their own observees, given the observee’s credentials or access token are provided.
+        Administrators can add observees given credentials, access token or the observee’s id.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the observer user.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                observee:
+                  type: object
+                  properties:
+                    unique_id:
+                      type: string
+                      description: The login id for the user to observe. Required if access_token is omitted.
+                    password:
+                      type: string
+                      description: The password for the user to observe. Required if access_token is omitted.
+                access_token:
+                  type: string
+                  description: The access token for the user to observe. Required if observee.unique_id or observee.password are omitted.
+                pairing_code:
+                  type: string
+                  description: A generated pairing code for the user to observe. Required if the Observer pairing code feature flag is enabled.
+                root_account_id:
+                  type: integer
+                  description: >-
+                    The ID for the root account to associate with the observation link.
+                    Defaults to the current domain account. If ‘all’ is specified,
+                    a link will be created for each root account associated to both
+                    the observer and observee.
+      responses:
+        '200':
+          description: The newly observed User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/v1/users/{user_id}/observees/{observee_id}:
+    get:
+      summary: Show an observee
+      description: Gets information about an observed user. Note: all users are allowed to view their own observees.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: observee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: The observed User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Add an observee
+      description: Registers a user as being observed by the given user.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: observee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                root_account_id:
+                  type: integer
+                  description: >-
+                    The ID for the root account to associate with the observation link.
+                    If not specified, a link will be created for each root account
+                    associated to both the observer and observee.
+      responses:
+        '200':
+          description: The updated User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      summary: Remove an observee
+      description: Unregisters a user as being observed by the given user.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: observee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                root_account_id:
+                  type: integer
+                  description: If specified, only removes the link for the given root account.
+      responses:
+        '200':
+          description: The updated User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/v1/users/{user_id}/observers:
+    get:
+      summary: List observers
+      description: |
+        A paginated list of the observers of a given user.
+        Note: all users are allowed to list their own observers. Administrators can list other users’ observers.
+        The returned observers will include an attribute “observation_link_root_account_ids”, a list of ids for the root accounts the observer and observee are linked on.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: include[]
+          in: query
+          schema:
+            type: string
+            enum:
+              - avatar_url
+          description: Optionally include avatar_url.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of observer User objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /api/v1/users/{user_id}/observers/{observer_id}:
+    get:
+      summary: Show an observer
+      description: Gets information about an observer. Note: all users are allowed to view their own observers.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: observer_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: The observer User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/v1/users/{user_id}/observer_pairing_codes:
+    post:
+      summary: Create observer pairing code
+      description: If the user is a student, will generate a code to be used with self registration or observees APIs to link another user to this student.
+      tags:
+        - User Observees
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A pairing code object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PairingCode'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    PairingCode:
+      type: object
+      required:
+        - user_id
+        - code
+        - expires_at
+        - workflow_state
+      properties:
+        user_id:
+          type: integer
+          description: The ID of the user.
+        code:
+          type: string
+          description: The actual code to be sent to other APIs.
+        expires_at:
+          type: string
+          format: date-time
+          description: When the code expires.
+        workflow_state:
+          type: string
+          description: The current status of the code.
+    User:
+      type: object
+      description: A Canvas user object (see external Users API for full schema).

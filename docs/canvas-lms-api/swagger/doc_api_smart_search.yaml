@@ -1,0 +1,63 @@
+/api/v1/courses/{course_id}/smartsearch:
+  get:
+    summary: Search course content
+    description: |
+      BETA: This API endpoint is not finalized, and there could be breaking changes before its final release.
+      Find course content using a meaning-based search.
+    parameters:
+      - name: course_id
+        in: path
+        description: ID of the course.
+        required: true
+        schema:
+          type: integer
+      - name: q
+        in: query
+        description: The search query.
+        required: true
+        schema:
+          type: string
+      - name: filter[]
+        in: query
+        description: >-
+          Types of objects to search. By default, all supported types are searched.
+          Supported types include "pages", "assignments", "announcements", and
+          "discussion_topics".
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+    responses:
+      '200':
+        description: A list of SearchResult objects.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchResult'
+components:
+  schemas:
+    SearchResult:
+      type: object
+      properties:
+        content_id:
+          type: integer
+          description: The ID of the matching object.
+        content_type:
+          type: string
+          description: The type of the matching object.
+        title:
+          type: string
+          description: The title of the matching object.
+        body:
+          type: string
+          description: The body of the matching object.
+        html_url:
+          type: string
+          description: The Canvas URL of the matching object.
+        distance:
+          type: number
+          format: float
+          description: The distance between the search query and the result. Smaller numbers indicate closer matches.

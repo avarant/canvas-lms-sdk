@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  title: Temporary Enrollment Pairings API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/{account_id}/temporary_enrollment_pairings:
+    get:
+      summary: List temporary enrollment pairings
+      parameters:
+        - $ref: '#/components/parameters/account_id'
+      responses:
+        '200':
+          description: A list of TemporaryEnrollmentPairing objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemporaryEnrollmentPairing'
+    post:
+      summary: Create Temporary Enrollment Pairing
+      parameters:
+        - $ref: '#/components/parameters/account_id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workflow_state:
+                  type: string
+                  description: The workflow state of the temporary enrollment pairing.
+                ending_enrollment_state:
+                  type: string
+                  description: >-
+                    The ending enrollment state to be given to each associated
+                    enrollment when the enrollment period has been reached.
+                  enum:
+                    - deleted
+                    - completed
+                    - inactive
+              additionalProperties: false
+      responses:
+        '200':
+          description: TemporaryEnrollmentPairing created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryEnrollmentPairing'
+
+  /api/v1/accounts/{account_id}/temporary_enrollment_pairings/new:
+    get:
+      summary: Initialize an unsaved TemporaryEnrollmentPairing
+      parameters:
+        - $ref: '#/components/parameters/account_id'
+      responses:
+        '200':
+          description: An unsaved TemporaryEnrollmentPairing object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryEnrollmentPairing'
+
+  /api/v1/accounts/{account_id}/temporary_enrollment_pairings/{id}:
+    get:
+      summary: Get a single temporary enrollment pairing
+      parameters:
+        - $ref: '#/components/parameters/account_id'
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: A TemporaryEnrollmentPairing object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryEnrollmentPairing'
+    delete:
+      summary: Delete Temporary Enrollment Pairing
+      parameters:
+        - $ref: '#/components/parameters/account_id'
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: The deleted TemporaryEnrollmentPairing object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryEnrollmentPairing'
+
+components:
+  parameters:
+    account_id:
+      name: account_id
+      in: path
+      description: ID of the account
+      required: true
+      schema:
+        type: integer
+    id:
+      name: id
+      in: path
+      description: ID of the temporary enrollment pairing
+      required: true
+      schema:
+        type: integer
+  schemas:
+    TemporaryEnrollmentPairing:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the temporary enrollment pairing.
+        workflow_state:
+          type: string
+          description: The current status of the temporary enrollment pairing.
+      required:
+        - id
+        - workflow_state

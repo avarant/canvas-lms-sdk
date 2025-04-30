@@ -1,0 +1,85 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LMS Plagiarism Detection Platform Assignments API
+  version: "1.0.0"
+paths:
+  /api/lti/assignments/{assignment_id}:
+    get:
+      tags:
+        - Plagiarism Detection Platform Assignments
+      summary: Get a single assignment (LTI)
+      description: >
+        Get a single Canvas assignment by Canvas id or LTI id. Tool providers may only access assignments that are associated with their tool.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: assignment_id
+          in: path
+          description: The id of the assignment. Can be a Canvas or LTI id for the assignment.
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: query
+          description: The id of the user. Can be a Canvas or LTI id for the user.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single LtiAssignment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LtiAssignment'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized – JWT access token is missing or invalid
+        '403':
+          description: Forbidden – Not permitted to access this assignment
+        '404':
+          description: Assignment not found
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LtiAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Canvas assignment ID
+        name:
+          type: string
+          description: Assignment name
+        description:
+          type: string
+          description: Assignment description (HTML)
+        points_possible:
+          type: integer
+          description: Points possible
+        due_at:
+          type: string
+          format: date-time
+          description: >
+            The due date for the assignment. If a user id is supplied and an assignment override is in place this field reflects the due date as it applies to the user.
+        lti_id:
+          type: string
+          description: LTI identifier for the assignment
+        course_id:
+          type: integer
+          description: Canvas course ID
+        lti_course_id:
+          type: string
+          description: LTI identifier for the course
+      required:
+        - id
+        - name
+        - points_possible
+        - lti_id
+        - course_id
+        - lti_course_id

@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title># Registering an LTI Tool
+ - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          checked
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="current" href="">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div id='filecontents'><h1 id="registering-an-lti-tool">Registering an LTI Tool</h1>
+
+<!-- Introduction & motivation -->
+
+<p>In order to enable an Administrator to install an application in Canvas, a tool can support the
+automated registration process, built on the Dynamic Registration specification mentioned
+<a href="https://www.imsglobal.org/activity/learning-tools-interoperability-lti%C2%AE">here</a>. This
+replaces the <a href="file.lti_dev_key_config.html">manual configuration</a> process
+previously used to install applications to Canvas.</p>
+
+<!-- Overview -->
+
+<h2 id="overview">Overview</h2>
+
+<p>The automated registration process allows tools to install themselves into Canvas automatically
+without requiring an Administrator to manually enter configuration values. Tools provide a Canvas
+administrator with a pre-determined URL, which the user enters into Canvas. Canvas will direct the
+user to that URL, where the tool can request Canvas&#39; OpenID configuration and provide the user with
+an installation UI, where they can choose tool-specific settings. The tool then installs itself using
+a registration token to access the registration REST JSON service. After installing, the user is
+returned to Canvas to confirm the installation and enable the tool.</p>
+
+<!-- Technical Diagram -->
+
+<p><img src="./images/dynamic-registration-sequence-diagram.png" alt="Dynamic Registration Sequence Diagram"></p>
+
+<!-- Initiation Request -->
+
+<h2 id="initiation-request">Initiation Request</h2>
+
+<p>The first part of the registration process is the registration initiation request. When an administrator
+enters the tool&#39;s dynamic registration URL, Canvas redirects the user with a GET request by embedding an
+iframe pointed to that URL with two parameters added, <code>openid_configuration</code>, and <code>registration_token</code>.
+The <code>openid_configuration</code> parameter contains the URL that the tool can use to retrieve Canvas&#39; OpenID
+Configuration, and the <code>registration_token</code> parameter is the token used to access that URL.</p>
+
+<p>At the registration initiation url, the tool should show a UI that guides the user through setting up a registration. This
+can include deployment-specific options for the tool. The tool can also guard this UI with a login, access
+code, or some other form of authentication, since the dynamic registration URL is meant to be shared publicly.</p>
+
+<!-- Canvas OpenID Configuration -->
+
+<h2 id="canvas-openid-configuration">Canvas OpenID Configuration</h2>
+
+<p>During registration, the tool can request Canvas&#39; OpenID configuration by sending a <code>GET</code> request to the url
+included in the <code>openid_configuration</code> redirect url. The tool also needs to include the <code>registration_token</code>
+in the <code>GET</code> request, as the bearer token in the <code>Authorization</code> http header:</p>
+
+<pre class="code sh"><code class="sh">curl -v https://canvas.instructure.com/api/lti/security/openid-configuration \
+  -H &quot;Accept: application/json&quot; \
+  -H &quot;Authorization: Bearer {registration_token}&quot;
+</code></pre>
+
+<p>Canvas&#39; Open ID configuration contains details about itself that the tool can use to make decisions. It contains
+claims supported, message types, placements, variables, and information about the account the administrator is
+installing the tool into.</p>
+
+<p>A example response looks like:</p>
+
+<pre class="code json"><code class="json">{
+  &quot;issuer&quot;: &quot;http://canvas.instructure.com&quot;,
+  &quot;authorization_endpoint&quot;: &quot;http://canvas.instructure.com/api/lti/authorize_redirect&quot;,
+  &quot;registration_endpoint&quot;: &quot;http://canvas.instructure.com/api/lti/registrations&quot;,
+  &quot;jwks_uri&quot;: &quot;http://canvas.instructure.com/login/oauth2/jwks&quot;,
+  &quot;token_endpoint&quot;: &quot;http://canvas.instructure.com/login/oauth2/token&quot;,
+  &quot;token_endpoint_auth_methods_supported&quot;: [&quot;private_key_jwt&quot;],
+  &quot;token_endpoint_auth_signing_alg_values_supported&quot;: [&quot;RS256&quot;],
+  &quot;scopes_supported&quot;: [
+    &quot;https://purl.imsglobal.org/spec/lti-ags/scope/lineitem&quot;,
+    &quot;https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly&quot;,
+    &quot;https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly&quot;,
+    &quot;https://purl.imsglobal.org/spec/lti-ags/scope/score&quot;,
+    &quot;https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly&quot;,
+    &quot;https://canvas.instructure.com/lti/public_jwk/scope/update&quot;,
+    &quot;https://canvas.instructure.com/lti/account_lookup/scope/show&quot;,
+    &quot;https://canvas.instructure.com/lti-ags/progress/scope/show&quot;
+  ],
+  &quot;response_types_supported&quot;: [&quot;id_token&quot;],
+  &quot;id_token_signing_alg_values_supported&quot;: [&quot;RS256&quot;],
+  &quot;claims_supported&quot;: [
+    &quot;sub&quot;,
+    // ... more here
+    &quot;locale&quot;
+  ],
+  &quot;subject_types_supported&quot;: [&quot;public&quot;],
+  &quot;authorization_server&quot;: &quot;canvas.instructure.com&quot;,
+  &quot;https://purl.imsglobal.org/spec/lti-platform-configuration&quot;: {
+    &quot;product_family_code&quot;: &quot;canvas&quot;,
+    &quot;version&quot;: &quot;vCloud&quot;,
+    &quot;messages_supported&quot;: [
+      {
+        &quot;type&quot;: &quot;LtiResourceLinkRequest&quot;,
+        &quot;placements&quot;: [
+          &quot;account_navigation&quot;,
+          // ... more here
+          &quot;wiki_page_menu&quot;
+        ]
+      },
+      {
+        &quot;type&quot;: &quot;LtiDeepLinkingRequest&quot;,
+        &quot;placements&quot;: [
+          &quot;assignment_selection&quot;,
+          // ... more here
+          &quot;submission_type_selection&quot;
+        ]
+      }
+    ],
+    &quot;notice_types_supported&quot;: [
+      &quot;LtiHelloWorldNotice&quot;
+      // ... more here
+    ],
+    &quot;variables&quot;: [
+      &quot;ResourceLink.id&quot;,
+      // ... more here
+      &quot;Canvas.environment.test&quot;
+    ],
+    &quot;https://canvas.instructure.com/lti/account_name&quot;: &quot;Test University&quot;,
+    &quot;https://canvas.instructure.com/lti/account_lti_guid&quot;: &quot;pNu5F9EoIATW6XqZ33C5tiqomb7bFJ4IGWFoCFy6:canvas-lms&quot;
+  }
+}
+</code></pre>
+
+<!-- Registration Request -->
+
+<h2 id="registration-creation">Registration Creation</h2>
+
+<p>Canvas includes a URL in the OpenID configuration under the <code>registration_endpoint</code> key which can be used
+by the tool to create a registration. The tool must send a <code>POST</code> request to this endpoint with the tool&#39;s
+<a href="#lti-registration-schema">LTI Registration</a> in the body and the <code>registration_token</code> as the bearer token
+in the <code>Authorization</code> http header.</p>
+
+<p>An example request looks like:</p>
+
+<pre class="code shell"><code class="shell">curl \
+  --header &quot;Content-Type: application/json&quot; \
+  --request POST \
+  --data &#39;&lt;lti_registration_body&gt;&#39; \
+  http://canvas.instructure.com/api/lti/registrations
+</code></pre>
+
+<h4 id="lti-registration-schema">LTI Registration schema</h4>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>application_type</td>
+<td>&quot;web&quot;</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>grant_types</td>
+<td>[&quot;client_credentials&quot;, &quot;implicit&quot;]</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>initiate_login_uri</td>
+<td>string</td>
+<td>yes</td>
+<td>The url that Canvas should use to initiate an LTI launch request</td>
+</tr>
+<tr>
+<td>redirect_uris</td>
+<td>string</td>
+<td>yes</td>
+<td>Any urls that the tool can launch to.</td>
+</tr>
+<tr>
+<td>response_types</td>
+<td>&quot;id_token&quot;</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>client_name</td>
+<td>string</td>
+<td>yes</td>
+<td>The name of the tool as it will appear to Administrators maintaining the integration</td>
+</tr>
+<tr>
+<td>jwks_uri</td>
+<td>string</td>
+<td>yes</td>
+<td>The url of the tool&#39;s JSON Web Key Set</td>
+</tr>
+<tr>
+<td>token_endpoint_auth_method</td>
+<td>&quot;private_key_jwt&quot;</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>scope</td>
+<td>string</td>
+<td>yes</td>
+<td>A space-separated list of scopes the tool requests access to.</td>
+</tr>
+<tr>
+<td>ht<span>tps://</span>purl.imsglobal.org/spec/lti-tool-configuration</td>
+<td><a href="#lti-tool-configuration-schema">Lti Tool Configuration</a></td>
+<td>yes</td>
+<td>none</td>
+</tr>
+</tbody></table>
+
+<h4 id="lti-tool-configuration-schema">LTI Tool Configuration schema</h4>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>domain</td>
+<td>string</td>
+<td>yes</td>
+<td>The primary domain used by this tool.</td>
+</tr>
+<tr>
+<td>secondary_domains</td>
+<td>Array<string></td>
+<td>no</td>
+<td>Additional domains used by this tool.</td>
+</tr>
+<tr>
+<td>target_link_uri</td>
+<td>string</td>
+<td>yes</td>
+<td>The default launch url if not defined in a message</td>
+</tr>
+<tr>
+<td>custom_parameters</td>
+<td>JSON object</td>
+<td>no</td>
+<td>Custom parameters to be included in each launch. Values must be a string</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>no</td>
+<td>A short description of the tool.</td>
+</tr>
+<tr>
+<td>messages</td>
+<td>Array&lt;<a href="#lti-message-schema">message</a>&gt;</td>
+<td>yes</td>
+<td>Messages supported by the tool.</td>
+</tr>
+<tr>
+<td>claims</td>
+<td>Array<string></td>
+<td>yes</td>
+<td>An array of claims to be included in each launch token.</td>
+</tr>
+<tr>
+<td><span>https://</span>canvas.instructure.com/lti/privacy_level</td>
+<td>&quot;public&quot; &#124; &quot;name_only&quot; &#124; &quot;email_only&quot; &#124; &quot;anonymous&quot;</td>
+<td>no</td>
+<td>The tool&#39;s default privacy level, (determines the PII fields the tool is sent.) defaults to &quot;anonymous&quot;</td>
+</tr>
+<tr>
+<td><span>https://</span>canvas.instructure.com/lti/tool_id</td>
+<td>string</td>
+<td>no</td>
+<td>This is a tool-provided value that can be anything, and tools often use it to correlate themselves across deployments. Same as the <code>tool_id</code> field within the <code>extensions</code> array in the <a href="file.lti_dev_key_config.html">LTI 1.3 manual configuration</a> JSON.</td>
+</tr>
+</tbody></table>
+
+<h4 id="lti-message-schema">LTI Message schema</h4>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type</td>
+<td>&quot;LtiResourceLinkRequest&quot; &#124; &quot;LtiDeepLinkingRequest&quot;</td>
+<td>yes</td>
+<td>The message type.</td>
+</tr>
+<tr>
+<td>target_link_uri</td>
+<td>string</td>
+<td>no</td>
+<td>The URL to launch to.</td>
+</tr>
+<tr>
+<td>label</td>
+<td>string</td>
+<td>no</td>
+<td>The user-facing label to show when launching a tool.</td>
+</tr>
+<tr>
+<td>icon_uri</td>
+<td>string</td>
+<td>no</td>
+<td>URL to an icon that will be added to the link (only for applicable placements)</td>
+</tr>
+<tr>
+<td>custom_parameters</td>
+<td>JSON object</td>
+<td>no</td>
+<td>Custom parameters to be included in each launch. Values must be a string</td>
+</tr>
+<tr>
+<td>placements</td>
+<td>Array<string></td>
+<td>no</td>
+<td>An array of placements to apply to this launch</td>
+</tr>
+<tr>
+<td>ht<span>tps://</span>canvas.instructure.com/lti/course_navigation/default_enabled</td>
+<td>boolean</td>
+<td>no</td>
+<td>Only applies if the placement is &quot;course_navigation&quot;. If false, the tool will not appear in the course navigation bar, but can still be re-enabled by admins and teachers. Defaults to &#39;true&#39;. See the &quot;default&quot; setting as discussed in the <a href="file.navigation_tools.html#settings">Navigation Tools</a> docs.</td>
+</tr>
+<tr>
+<td>ht<span>tps://</span>canvas.instructure.com/lti/visibility</td>
+<td>&quot;admins&quot; &#124; &quot;members&quot; &#124; &quot;public&quot;</td>
+<td>no</td>
+<td>Determines what users can see a link to launch this message. The &quot;admins&quot; value indicates users that can manage the link can see it, which for the Global Navigation placement means administrators, but in courses means administrators and instructors. The &quot;members&quot; value indicates that any member of the context the link appears in can see the link, and &quot;public&quot; means visible to all.</td>
+</tr>
+<tr>
+<td>ht<span>tps://</span>canvas.instructure.com/lti/launch_height</td>
+<td>string &#124; number</td>
+<td>no</td>
+<td>Specifies the height of the iframe the tool will be embedded in.</td>
+</tr>
+<tr>
+<td>ht<span>tps://</span>canvas.instructure.com/lti/launch_width</td>
+<td>string &#124; number</td>
+<td>no</td>
+<td>Specifies the width of the iframe the tool will be embedded in.</td>
+</tr>
+<tr>
+<td>ht<span>tps://</span>canvas.instructure.com/lti/display_type</td>
+<td>&quot;default&quot; &#124; &quot;full_width&quot; &#124; &quot;full_width_in_context&quot; &#124; &quot;full_width_with_nav&quot; &#124; &quot;in_nav_context&quot; &#124; &quot;borderless&quot; &#124; &quot;new_window&quot;</td>
+<td>no</td>
+<td>Specifies how to launch the tool. See the <a href="file.navigation_tools.html#settings">Navigation Tools Settings</a> docs for details on each option. Note: &quot;new_window&quot; is only valid for Dynamic Registration, and produces the same behavior as setting <code>windowTarget: _blank</code> in a Canvas LTI 1.3 JSON configuration.</td>
+</tr>
+</tbody></table>
+
+<p>example LTI Registration body:</p>
+
+<pre class="code json"><code class="json">{
+  &quot;application_type&quot;: &quot;web&quot;,
+  &quot;client_name&quot;: &quot;Lti Tool&quot;,
+  &quot;client_uri&quot;: &quot;http://tool.com&quot;,
+  &quot;grant_types&quot;: [&quot;client_credentials&quot;, &quot;implicit&quot;],
+  &quot;jwks_uri&quot;: &quot;http://tool.com/jwks&quot;,
+  &quot;initiate_login_uri&quot;: &quot;http://tool.com/login&quot;,
+  &quot;redirect_uris&quot;: [&quot;http://tool.com/launch&quot;],
+  &quot;response_types&quot;: [&quot;id_token&quot;],
+  &quot;scope&quot;: &quot;https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly&quot;,
+  &quot;token_endpoint_auth_method&quot;: &quot;private_key_jwt&quot;,
+  &quot;logo_uri&quot;: &quot;http://tool.com/icon.svg&quot;,
+  &quot;https://purl.imsglobal.org/spec/lti-tool-configuration&quot;: {
+    &quot;claims&quot;: [
+      &quot;sub&quot;,
+      &quot;iss&quot;,
+      &quot;name&quot;,
+      &quot;given_name&quot;,
+      &quot;family_name&quot;,
+      &quot;nickname&quot;,
+      &quot;picture&quot;,
+      &quot;email&quot;,
+      &quot;locale&quot;
+    ],
+    &quot;custom_parameters&quot;: {},
+    &quot;domain&quot;: &quot;tool.com&quot;,
+    &quot;messages&quot;: [
+      {
+        &quot;type&quot;: &quot;LtiResourceLinkRequest&quot;,
+        &quot;icon_uri&quot;: &quot;http://tool.com/icon.svg&quot;,
+        &quot;label&quot;: &quot;Lti Tool&quot;,
+        &quot;custom_parameters&quot;: {
+          &quot;foo&quot;: &quot;bar&quot;,
+          &quot;context_id&quot;: &quot;$Context.id&quot;
+        },
+        &quot;placements&quot;: [&quot;course_navigation&quot;],
+        &quot;roles&quot;: [],
+        &quot;target_link_uri&quot;: &quot;http://tool.com/launch?placement=course_navigation&quot;
+      }
+    ],
+    &quot;target_link_uri&quot;: &quot;http://tool.com/launch&quot;,
+    &quot;https://canvas.instructure.com/lti/tool_id&quot;: &quot;toolid-123&quot;,
+    &quot;https://canvas.instructure.com/lti/privacy_level&quot;: &quot;public&quot;
+  }
+}
+</code></pre>
+
+<h4 id="registration-response">Registration Response</h4>
+
+<p>Upon successful creation, the registration endpoint will respond with the created registration, along with an additional field, <code>client_id</code>:</p>
+
+<pre class="code json"><code class="json">{
+  &quot;application_type&quot;: &quot;web&quot;,
+  &quot;client_name&quot;: &quot;Lti Tool&quot;,
+  ...
+  &quot;client_id&quot;: &quot;10000000000001&quot;
+}
+</code></pre>
+
+<p>The tool will use this <code>client_id</code> when requesting tokens and accessing LTI Services.</p>
+
+<h4 id="returning-the-administrator-to-canvas">Returning the Administrator to Canvas</h4>
+
+<p>After the registration is created successfully, the tool should return the user to Canvas by sending a post message to the parent Canvas window:</p>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;org.imsglobal.lti.close&#39;}, &#39;*&#39;)
+</code></pre>
+
+<p>Canvas will listen for this message and close the iframe, presenting the user with a summary of the registration the tool returned. The administrator will then be able to make some modifications to the registration. It&#39;s important to note that these modifications may alter how the tool is finally configured and launched. For example, the tool may request a certain number of scopes, but the administrator could restrict access to certain scopes. The tool should detect this and warn the user if modifications need to be made to the configuration.</p>
+</div></div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:39 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title># Navigation Tools
+ - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          checked
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="" href="file.lti_window_post_message.html">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              checked
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="current" href="">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div id='filecontents'><h1 id="navigation-tools">Navigation Tools</h1>
+
+<p>Canvas allows External Tools to be surfaced in a variety of navigation menus. The primary use case for using a navigation placement is to permit SSO to display a dashboard of some type. The Top Navigation placement launches in a drawer which allows the tool to be displayed alongside Canvas content.</p>
+
+<ul>
+<li><a href="#course_navigation">Course Navigation Placement</a></li>
+<li><a href="#account_navigation">Account Navigation Placement</a></li>
+<li><a href="#user_navigation">User Navigation Placement</a></li>
+<li><a href="#top_navigation">Top Navigation Placement</a></li>
+</ul>
+
+<h1 id="course-navigation-placement">Course Navigation Placement <a name="course_navigation"></a></h1>
+
+<p>External tools can be configured to appear as links in course-level navigation. If the tool is configured on an account, any course in that account or any of its sub-accounts will have the link added to the course navigation by default. If the tool is configured in a course, then the navigation will only appear in that course.</p>
+
+<p>There are some additional parameters that can be set on course navigation tools to define default behavior. These settings allow the tool to be disabled by default or visible only to some types of users.</p>
+
+<h3 id="configuring">Configuring</h3>
+
+<p>Configuration of the Course Navigation Placement depends on the LTI version.</p>
+
+<p><em>Via JSON (LTI 1.3)</em></p>
+
+<pre class="code json"><code class="json">{
+   &quot;title&quot;:&quot;Cool Course Navigation Tool &quot;,
+   &quot;scopes&quot;:[],
+   &quot;extensions&quot;:[
+      {
+         &quot;domain&quot;:&quot;coursenavexample.com&quot;,
+         &quot;tool_id&quot;:&quot;course-nav&quot;,
+         &quot;platform&quot;:&quot;canvas.instructure.com&quot;,
+         &quot;settings&quot;:{
+            &quot;text&quot;:&quot;Cool Course Navigation Tool Text&quot;,
+            &quot;icon_url&quot;:&quot;https://some.icon.url&quot;,
+            &quot;placements&quot;:[
+               {
+                  &quot;text&quot;:&quot;Cool App Dashboard&quot;,
+                  &quot;enabled&quot;:true,
+                  &quot;icon_url&quot;:&quot;https://some.icon.url&quot;,
+                  &quot;placement&quot;:&quot;course_navigation&quot;,
+                  &quot;message_type&quot;:&quot;LtiResourceLinkRequest&quot;,
+                  &quot;target_link_uri&quot;:&quot;https://your.target_link_uri/your_dashboard&quot;
+               }
+            ]
+         }
+      }
+   ],
+   &quot;public_jwk&quot;:{
+      &quot;kty&quot;:&quot;RSA&quot;,
+      &quot;alg&quot;:&quot;RS256&quot;,
+      &quot;e&quot;:&quot;AQAB&quot;,
+      &quot;kid&quot;:&quot;8f796169-0ac4-48a3-a202-fa4f3d814fcd&quot;,
+      &quot;n&quot;:&quot;nZD7QWmIwj-3N_RZ1qJjX6CdibU87y2l02yMay4KunambalP9g0fU9yZLwLX9WYJINcXZDUf6QeZ-SSbblET-h8Q4OvfSQ7iuu0WqcvBGy8M0qoZ7I-NiChw8dyybMJHgpiP_AyxpCQnp3bQ6829kb3fopbb4cAkOilwVRBYPhRLboXma0cwcllJHPLvMp1oGa7Ad8osmmJhXhM9qdFFASg_OCQdPnYVzp8gOFeOGwlXfSFEgt5vgeU25E-ycUOREcnP7BnMUk7wpwYqlE537LWGOV5z_1Dqcqc9LmN-z4HmNV7b23QZW4_mzKIOY4IqjmnUGgLU9ycFj5YGDCts7Q&quot;,
+      &quot;use&quot;:&quot;sig&quot;
+   },
+   &quot;description&quot;:&quot;1.3 Test Tool&quot;,
+   &quot;target_link_uri&quot;:&quot;https://your.target_link_uri&quot;,
+   &quot;oidc_initiation_url&quot;:&quot;https://your.oidc_initiation_url&quot;
+}
+</code></pre>
+
+<p><em>Via XML (LTI 1.0-1.2)</em></p>
+
+<pre class="code xml"><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;cartridge_basiclti_link xmlns=&quot;http://www.imsglobal.org/xsd/imslticc_v1p0&quot;
+    xmlns:blti = &quot;http://www.imsglobal.org/xsd/imsbasiclti_v1p0&quot;
+    xmlns:lticm =&quot;http://www.imsglobal.org/xsd/imslticm_v1p0&quot;
+    xmlns:lticp =&quot;http://www.imsglobal.org/xsd/imslticp_v1p0&quot;
+    xmlns:xsi = &quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation = &quot;http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd
+    http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0.xsd
+    http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd
+    http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd&quot;&gt;
+    &lt;blti:launch_url&gt;https://example.com/attendance&lt;/blti:launch_url&gt;
+    &lt;blti:title&gt;Attendance&lt;/blti:title&gt;
+    &lt;blti:description&gt;Provides an interactive seating chart and attendance tool&lt;/blti:description&gt;
+    &lt;blti:extensions platform=&quot;canvas.instructure.com&quot;&gt;
+      &lt;lticm:property name=&quot;privacy_level&quot;&gt;public&lt;/lticm:property&gt;
+      &lt;lticm:options name=&quot;course_navigation&quot;&gt;
+        &lt;lticm:property name=&quot;enabled&quot;&gt;true&lt;/lticm:property&gt;
+      &lt;/lticm:options&gt;
+    &lt;/blti:extensions&gt;
+&lt;/cartridge_basiclti_link&gt;
+</code></pre>
+
+<p>For more examples, refer to the <a href="file.lti_dev_key_config.html" target="_blank">Configuring</a> documentation.</p>
+
+<h3 id="advantages">Advantages</h3>
+
+<p>The Course Navigation Placement is well suited for external apps that wish to be surfaced in Canvas without having to implement an LTI deep linking workflow. Once the tool is configured, no additional steps are required for users to see the launch point (unless the tool is disabled by default). It is well suited for tools that want to provide a simple SSO connection from Canvas to the external application. A dashboard type experience can be provided by apps offering services like:</p>
+
+<ul>
+<li>Course-level Analytics or tool settings</li>
+<li>Management of external course resources</li>
+<li>Rostering or Attendance</li>
+<li>Canvas-to-app SSO</li>
+<li>Allowing users to select multiple resources and generate line items for them (LTI Advantage tools only)</li>
+<li>Allowing teachers or students to complete an <a href="file.oauth.html#accessing-canvas-api" target="_blank">OAuth2 flow</a> so a tool can run API requests on their behalf.</li>
+</ul>
+
+<h3 id="limitations-challenges">Limitations/Challenges</h3>
+
+<ul>
+<li>Canvas does not support Deep Linking from this placement, however, Assignment and Grading Services could be used to generate many line items in Canvas.</li>
+<li>There is no &#39;resource&#39; context, only course context.</li>
+</ul>
+
+<h3 id="workflow">Workflow</h3>
+
+<ol>
+<li>After configuring a course navigation tool, the instructor or student navigates to their course in Canvas.</li>
+<li>Then, they click a link in the course navigation menu.</li>
+<li>The tool consumes the LTI launch and renders the application.</li>
+</ol>
+
+<p>If the tool is disabled by default, the instructor must first <a href="https://community.canvaslms.com/t5/Instructor-Guide/How-do-I-manage-Course-Navigation-links/ta-p/1020" target="_blank"> organize the navigation tabs</a> to surface the LTI launch point.</p>
+
+<h3 id="settings">Settings</h3>
+
+<p>All of these settings are contained under &quot;course_navigation&quot;</p>
+
+<ul>
+<li>url: &lt;url&gt; (optional)</li>
+</ul>
+
+<p>This is the URL that will be POSTed to when users click the left tab. It can be the same as the tool&#39;s URL, or something different. Domain and URL matching are not enforced for course navigation links. In order to prevent security warnings for users, it is recommended that this URL be over SSL (https).
+  This is required if a url is not set on the main tool configuration.</p>
+
+<ul>
+<li>default: &#39;enabled&#39;, &#39;disabled&#39; (optional, &#39;enabled&#39; by default)</li>
+</ul>
+
+<p>This specifies whether the link is turned on or off by default for courses. Course administrators will see the link appear in Settings just like any other link, and can explicitly order, enable and disable the link from there.</p>
+
+<ul>
+<li>visibility: &#39;public&#39;, &#39;members&#39;, &#39;admins&#39; (optional, &#39;public&#39; by default)</li>
+</ul>
+
+<p>This specifies what types of users will see the link in the course navigation. &quot;public&quot; means anyone accessing the course, &quot;members&quot; means only users enrolled in the course, and &quot;admins&quot; means only Teachers, TAs, Designers and account admins will see the link.</p>
+
+<ul>
+<li>text: &lt;text&gt; (optional)</li>
+</ul>
+
+<p>This is the default text that will be shown in the left hand navigation as the text of the link. This can be overridden by language-specific settings if desired by using the labels setting.
+  This is required if a text value is not set on the main tool configuration.</p>
+
+<ul>
+<li>labels: &lt;set of locale-label pairs&gt; (optional)</li>
+</ul>
+
+<p>This can be used to specify different label names for different locales. For example, if an institution supports both English and Spanish interfaces, the text in the link should change depending on the language being displayed. This option lets you support multiple languages for a single tool.</p>
+
+<ul>
+<li>enabled: &lt;boolean&gt; (required)</li>
+</ul>
+
+<p>Whether to enable this selection feature.</p>
+
+<ul>
+<li>display_type &lt;text&gt; (optional)</li>
+</ul>
+
+<p>The layout type to use when launching the tool. Must be one of the following:</p>
+
+<p><ul style="list-style-type: circle;margin-left: 1em">
+    <li>default
+      <p>Includes Canvas global navigation, breadcrumb, and course navigation.</p>
+    </li>
+    <li>full_width
+      <p>Includes Canvas global navigation but does not include breadcrumb or course navigation.</p>
+    </li>
+    <li>full_width_in_context
+      <p>Includes Canvas global_navigation, breadcrumb, and course navigation, and gives the tool access to the rest of the horizontal screen width.</p>
+    </li>
+    <li>full_width_with_nav
+      <p>Includes Canvas global_navigation, breadcrumb, and course navigation, and gives the tool access to the rest of the horizontal screen width.</p>
+    </li>
+    <li>in_nav_context
+      <p>Includes Canvas global_navigation, breadcrumbs, and course navigation.</p>
+    </li>
+    <li>borderless
+      <p>Does not include Canvas global_navigation, course navigation, or breadcrumbs.</p>
+    </li>
+  </ul></p>
+
+<ul>
+<li>windowTarget: _blank (optional)</li>
+</ul>
+
+<p>When set to _blank, the windowTarget property allows you to configure a launch to happen in a new tab instead of in an iframe. Omit this if you want to launch in frame.</p>
+
+<h1 id="account-navigation-links">Account navigation links <a name="account_navigation"></a></h1>
+
+<p>External tools can also be configured to appear as links in account-level navigation. If the tool is configured on an account, administrators in that account and any of its sub-accounts will see the link in their account navigation.</p>
+
+<h3 id="configuring">Configuring</h3>
+
+<p>Refer to the <a href="#course_navigation">Course Navigation Placement&#39;s</a> configuring section and simply replace <strong>course_navigation</strong> with <strong>account_navigation</strong>.</p>
+
+<h3 id="advantages">Advantages</h3>
+
+<p>Once configured, the account_navigation placement surfaces the LTI launch point in the account/sub-account navigation menu. This placement works well for:</p>
+
+<ul>
+<li>Account-level reporting and analytics tools</li>
+<li>Management of account-level tool resources or settings</li>
+<li>Canvas-to-app SSO</li>
+<li>Allowing admins to complete an <a href="file.oauth.html#accessing-canvas-api" target="_blank">OAuth2 flow</a> so a tool can run API requests on their behalf.</li>
+</ul>
+
+<h3 id="limitations-challenges">Limitations/Challenges</h3>
+
+<ul>
+<li>This placement does not provide any course or resource level context in the Launch.</li>
+<li>This is primarily a one-way launch; returning data to Canvas requires using Canvas API.</li>
+</ul>
+
+<h3 id="workflow">Workflow</h3>
+
+<ol>
+<li>After configuring an account navigation tool, the admin navigates to the account.</li>
+<li>Then, they click the LTI link in the account navigation menu.</li>
+<li>The tool consumes the LTI launch and renders the application.</li>
+</ol>
+
+<h3 id="settings">Settings</h3>
+
+<p>All of these settings are contained under &quot;account_navigation&quot;</p>
+
+<ul>
+<li>url: &lt;url&gt; (optional)</li>
+</ul>
+
+<p>This is the URL that will be POSTed to when users click the left tab. It can be the same as the tool&#39;s URL, or something different. Domain and URL matching are not enforced for account navigation links. In order to prevent security warnings for users, it is recommended that this URL be over SSL (https).
+  This is required if a url is not set on the main tool configuration.</p>
+
+<ul>
+<li>text: &lt;text&gt; (optional)</li>
+</ul>
+
+<p>This is the default text that will be shown in the left-hand navigation as the text of the link. This can be overridden by language-specific settings if desired by using the labels setting.
+  This is required if a text value is not set on the main tool configuration.</p>
+
+<ul>
+<li>labels: &lt;set of locale-label pairs&gt; (optional)</li>
+</ul>
+
+<p>This can be used to specify different label names for different locales. For example, if an institution supports both English and Spanish interfaces, the text in the link should change depending on the language being displayed. This option lets you support multiple languages for a single tool.</p>
+
+<ul>
+<li>enabled: &lt;boolean&gt; (required)</li>
+</ul>
+
+<p>Whether to enable this selection feature.</p>
+
+<ul>
+<li>display_type &lt;text&gt; (optional)</li>
+</ul>
+
+<p>The layout type to use when launching the tool. Must be one of the following:</p>
+
+<p><ul style="list-style-type: circle;margin-left: 1em">
+    <li>default
+      <p>Includes Canvas global navigation, breadcrumb, and account navigation.</p>
+    </li>
+    <li>full_width
+      <p>Includes Canvas global navigation but does not include breadcrumb or account navigation. This is the default and recommended display type for global navigation.</p>
+    </li>
+    <li>full_width_in_context
+      <p>Includes Canvas global navigation, breadcrumb, and account navigation, and gives the tool access to the rest of the horizontal screen width.</p>
+    </li>
+    <li>full_width_with_nav
+      <p>Includes Canvas global navigation, breadcrumb, and account navigation, and gives the tool access to the rest of the horizontal screen width.</p>
+    </li>
+    <li>in_nav_context
+      <p>Includes Canvas global navigation, breadcrumbs, and course navigation.</p>
+    </li>
+    <li>borderless
+      <p>Does not include Canvas global navigation, account navigation, or breadcrumbs.</p>
+    </li>
+  </ul></p>
+
+<ul>
+<li>windowTarget: _blank (optional)</li>
+</ul>
+
+<p>When set to _blank, the windowTarget property allows you to configure a launch to happen in a new tab instead of in an iframe. Omit this if you want to launch in frame.</p>
+
+<ul>
+<li>root_account_only: &lt;boolean&gt; (optional)</li>
+</ul>
+
+<p>If set to true, the tool will not be shown in the account navigation for subaccounts. Defaults to false (show in root account and all subaccounts).</p>
+
+<h1 id="user-navigation-links">User navigation links <a name="user_navigation"></a></h1>
+
+<p>External tools can also be configured to appear as links in user-level navigation. If the tool is configured on a root account, all users logged in to that account will see the link in their profile navigation by default.</p>
+
+<h3 id="configuring">Configuring</h3>
+
+<p>Refer to the <a href="#course_navigation">Course Navigation Placement&#39;s</a> configuring section and simply replace <strong>course_navigation</strong> with <strong>user_navigation</strong>.</p>
+
+<p>User navigation links will only work if they are configured at the <strong>root account level</strong>.</p>
+
+<h3 id="advantages">Advantages</h3>
+
+<p>Once configured, the user_navigation placement surfaces the LTI launch point in the users &quot;Account&quot; slide-out tray. This placement works well for:</p>
+
+<ul>
+<li>Student Planners</li>
+<li>Portfolio Management</li>
+<li>Management of user-level resources in an external application</li>
+<li>Canvas-to-app SSO</li>
+<li>User-level analytics or tool settings</li>
+<li>Allowing users to complete an <a href="file.oauth.html#accessing-canvas-api" target="_blank">OAuth2 flow</a> so a tool can run API requests on their behalf.</li>
+</ul>
+
+<h3 id="limitations-challenges">Limitations/Challenges</h3>
+
+<ul>
+<li>This placement does not provide any course or resource level context in the Launch.</li>
+<li>This is primarily a one-way launch. Returning data to Canvas requires using Canvas API.</li>
+</ul>
+
+<h3 id="workflow">Workflow</h3>
+
+<ol>
+<li>After configuring, the user clicks on the &quot;Account&quot; icon from the global navigation side-bar.</li>
+<li>Then, they click the LTI link in the tray that slides out.</li>
+<li>The tool consumes the LTI launch and renders their application.</li>
+</ol>
+
+<h3 id="settings">Settings</h3>
+
+<p>All of these settings are contained under &quot;user_navigation&quot;</p>
+
+<ul>
+<li>url: &lt;url&gt; (optional)</li>
+</ul>
+
+<p>This is the URL that will be POSTed to when users click the left tab. It can be the same as the tool&#39;s URL, or something different. Domain and URL matching are not enforced for user navigation links. In order to prevent security warnings for users, it is recommended that this URL be over SSL (https).
+  This is required if a url is not set on the main tool configuration.</p>
+
+<ul>
+<li>text: &lt;text&gt; (optional)</li>
+</ul>
+
+<p>This is the default text that will be shown in the left hand navigation as the text of the link. This can be overridden by language-specific settings if desired by using the labels setting.
+  This is required if a text value is not set on the main tool configuration.</p>
+
+<ul>
+<li>labels: &lt;set of locale-label pairs&gt; (optional)</li>
+</ul>
+
+<p>This can be used to specify different label names for different locales. For example, if an institution supports both English and Spanish interfaces, the text in the link should change depending on the language being displayed. This option lets you support multiple languages for a single tool.</p>
+
+<ul>
+<li>enabled: &lt;boolean&gt; (required)</li>
+</ul>
+
+<p>Whether to enable this selection feature.</p>
+
+<ul>
+<li>visibility: &#39;public&#39;, &#39;members&#39;, &#39;admins&#39; (optional, &#39;public&#39; by default)</li>
+</ul>
+
+<p>This specifies what types of users will see the link in the user navigation. &quot;public&quot; and &quot;members&quot; means anyone will see it, and &quot;admins&quot; means only account admins will see the link.</p>
+
+<h1 id="top-navigation-placement">Top Navigation Placement <a name="top_navigation"></a></h1>
+
+<p>External tools can be configured to appear in the Top Navigation menu and will launch in a drawer alongside the Canvas content. A preview of this can be seen in <a href="file.placements_overview.html">Placements Overview</a>.</p>
+
+<h3 id="configuring">Configuring</h3>
+
+<p>To use the top navigation placement, the following requirements must be met:</p>
+
+<ul>
+<li>The feature flag top_navigation_placement needs to be enabled.</li>
+<li>The tool that will use the placement must be added to the allow list for the placement either by Global Developer Key ID or by the Launch Domain.</li>
+<li>The tool is configured with a placement entry for top_navigation.</li>
+</ul>
+
+<p>The tool will then show up in the Top Navigation tool menu with both the icon_url and text properties. If no icon_url is provided, a default icon generated from the first letter of the tool title will be used instead. Up to two tools can also be &quot;pinned&quot; which promotes them from the Tool Menu to a dedicated button (icon only) alongside the menu. This pinning is done per Account and can be managed by a user with manage tools permission in the Apps tab of the account settings.</p>
+
+<p>Please contact your CSM (Customers) or <a href="mailto:dev-relations@instructure.com">Developer Relations</a> (Partners) to inquire about adding your tool to the allow list.</p>
+
+<h3 id="settings">Settings</h3>
+
+<p>All of these settings are present for the <strong>top_navigation</strong> placement:</p>
+
+<ul>
+<li>url: &lt;url&gt; (required if not set on main tool configuration)</li>
+</ul>
+
+<p>This is the URL that will be POSTed to when users click the launch button. It can be the same as the tool&#39;s URL, or something different. Domain and URL matching are not enforced for top_navigation launches. In order to prevent security warnings for users, it is recommended that URLs be over SSL (https).
+  This setting is required if a url is not set on the main tool configuration.</p>
+
+<ul>
+<li>text: &lt;text&gt; (required if not set on main tool configuration)</li>
+</ul>
+
+<p>This is the default text that will be shown on the hover-over tip and menu entry.</p>
+
+<ul>
+<li>icon_url &lt;url&gt; (optional)</li>
+</ul>
+
+<p>The URL for an icon that identifies your tool in the toolbar. The icon will be shown at 16x16 pixels. It is recommended that this icon be in PNG or SVG format. The url must be an https (SSL) URL.</p>
+
+<p>If a tool does not provide an icon_url on the, a default icon based on the first letter of the tool&#39;s name will be used.</p>
+
+<ul>
+<li>selection_width: &lt;pixels&gt; (optional)</li>
+</ul>
+
+<p>This currently has no effect as the Drawer size is a fixed width of 320px.</p>
+
+<ul>
+<li>selection_height: &lt;pixels&gt; (optional)</li>
+</ul>
+
+<p>This currently has no effect as the Drawer height is fixed to the available space of the browser viewport minus the tool title header and close button.</p>
+
+<h3 id="post-message-api">Post Message API</h3>
+
+<p>We have also introduced two new postMessage functions to enhance the Top Navigation placement. The first, <strong>lti.getPageContent</strong>, allows an LTI tool to request the content of the current page, providing valuable context data directly from the front end without the need for a REST API call. The second, <strong>lti.getPageSettings</strong>, returns an object containing locale, timezone, and theme information, enabling tools to match Canvas&#39;s appearance for improved accessibility and cohesion.</p>
+
+<p>Currently, only <code>Assignments</code> and <code>Wiki Pages</code> are supported by getPageContent, but support for additional pages is planned. Further documentation for making use of Canvas Post Message functions is located in the Using window.postMessage in LTI Tools section of the Canvas REST API and Extensions Documentation.</p>
+
+<h4 id="security">Security</h4>
+
+<p>To control access to the <strong>lti.getPageContent</strong> postMessage function, we have introduced a new LTI scope <code>https://canvas.instructure.com/lti/page_content/show</code>, tools without this scope will not be able to invoke the postMessage function.</p>
+</div></div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:39 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

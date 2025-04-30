@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Plagiarism Detection Platform Users API
+  version: 1.0.0
+paths:
+  /api/lti/users/{id}:
+    get:
+      summary: Get a single user (lti)
+      description: |
+        Get a single Canvas user by Canvas id or LTI id. Tool providers may only access users that have been assigned an assignment associated with their tool.
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          description: Canvas user id or LTI id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized – invalid or missing JWT access token
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+  /api/lti/groups/{group_id}/users:
+    get:
+      summary: Get all users in a group (lti)
+      description: |
+        Get all Canvas users in a group. Tool providers may only access groups that belong to the context the tool is installed in.
+      security:
+        - JWT: []
+      parameters:
+        - name: group_id
+          in: path
+          description: Canvas group id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of User objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized – invalid or missing JWT access token
+        '404':
+          description: Group not found
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      description: Canvas user object
+      externalDocs:
+        description: User schema
+        url: users.html#User
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message

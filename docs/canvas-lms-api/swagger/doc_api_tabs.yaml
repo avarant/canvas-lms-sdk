@@ -1,0 +1,256 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS Tabs API
+  version: 1.0.0
+servers:
+  - url: https://{canvas}/api/v1
+    variables:
+      canvas:
+        default: canvas.instructure.com
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Tab:
+      type: object
+      properties:
+        html_url:
+          type: string
+          description: URL to access the tab in the Canvas UI
+        id:
+          type: string
+          description: Unique identifier for the tab
+        label:
+          type: string
+          description: Display name of the tab
+        type:
+          type: string
+          description: Type of tab (e.g., internal or external)
+        hidden:
+          type: boolean
+          description: Whether the tab is hidden (only present if true)
+        visibility:
+          type: string
+          description: Who can see the tab
+          enum:
+            - public
+            - members
+            - admins
+            - none
+        position:
+          type: integer
+          description: Position of the tab in the navigation (1-based)
+      required:
+        - html_url
+        - id
+        - label
+        - type
+        - visibility
+        - position
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+paths:
+  /accounts/{account_id}/tabs:
+    get:
+      summary: List available tabs for an account
+      tags:
+        - Tabs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the account
+        - name: include[]
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - course_subject_tabs
+          description: >
+            "course_subject_tabs": Optional flag to return the tabs associated with a canvas_for_elementary subject course’s home page instead of the typical sidebar navigation.
+      responses:
+        '200':
+          description: A paginated list of navigation tabs available in the account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tab'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /courses/{course_id}/tabs:
+    get:
+      summary: List available tabs for a course
+      tags:
+        - Tabs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: include[]
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - course_subject_tabs
+          description: >
+            "course_subject_tabs": Optional flag to return the tabs associated with a canvas_for_elementary subject course’s home page instead of the typical sidebar navigation.
+      responses:
+        '200':
+          description: A paginated list of navigation tabs available in the course
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tab'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a tab for a course
+      tags:
+        - Tabs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - name: tab_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the tab to update
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                position:
+                  type: integer
+                  description: The new position of the tab (1-based)
+                hidden:
+                  type: boolean
+                  description: Whether the tab is hidden
+      responses:
+        '200':
+          description: The updated tab object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tab'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /groups/{group_id}/tabs:
+    get:
+      summary: List available tabs for a group
+      tags:
+        - Tabs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: group_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the group
+        - name: include[]
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - course_subject_tabs
+          description: >
+            "course_subject_tabs": Optional flag to return the tabs associated with a canvas_for_elementary subject course’s home page instead of the typical sidebar navigation.
+      responses:
+        '200':
+          description: A paginated list of navigation tabs available in the group
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tab'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/tabs:
+    get:
+      summary: List available tabs for a user
+      tags:
+        - Tabs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user
+        - name: include[]
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - course_subject_tabs
+          description: >
+            "course_subject_tabs": Optional flag to return the tabs associated with a canvas_for_elementary subject course’s home page instead of the typical sidebar navigation.
+      responses:
+        '200':
+          description: A paginated list of navigation tabs available for the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tab'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

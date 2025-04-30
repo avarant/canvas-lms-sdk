@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="UTF-8">
+<title># Using window.postMessage in LTI Tools
+ - Canvas LMS REST API Documentation</title>
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<link href="css/prettify.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+  // set up pretty-printing in static docs generated from .md files
+  $('pre.code.bash').addClass('prettyprint language-bash');
+  $('pre.code.html').addClass('prettyprint language-html');
+  $('pre.code.xml').addClass('prettyprint language-xml');
+  $('pre.code.json').addClass('prettyprint language-js');
+  $('pre.code.javascript').addClass('prettyprint language-js');
+  prettyPrint();
+});
+</script>
+
+  </head>
+  <body>
+
+    <div id="header">
+      <h1>
+  <a href="index.html">Canvas LMS - REST API and Extensions Documentation</a>
+</h1>
+    </div>
+
+    <div id="sidebar">
+      <nav>
+
+  <div class="expand-all-toggle">
+    <input id="toggle-input" type="checkbox" onClick="toggle(this)">
+    <label for="toggle-input" class="toggle-label">Expand all</label>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-basics" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-basics">Basics</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.graphql.html">GraphQL</a><a class="" href="file.changelog.html">API Change Log</a><a class="" href="file.object_ids.html">SIS IDs</a><a class="" href="file.pagination.html">Pagination</a><a class="" href="file.throttling.html">Throttling</a><a class="" href="file.compound_documents.html">Compound Documents</a><a class="" href="file.file_uploads.html">File Uploads</a><a class="" href="file.endpoint_attributes.html">API Endpoint Attributes</a><a class="" href="file.masquerading.html">Masquerading</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    
+    <input name="header" class="ac-input" id="sidebar-oauth2" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-oauth2">OAuth2</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a class="" href="file.oauth.html">OAuth2 Overview</a><a class="" href="file.oauth_endpoints.html">OAuth2 Endpoints</a><a class="" href="file.developer_keys.html">Developer Keys</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-resources" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-resources">Resources</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="all_resources.html" class="">All Resources Reference</a>
+        
+          
+          <a class="" href="access_tokens.html">Access Tokens</a>
+        
+          
+          <a class="" href="account_calendars.html">Account Calendars</a>
+        
+          
+          <a class="" href="account_domain_lookups.html">Account Domain Lookups</a>
+        
+          
+          <a class="" href="account_notifications.html">Account Notifications</a>
+        
+          
+          <a class="" href="account_reports.html">Account Reports</a>
+        
+          
+          <a class="" href="accounts.html">Accounts</a>
+        
+          
+          <a class="" href="accounts_(lti).html">Accounts (LTI)</a>
+        
+          
+          <a class="" href="admins.html">Admins</a>
+        
+          
+          <a class="" href="analytics.html">Analytics</a>
+        
+          
+          <a class="" href="announcement_external_feeds.html">Announcement External Feeds</a>
+        
+          
+          <a class="" href="announcements.html">Announcements</a>
+        
+          
+          <a class="" href="api_token_scopes.html">API Token Scopes</a>
+        
+          
+          <a class="" href="appointment_groups.html">Appointment Groups</a>
+        
+          
+          <a class="" href="assignment_extensions.html">Assignment Extensions</a>
+        
+          
+          <a class="" href="assignment_groups.html">Assignment Groups</a>
+        
+          
+          <a class="" href="assignments.html">Assignments</a>
+        
+          
+          <a class="" href="authentication_providers.html">Authentication Providers</a>
+        
+          
+          <a class="" href="authentications_log.html">Authentications Log</a>
+        
+          
+          <a class="" href="blackout_dates.html">Blackout Dates</a>
+        
+          
+          <a class="" href="block_editor_template.html">BlockEditorTemplate</a>
+        
+          
+          <a class="" href="blueprint_courses.html">Blueprint Courses</a>
+        
+          
+          <a class="" href="bookmarks.html">Bookmarks</a>
+        
+          
+          <a class="" href="brand_configs.html">Brand Configs</a>
+        
+          
+          <a class="" href="calendar_events.html">Calendar Events</a>
+        
+          
+          <a class="" href="collaborations.html">Collaborations</a>
+        
+          
+          <a class="" href="comm_messages.html">CommMessages</a>
+        
+          
+          <a class="" href="communication_channels.html">Communication Channels</a>
+        
+          
+          <a class="" href="conferences.html">Conferences</a>
+        
+          
+          <a class="" href="content_exports.html">Content Exports</a>
+        
+          
+          <a class="" href="content_migrations.html">Content Migrations</a>
+        
+          
+          <a class="" href="content_security_policy_settings.html">Content Security Policy Settings</a>
+        
+          
+          <a class="" href="content_shares.html">Content Shares</a>
+        
+          
+          <a class="" href="conversations.html">Conversations</a>
+        
+          
+          <a class="" href="course_audit_log.html">Course Audit log</a>
+        
+          
+          <a class="" href="course_pace.html">Course Pace</a>
+        
+          
+          <a class="" href="course_quiz_extensions.html">Course Quiz Extensions</a>
+        
+          
+          <a class="" href="course_reports.html">Course Reports</a>
+        
+          
+          <a class="" href="courses.html">Courses</a>
+        
+          
+          <a class="" href="custom_gradebook_columns.html">Custom Gradebook Columns</a>
+        
+          
+          <a class="" href="developer_key_account_bindings.html">Developer Key Account Bindings</a>
+        
+          
+          <a class="" href="developer_keys.html">Developer Keys</a>
+        
+          
+          <a class="" href="discussion_topics.html">Discussion Topics</a>
+        
+          
+          <a class="" href="enrollment_terms.html">Enrollment Terms</a>
+        
+          
+          <a class="" href="enrollments.html">Enrollments</a>
+        
+          
+          <a class="" href="e_portfolios.html">ePortfolios</a>
+        
+          
+          <a class="" href="e_pub_exports.html">ePub Exports</a>
+        
+          
+          <a class="" href="error_reports.html">Error Reports</a>
+        
+          
+          <a class="" href="external_tools.html">External Tools</a>
+        
+          
+          <a class="" href="favorites.html">Favorites</a>
+        
+          
+          <a class="" href="feature_flags.html">Feature Flags</a>
+        
+          
+          <a class="" href="files.html">Files</a>
+        
+          
+          <a class="" href="grade_change_log.html">Grade Change Log</a>
+        
+          
+          <a class="" href="gradebook_history.html">Gradebook History</a>
+        
+          
+          <a class="" href="grading_period_sets.html">Grading Period Sets</a>
+        
+          
+          <a class="" href="grading_periods.html">Grading Periods</a>
+        
+          
+          <a class="" href="grading_standards.html">Grading Standards</a>
+        
+          
+          <a class="" href="group_categories.html">Group Categories</a>
+        
+          
+          <a class="" href="groups.html">Groups</a>
+        
+          
+          <a class="" href="history.html">History</a>
+        
+          
+          <a class="" href="inst_access_tokens.html">InstAccess tokens</a>
+        
+          
+          <a class="" href="jw_ts.html">JWTs</a>
+        
+          
+          <a class="" href="late_policy.html">Late Policy</a>
+        
+          
+          <a class="" href="learning_object_dates.html">Learning Object Dates</a>
+        
+          
+          <a class="" href="line_items.html">Line Items</a>
+        
+          
+          <a class="" href="live_assessments.html">LiveAssessments</a>
+        
+          
+          <a class="" href="logins.html">Logins</a>
+        
+          
+          <a class="" href="lti_launch_definitions.html">LTI Launch Definitions</a>
+        
+          
+          <a class="" href="lti_registrations.html">LTI Registrations</a>
+        
+          
+          <a class="" href="lti_resource_links.html">LTI Resource Links</a>
+        
+          
+          <a class="" href="media_objects.html">Media Objects</a>
+        
+          
+          <a class="" href="moderated_grading.html">Moderated Grading</a>
+        
+          
+          <a class="" href="modules.html">Modules</a>
+        
+          
+          <a class="" href="names_and_role.html">Names and Role</a>
+        
+          
+          <a class="" href="new_quiz_items.html">New Quiz Items</a>
+        
+          
+          <a class="" href="new_quizzes.html">New Quizzes</a>
+        
+          
+          <a class="" href="new_quizzes_accommodations.html">New Quizzes Accommodations</a>
+        
+          
+          <a class="" href="new_quizzes_reports.html">New Quizzes Reports</a>
+        
+          
+          <a class="" href="notification_preferences.html">Notification Preferences</a>
+        
+          
+          <a class="" href="originality_reports.html">Originality Reports</a>
+        
+          
+          <a class="" href="outcome_groups.html">Outcome Groups</a>
+        
+          
+          <a class="" href="outcome_imports.html">Outcome Imports</a>
+        
+          
+          <a class="" href="outcome_results.html">Outcome Results</a>
+        
+          
+          <a class="" href="outcomes.html">Outcomes</a>
+        
+          
+          <a class="" href="pages.html">Pages</a>
+        
+          
+          <a class="" href="peer_reviews.html">Peer Reviews</a>
+        
+          
+          
+          
+          
+          <a class="" href="planner.html">Planner</a>
+        
+          
+          <a class="" href="poll_sessions.html">Poll Sessions</a>
+        
+          
+          <a class="" href="poll_choices.html">PollChoices</a>
+        
+          
+          <a class="" href="polls.html">Polls</a>
+        
+          
+          <a class="" href="poll_submissions.html">PollSubmissions</a>
+        
+          
+          <a class="" href="proficiency_ratings.html">Proficiency Ratings</a>
+        
+          
+          <a class="" href="progress.html">Progress</a>
+        
+          
+          <a class="" href="public_jwk.html">Public JWK</a>
+        
+          
+          <a class="" href="quiz_assignment_overrides.html">Quiz Assignment Overrides</a>
+        
+          
+          <a class="" href="quiz_extensions.html">Quiz Extensions</a>
+        
+          
+          <a class="" href="quiz_ip_filters.html">Quiz IP Filters</a>
+        
+          
+          <a class="" href="quiz_question_groups.html">Quiz Question Groups</a>
+        
+          
+          <a class="" href="quiz_questions.html">Quiz Questions</a>
+        
+          
+          <a class="" href="quiz_reports.html">Quiz Reports</a>
+        
+          
+          <a class="" href="quiz_statistics.html">Quiz Statistics</a>
+        
+          
+          <a class="" href="quiz_submission_events.html">Quiz Submission Events</a>
+        
+          
+          <a class="" href="quiz_submission_files.html">Quiz Submission Files</a>
+        
+          
+          <a class="" href="quiz_submission_questions.html">Quiz Submission Questions</a>
+        
+          
+          <a class="" href="quiz_submission_user_list.html">Quiz Submission User List</a>
+        
+          
+          <a class="" href="quiz_submissions.html">Quiz Submissions</a>
+        
+          
+          <a class="" href="quizzes.html">Quizzes</a>
+        
+          
+          <a class="" href="result.html">Result</a>
+        
+          
+          <a class="" href="roles.html">Roles</a>
+        
+          
+          <a class="" href="rubrics.html">Rubrics</a>
+        
+          
+          <a class="" href="sandboxes.html">Sandboxes</a>
+        
+          
+          <a class="" href="score.html">Score</a>
+        
+          
+          <a class="" href="search.html">Search</a>
+        
+          
+          <a class="" href="sections.html">Sections</a>
+        
+          
+          <a class="" href="services.html">Services</a>
+        
+          
+          <a class="" href="shared_brand_configs.html">Shared Brand Configs</a>
+        
+          
+          <a class="" href="sis_import_errors.html">SIS Import Errors</a>
+        
+          
+          <a class="" href="sis_imports.html">SIS Imports</a>
+        
+          
+          <a class="" href="sis_integration.html">SIS Integration</a>
+        
+          
+          <a class="" href="smart_search.html">Smart Search</a>
+        
+          
+          <a class="" href="submission_comments.html">Submission Comments</a>
+        
+          
+          <a class="" href="submissions.html">Submissions</a>
+        
+          
+          <a class="" href="tabs.html">Tabs</a>
+        
+          
+          <a class="" href="temporary_enrollment_pairings.html">Temporary Enrollment Pairings</a>
+        
+          
+          <a class="" href="user_observees.html">User Observees</a>
+        
+          
+          <a class="" href="users.html">Users</a>
+        
+          
+          
+          <a class="" href="what_if_grades.html">What If Grades</a>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-outcomes" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-outcomes">Outcomes</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.outcomes_csv.html" class="">Outcomes CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-groupCategories" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-groupCategories">Group Categories</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.group_category_csv.html" class="">Group Categories CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+    <input name="header" class="ac-input" id="sidebar-sis" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-sis">SIS</label>
+    <div class="ac-text">
+      <div class="ac-sub">
+        <a href="file.sis_csv.html" class="">SIS CSV Format</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+    
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+      
+
+    <input name="header" class="ac-input" id="sidebar-externalTools" type="checkbox"
+      checked
+    >
+    <label class="ac-label" for="sidebar-externalTools">External Tools</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-lti" type="checkbox"
+          checked
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-lti">LTI</label>
+        <div class="ac-sub-text">
+          <a class="" href="file.tools_intro.html">Introduction</a><a class="" href="file.registration.html">Registration</a><a class="" href="file.lti_launch_overview.html">Launch Overview</a><a class="" href="file.lti_dev_key_config.html">Configuring</a><a class="" href="file.tools_variable_substitutions.html">Variable Substitutions</a><a class="" href="file.content_item.html">Deep Linking</a><a class="" href="file.assignment_tools.html">Grading</a><a class="" href="file.provisioning.html">Provisioning</a><a class="current" href="">PostMessage</a><a class="" href="file.pns.html">Platform Notification Service</a>
+
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-externalTools-lti-placements" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-externalTools-lti-placements">Placements</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.placements_overview.html">Placements Overview</a><a class="" href="file.navigation_tools.html">Navigation</a><a class="" href="file.homework_submission_placement.html">Homework Submission</a><a class="" href="file.editor_button_placement.html">Editor Button</a><a class="" href="file.migration_selection_placement.html">Migration Selection</a><a class="" href="file.link_selection_placement.html">Link Selection (Modules)</a><a class="" href="file.assignment_selection_placement.html">Assignment Selection</a><a class="" href="file.collaborations_placement.html">Collaborations</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <a href="file.xapi.html" class="">xAPI</a>
+      <a href="file.canvas_roles.html" class="">Canvas Roles</a>
+
+    </div>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-externalTools-plagiarism" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-externalTools-plagiarism">Plagiarism Detection Platform</label>
+        <div class="ac-sub-text">
+          <a href="file.plagiarism_platform.html" class="">Overview</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="plagiarism_detection_platform_assignments.html">Plagiarism Detection Platform Assignments</a>
+          
+            
+            <a class="" href="plagiarism_detection_platform_users.html">Plagiarism Detection Platform Users</a>
+          
+            
+            <a class="" href="plagiarism_detection_submissions.html">Plagiarism Detection Submissions</a>
+          
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <a class="" href="webhooks_subscriptions_for_plagiarism_platform.html">Webhooks Subscriptions for Plagiarism Platform</a>
+          
+            
+          <a href="file.jwt_access_tokens.html" class="">JWT Access Tokens</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ac-container">
+
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    <input name="header" class="ac-input" id="sidebar-dataServices" type="checkbox"
+      
+    >
+    <label class="ac-label" for="sidebar-dataServices">Data Services</label>
+
+    <div class="ac-text">
+      <div class="ac-sub">
+        <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents" type="checkbox"
+          
+        >
+        <label class="ac-label level1-label" for="sidebar-dataServices-liveEvents">Live Events</label>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-overview" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-overview">Overview</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_introduction.html">Introduction</a><a class="" href="file.data_service_setup.html">Setup</a><a class="" href="file.data_service_caliper_structure.html">Caliper</a><a class="" href="file.data_service_canvas_event_metadata.html">Metadata</a>
+            </div>
+          </div>
+          <span class="sub-label">Event Format</span>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-canvas" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-canvas">Canvas</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_canvas_account.html">Account</a><a class="" href="file.data_service_canvas_asset.html">Asset</a><a class="" href="file.data_service_canvas_assignment.html">Assignment</a><a class="" href="file.data_service_canvas_attachment.html">Attachment</a><a class="" href="file.data_service_canvas_content.html">Content</a><a class="" href="file.data_service_canvas_conversation.html">Conversation</a><a class="" href="file.data_service_canvas_course.html">Course</a><a class="" href="file.data_service_canvas_discussion.html">Discussion</a><a class="" href="file.data_service_canvas_enrollment.html">Enrollment</a><a class="" href="file.data_service_canvas_grade.html">Grade</a><a class="" href="file.data_service_canvas_group.html">Group</a><a class="" href="file.data_service_canvas_learning.html">Learning</a><a class="" href="file.data_service_canvas_logged.html">Logged</a><a class="" href="file.data_service_canvas_module.html">Module</a><a class="" href="file.data_service_canvas_outcome.html">Outcome</a><a class="" href="file.data_service_canvas_outcomes.html">Outcomes</a><a class="" href="file.data_service_canvas_plagiarism.html">Plagiarism</a><a class="" href="file.data_service_canvas_quiz.html">Quiz</a><a class="" href="file.data_service_canvas_rubric.html">Rubric</a><a class="" href="file.data_service_canvas_sis.html">Sis</a><a class="" href="file.data_service_canvas_submission.html">Submission</a><a class="" href="file.data_service_canvas_syllabus.html">Syllabus</a><a class="" href="file.data_service_canvas_user.html">User</a><a class="" href="file.data_service_canvas_wiki.html">Wiki</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-sub-text">
+          <div class="ac-sub">
+            <input name="header" class="ac-input" id="sidebar-dataServices-liveEvents-eventFormat-caliper" type="checkbox"
+              
+            >
+            <label class="ac-label level2-label" for="sidebar-dataServices-liveEvents-eventFormat-caliper">Caliper IMS 1.1</label>
+            <div class="ac-sub-text-nested">
+              <a class="" href="file.data_service_caliper_assessment.html">Assessment</a><a class="" href="file.data_service_caliper_basic.html">Basic</a><a class="" href="file.data_service_caliper_forum.html">Forum</a><a class="" href="file.data_service_caliper_grading.html">Grading</a><a class="" href="file.data_service_caliper_navigation_events.html">Navigation Events</a><a class="" href="file.data_service_caliper_session.html">Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-trailing-background"></div>
+
+  <script>
+    function toggle(source) {
+      let expandText = document.querySelector('label[for="toggle-input"]')
+      let isChecked = document.querySelector('input[id="toggle-input"]').checked
+      let checkboxes = document.querySelectorAll('input[name="header"]');
+      checkboxes.forEach(checkbox => {
+        if (checkbox !== source) {
+          checkbox.checked = source.checked
+        }
+      });
+      expandText.innerHTML = isChecked ? 'Collapse all' : 'Expand all'
+    }
+  </script>
+
+</nav>
+
+    </div>
+
+    <div id="content"><div id='filecontents'><h1 id="using-window-postmessage-in-lti-tools">Using window.postMessage in LTI Tools</h1>
+
+<p>Canvas listens for events sent through the <code>window.postMessage</code> Javascript
+API (docs <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" target="_blank">here</a>)
+from LTI tools and other children rendered in iframes or opened in new tabs/windows. Tools
+can send various types of events to resize windows, launch in new windows, or other
+functionality. Note that this is not part of the LTI specification, and is Canvas-specific.
+In addition, these messages are not currently supported by any of the Canvas mobile apps, only
+the web version of Canvas.</p>
+
+<p>The data sent to <code>window.postMessage</code> can be of any type, and each message type looks for different
+data. Most data is sent as an object with a <code>subject</code> property.</p>
+
+<p>Some of these message handlers require the presence of a <code>token</code>, which identifies the tool launch.
+This token is present in the launch as a custom variable, <code>$com.instructure.PostMessageToken</code>, and
+should be passed in postMessage calls if it&#39;s present.</p>
+
+<h3 id="message-recipient">Message Recipient</h3>
+
+<p><strong>Note: Previous versions of this documentation recommended always sending messages to <code>window.top</code>.</strong>
+<strong>This is no longer recommended, as tools should target the parent window they are embedded in.</strong></p>
+
+<p>If the LTI tool is launched in a iframe, as is most common, then postMessages should be sent to the window
+embedding the LTI tool (usually accessible by <code>window.parent</code>). However, if the tool is launched in a new tab,
+window, or popup, then postMessages should be directed to <code>window.opener</code>. The examples will use <code>window.parent</code>,
+but in practice, the target recipient can sometimes also be <code>window.opener</code>.</p>
+
+<p>The LTI Platform Storage messages (<code>lti.get_data</code> and <code>lti.put_data</code>) should be sent to either the
+direct parent frame, or to a named frame that will be present in <code>window.parent.frames</code>. If this
+named frame is present, it will be returned in the <code>lti.capabilities.response</code> message and
+also present in the <code>lti_storage_target</code> body parameter in the LTI 1.3 Login and Launch requests.
+This is also defined in the <a href="https://www.imsglobal.org/spec/lti-cs-pm/v0p1#target-frame">Platform Storage spec</a>.</p>
+
+<h3 id="message-responses">Message Responses</h3>
+
+<p>Most message handlers will respond with a postMessage with a subject that matches the intial subject,
+with <code>.response</code> appended. If an error occurs during message handling, the response postMessage will
+contain an <code>error</code> property with a <code>code</code> and a <code>message</code>.</p>
+
+<p>Sample code for receiving the response messages:</p>
+
+<pre class="code js"><code class="js">window.addEventListener(&#39;message&#39;, function (event) {
+  // Process response
+})
+</code></pre>
+
+<p>Messages sent by a tool that has been launched from a Canvas mobile app will not receive any response messages.</p>
+
+<h1 id="message-types">Message Types</h1>
+
+<h2 id="lti-capabilities">lti.capabilities</h2>
+
+<p>Responds with a list of subjects that Canvas will respond to, and if necessary the named
+frame to address each subject to. Part of the LTI Platform Storage spec, defined
+<a href="https://www.imsglobal.org/spec/lti-cs-pm/v0p1#capabilities-request-postmessage">here</a>.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.capabilities&quot;</li>
+</ul>
+
+<p>Returning postMessage includes the following properties:</p>
+
+<ul>
+<li>subject: &quot;lti.capabilities&quot;</li>
+<li>supported_messages: array of supported message types with these properties:
+
+<ul>
+<li>subject: the string name of each message type</li>
+<li>frame: (optional) the named frame on the parent window to which postMessages should be sent</li>
+</ul></li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.capabilities&#39;}, &#39;*&#39;)
+</code></pre>
+
+<h2 id="lti-getpagecontent">lti.getPageContent</h2>
+
+<p>Responds with an html object containing page content. This will contain all markup and children elements of the main content area of the page. Some content may be filtered from this response. The scope <code>https://canvas.instructure.com/lti/page_content/show</code> is required to use this functionality. Currently, only <code>Assignments</code> and <code>Wiki Pages</code> are supported by getPageContent, but support for additional pages is planned.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.getPageContent&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.getPageContent&#39;}, &#39;*&#39;)
+</code></pre>
+
+<p>Returning postMessage includes the following properties:</p>
+
+<ul>
+<li>subject: &quot;lti.getPageContent&quot;</li>
+<li>pageContent: a string containing HTML</li>
+</ul>
+
+<pre class="code js"><code class="js">{
+  subject: &#39;lti.getPageContent.response&#39;,
+  content: &#39;&lt;div&gt;...&lt;/div&gt;&#39;
+}
+</code></pre>
+
+<h2 id="lti-getpagesettings">lti.getPageSettings</h2>
+
+<p>Responds with an object containing page settings. This includes the current locale, time zome, contrast settings, url to the active branding configuration file, and the width of the parent (Canvas) window.
+This is the same json file url provided by the <a href="brand_configs.html">Brand Configs API</a>.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.getPageSettings&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.getPageSettings&#39;}, &#39;*&#39;)
+</code></pre>
+
+<p>Returning postMessage includes the following properties:</p>
+
+<ul>
+<li>subject: &quot;lti.getPageSettings&quot;</li>
+<li>pageSettings: an object containing the following keys:
+
+<ul>
+<li>locale</li>
+<li>time_zone</li>
+<li>use_high_contrast</li>
+<li>active_brand_config_json_url</li>
+<li>window_width</li>
+</ul></li>
+</ul>
+
+<pre class="code js"><code class="js">{
+  pageSettings: {
+    locale: &#39;en&#39;,
+    time_zone: &#39;Etc/UTC&#39;,
+    use_high_contrast: false,
+    active_brand_config_json_url: &#39;https://du11hjcvx0uqb.cloudfront.net/dist/brandable_css/default/variables-7dd4b80918af0e0218ec0229e4bd5873.json&#39;,
+    window_width: 1024
+  }
+}
+</code></pre>
+
+<h2 id="lti-put_data">lti.put_data</h2>
+
+<p>Stores the provided <code>value</code> at the provided <code>key</code> in Canvas&#39;s <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localstorage</a>,
+partitioned by tool. Data stored by one tool cannot be accessed by another, is
+only stored in the user&#39;s browser, and is short-lived. Part of the LTI Platform Storage spec,
+defined <a href="https://www.imsglobal.org/spec/lti-pm-s/v0p1">here</a>.</p>
+
+<p>The spec requires that this message&#39;s target origin be set to the platform&#39;s OIDC Authorization url
+as defined <a href="file.lti_launch_overview.html#step-2">here</a>, so that the tool can be certain that Canvas
+is the entity receiving the message. To enable this feature, Canvas also requires that messages
+with this target origin are sent to the <code>post_message_forwarding</code> frame, which is a sibling frame to the tool.
+For now, tools are also still allowed to send this message directly to the parent window and use the wildcard <code>*</code> origin, although this does not conform to the spec.</p>
+
+<p>Support for this API is signalled using the <code>lti_storage_target</code> parameter, which is included in
+the LTI 1.3 login and launch requests. If this parameter absent, tools should use cookies instead
+of trying to use this postMessage. The default value for this parameter is <code>_parent</code>, which means
+messages should be sent to <code>window.parent</code>. When the value is something else (like <code>post_message_forwarding</code>),
+the tool should send message to the frame with that name present at <code>window.parent.frames[lti_storage_target]</code>.</p>
+
+<p><strong>Note:</strong> When a tool is launched from within an active RCE (Rich Content Editor) this sibling
+frame may not be available, since the RCE uses an iframe to represent the editor box. If the
+message sent to this frame using this origin doesn&#39;t receive a timely response, the tool should
+fall back to sending the message to the parent window using the wildcard <code>*</code> origin.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.put_data&quot;</li>
+<li>key: the string key to store <code>value</code> at</li>
+<li>value: the string to store at <code>key</code>, or <code>null</code> to remove an existing value</li>
+<li>message_id: any random string value. a UUID is easiest</li>
+</ul>
+
+<p>Returned postMessage includes the following properties:</p>
+
+<ul>
+<li>subject: &quot;lti.fetchWindowSize.response&quot;</li>
+<li>key: the same key provided in the initial message</li>
+<li>value: the same value provided in the initial message</li>
+<li>message_id: the same message_id provided in the initial message</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.frames[&#39;post_message_forwarding&#39;].postMessage(
+  {
+    subject: &#39;lti.put_data&#39;,
+    key: &#39;hello&#39;,
+    value: &#39;world&#39;,
+    message_id: &#39;14556a4f-e9af-43f7-bd1f-d3e260d05a9f&#39;,
+  },
+  &#39;http://sso.canvaslms.com&#39;
+)
+
+window.parent.postMessage(
+  {
+    subject: &#39;lti.put_data&#39;,
+    key: &#39;hello&#39;,
+    value: &#39;world&#39;,
+    message_id: &#39;14556a4f-e9af-43f7-bd1f-d3e260d05a9f&#39;,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-get_data">lti.get_data</h2>
+
+<p>Fetches the value stored at the provided <code>key</code> in Canvas&#39;s <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localstorage</a>,
+partitioned by tool. Data stored by one tool cannot be accessed by another, is
+only stored in the user&#39;s browser, and is short-lived. Part of the LTI Platform Storage spec,
+defined <a href="https://www.imsglobal.org/spec/lti-pm-s/v0p1">here</a>.</p>
+
+<p>The spec requires that this message&#39;s target origin be set to the platform&#39;s OIDC Authorization url
+as defined <a href="file.lti_launch_overview.html#step-2">here</a>, so that the tool can be certain that Canvas
+is the entity receiving the message. To enable this feature, Canvas also requires that messages
+with this target origin are sent to the <code>post_message_forwarding</code> frame, which is a sibling frame to the tool.
+For now, tools are also still allowed to send this message directly to the parent window and use the wildcard <code>*</code> origin, although this does not conform to the spec.</p>
+
+<p>Support for this API is signalled using the <code>lti_storage_target</code> parameter, which is included in
+the LTI 1.3 login and launch requests. If this parameter absent, tools should use cookies instead
+of trying to use this postMessage. The default value for this parameter is <code>_parent</code>, which means
+messages should be sent to <code>window.parent</code>. When the value is something else (like <code>post_message_forwarding</code>),
+the tool should send message to the frame with that name present at <code>window.parent.frames[lti_storage_target]</code>.</p>
+
+<p><strong>Note:</strong> When a tool is launched from within an active RCE (Rich Content Editor) this sibling
+frame may not be available, since the RCE uses an iframe to represent the editor box. If the
+message sent to this frame using this origin doesn&#39;t receive a timely response, the tool should
+fall back to sending the message to the parent window using the wildcard <code>*</code> origin.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.get_data&quot;</li>
+<li>key: the string key for the retrieved value</li>
+<li>message_id: any random string value. a UUID is easiest</li>
+</ul>
+
+<p>Returning postMessage includes the following properties:</p>
+
+<ul>
+<li>subject: &quot;lti.get_data&quot;</li>
+<li>key: the same key provided in the initial message</li>
+<li>value: the value, if any, stored at that key in Canvas&#39;s localstorage. <code>null</code> will be sent if the key/value pair doesn&#39;t exist.</li>
+<li>message_id: the same message_id provided in the initial message</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.frames[&#39;post_message_forwarding&#39;].postMessage(
+  {
+    subject: &#39;lti.get_data&#39;,
+    key: &#39;hello&#39;,
+    message_id: &#39;14556a4f-e9af-43f7-bd1f-d3e260d05a9f&#39;,
+  },
+  &#39;http://sso.canvaslms.com&#39;
+)
+
+window.parent.postMessage(
+  {
+    subject: &#39;lti.get_data&#39;,
+    key: &#39;hello&#39;,
+    message_id: &#39;14556a4f-e9af-43f7-bd1f-d3e260d05a9f&#39;,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="requestfullwindowlaunch">requestFullWindowLaunch</h2>
+
+<p>Launches the tool that sent the event in a full-window context (ie not inside a Canvas iframe).</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;requestFullWindowLaunch&quot;</li>
+<li>data: either a string or an object
+
+<ul>
+<li>if a string, a url for relaunching the tool</li>
+<li>if an object, has required sub-properties</li>
+</ul></li>
+<li>data.url: a url for relaunching the tool</li>
+<li>data.placement: the Canvas placement that the tool was launched in. Provided in the 1.3 id token
+under the custom claim section (<code>https://www.instructure.com/placement</code>).</li>
+<li>data.resource_link_id: the Canvas resource_link_id for the resource launched. Provided in the 1.3
+id token under the <code>resource_link</code> claim (<code>https://purl.imsglobal.org/spec/lti/claim/resource_link#id</code>).</li>
+</ul>
+
+<p><strong>Optional properties:</strong></p>
+
+<ul>
+<li>data.launchType: defaults to &quot;same_window&quot;
+
+<ul>
+<li>&quot;same_window&quot;: launches the tool in the same window, replacing Canvas entirely</li>
+<li>&quot;new_window&quot;: launches the tool in a new tab/window, which depends on user preference</li>
+<li>&quot;popup&quot;: launches the tool in a popup window</li>
+</ul></li>
+<li>data.launchOptions.width: for launchType: popup, defines the popup window&#39;s width. Defaults to 800.</li>
+<li>data.launchOptions.height: for launchType: popup, defines the popup window&#39;s height. Defaults to 600.</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage(
+  {
+    subject: &#39;requestFullWindowLaunch&#39;,
+    data: {
+      url: &#39;https://example-tool.com/launch&#39;,
+      placement: &#39;course_navigation&#39;,
+      launchType: &#39;new_window&#39;,
+      launchOptions: {
+        width: 1000,
+        height: 800,
+      },
+    },
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-resourceimported">lti.resourceImported</h2>
+
+<p>Notifies the Canvas page holding the tool that a resource has finished importing.
+Canvas will respond by reloading the page, if the tool was present in the external
+apps tray. Used on wiki pages.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.resourceImported&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.resourceImported&#39;}, &#39;*&#39;)
+</code></pre>
+
+<h2 id="lti-hiderightsidewrapper">lti.hideRightSideWrapper</h2>
+
+<p>Tells Canvas to remove the right side nav in the assignments view.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.hideRightSideWrapper&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage(
+  {
+    subject: &#39;lti.hideRightSideWrapper&#39;,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-frameresize">lti.frameResize</h2>
+
+<p>Tells Canvas to change the height of the iframe containing the tool.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.frameResize&quot;</li>
+<li>height: integer, in px</li>
+</ul>
+
+<p><strong>Optional properties:</strong></p>
+
+<ul>
+<li>token: postMessage token, discussed above.</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage(
+  {
+    subject: &#39;lti.frameResize&#39;,
+    height: 400,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-fetchwindowsize">lti.fetchWindowSize</h2>
+
+<p>Sends a postMessage event back to the tool with details about the window size of
+the tool&#39;s containing iframe.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.fetchWindowSize&quot;</li>
+</ul>
+
+<p>Returning postMessage includes the following properties:</p>
+
+<ul>
+<li>subject: &quot;lti.fetchWindowSize.response&quot;</li>
+<li>height: height of the iframe</li>
+<li>width: width of the iframe</li>
+<li>footer: height of the &quot;#fixed_bottom&quot; HTML element or 0 if not found</li>
+<li>offset: <a href="https://api.jquery.com/offset/">jquery.offset()</a> of the iframe&#39;s wrapper</li>
+<li>scrollY: the number of px that the iframe is scrolled vertically</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.fetchWindowSize&#39;}, &#39;*&#39;)
+</code></pre>
+
+<h2 id="lti-showmodulenavigation">lti.showModuleNavigation</h2>
+
+<p>Toggles the module navigation footer based on the message&#39;s content.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.showModuleNavigation&quot;</li>
+<li>show: Boolean, whether to show or hide the footer</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage(
+  {
+    subject: &#39;lti.showModuleNavigation&#39;,
+    show: true,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-scrolltotop">lti.scrollToTop</h2>
+
+<p>Scrolls the iframe all the way to the top of its container.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.scrollToTop&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.scrollToTop&#39;}, &#39;*&#39;)
+</code></pre>
+
+<h2 id="lti-setunloadmessage">lti.setUnloadMessage</h2>
+
+<p>Sets a message to be shown in a browser dialog before page closes (ie
+&quot;Do you really want to leave this page?&quot;)</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.setUnloadMessage&quot;</li>
+</ul>
+
+<p><strong>Optional properties:</strong></p>
+
+<ul>
+<li>message: The message to be shown in the dialog. Most browser no longer
+support a custom message here, so a generic (built-in to the browser) message
+will be shown.</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage(
+  {
+    subject: &#39;lti.setUnloadMessage&#39;,
+    message: &#39;Are you sure you want to leave this app?&#39;,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-removeunloadmessage">lti.removeUnloadMessage</h2>
+
+<p>Clears any set message to be shown on page close.</p>
+
+<p>Required properties</p>
+
+<ul>
+<li>subject: &quot;lti.removeUnloadMessage&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.removeUnloadMessage&#39;}, &#39;*&#39;)
+</code></pre>
+
+<h2 id="lti-screenreaderalert">lti.screenReaderAlert</h2>
+
+<p>Shows an alert for screen readers.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.screenReaderAlert&quot;</li>
+<li>body: The contents of the alert.</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage(
+  {
+    subject: &#39;lti.screenReaderAlert&#39;,
+    body: &#39;An alert just for screen readers&#39;,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-showalert">lti.showAlert</h2>
+
+<p>Shows an alert using Canvas&#39;s alert system, and includes the name of the LTI
+tool that sent the message.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.showAlert&quot;</li>
+<li>body: The contents of the alert - can either be a string, or JSON string.</li>
+</ul>
+
+<p><strong>Optional properties:</strong></p>
+
+<ul>
+<li>alertType: &quot;success&quot;, &quot;warning&quot;, or &quot;error&quot;. Defaults to &quot;success&quot;.</li>
+<li>title: A display name for the tool. If not provided, Canvas will attempt to
+supply the tool name or default to &quot;External Tool&quot;.</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage(
+  {
+    subject: &#39;lti.showAlert&#39;,
+    alertType: &#39;warning&#39;,
+    body: &#39;An warning to be shown&#39;,
+    title: &#39;Tool Name&#39;,
+  },
+  &#39;*&#39;
+)
+</code></pre>
+
+<h2 id="lti-enablescrollevents">lti.enableScrollEvents</h2>
+
+<p>Sends a debounced postMessage event to the tool every time its containing
+iframe is scrolled.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;lti.enableScrollEvents&quot;</li>
+</ul>
+
+<p>Returning postMessage includes the following properties:</p>
+
+<ul>
+<li>subject: &quot;lti.scroll&quot;</li>
+<li>scrollY: the number of px that the iframe is scrolled vertically</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;lti.enableScrollEvents&#39;}, &#39;*&#39;)
+</code></pre>
+
+<h2 id="shownavigationmenu">showNavigationMenu</h2>
+
+<p>Opens the navigation sidebar, a replacement for toggleCourseNavigationMenu.
+Can be used on course, account or group page.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;showNavigationMenu&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;showNavigationMenu&#39;}, &#39;*&#39;)
+</code></pre>
+
+<h2 id="hidenavigationmenu">hideNavigationMenu</h2>
+
+<p>Closes the navigation sidebar, a replacement for toggleCourseNavigationMenu.
+Can be used on course, account or group page.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;hideNavigationMenu&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;hideNavigationMenu&#39;}, &#39;*&#39;)
+</code></pre>
+
+<div class="warning-message">
+    Deprecated Message Types
+</div>
+
+<h2 id="togglecoursenavigationmenu">toggleCourseNavigationMenu <span title="this message type is deprecated!">â ï¸</span></h2>
+
+<p><strong>Use show or hideNavigationMenu instead!</strong></p>
+
+<p>Opens and closes the course navigation sidebar, giving more space for the tool to display.</p>
+
+<p><strong>Required properties:</strong></p>
+
+<ul>
+<li>subject: &quot;toggleCourseNavigationMenu&quot;</li>
+</ul>
+
+<pre class="code js"><code class="js">window.parent.postMessage({subject: &#39;toggleCourseNavigationMenu&#39;}, &#39;*&#39;)
+</code></pre>
+</div></div>
+
+    <script type="text/javascript">
+  $('h2.api_method_name').each(function(i, el) {
+    var subtopic = $(el).data('subtopic');
+    var $a = $(el).find('a');
+    if ($.trim($a[0].innerHTML) == '')
+      return;
+    var $row = $('table#quicklinks tr').filter(function() { return $(this).data('subtopic') == subtopic; });
+    if ($row.length == 0) {
+      $row = $('<tr/>').appendTo($('table#quicklinks'));
+      $row.data('subtopic', subtopic);
+      $('<th/>').append(subtopic).appendTo($row);
+      $('<td/>').appendTo($row);
+    }
+    var link = $('<a/>').attr('href', '#'+$(el).attr('name')).append($.trim($a[0].innerHTML));
+    $row.find('td').append(link);
+  });
+</script>
+<div id="footer">
+  &copy; Instructure, Inc. Generated on Tue Apr 29 14:55:39 2025<br>
+  This documentation is generated directly from the Canvas LMS source code, available <a href="https://github.com/instructure/canvas-lms">on Github</a>.
+</div>
+
+  </body>
+</html>

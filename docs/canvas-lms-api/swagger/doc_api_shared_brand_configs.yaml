@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Shared Brand Configs API
+  description: >-
+    This is how you can share Themes with other people in your account or so you
+    can come back to them later without having to apply them to your account.
+  version: 1.0.0
+servers:
+  - url: https://{canvas}/api/v1
+    variables:
+      canvas:
+        description: Canvas domain
+        default: canvas.example.com
+paths:
+  /accounts/{account_id}/shared_brand_configs:
+    post:
+      summary: Share a BrandConfig (Theme)
+      description: >
+        Create a SharedBrandConfig, which will give the given brand_config a
+        name and make it available to other users of this account.
+      tags:
+        - Shared Brand Configs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: The id of the account in which to share the BrandConfig.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - shared_brand_config[name]
+                - shared_brand_config[brand_config_md5]
+              properties:
+                shared_brand_config[name]:
+                  type: string
+                  description: Name to share this BrandConfig (theme) as.
+                shared_brand_config[brand_config_md5]:
+                  type: string
+                  description: MD5 of the BrandConfig to share.
+      responses:
+        '200':
+          description: SharedBrandConfig object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharedBrandConfig'
+  /accounts/{account_id}/shared_brand_configs/{id}:
+    put:
+      summary: Update a shared theme
+      description: >
+        Update the specified SharedBrandConfig with a new name or to point to a
+        different BrandConfig. Uses same parameters as create.
+      tags:
+        - Shared Brand Configs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: The id of the account containing the SharedBrandConfig.
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: The id of the SharedBrandConfig to update.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - shared_brand_config[name]
+                - shared_brand_config[brand_config_md5]
+              properties:
+                shared_brand_config[name]:
+                  type: string
+                  description: New name for the SharedBrandConfig.
+                shared_brand_config[brand_config_md5]:
+                  type: string
+                  description: MD5 of the new BrandConfig to share.
+      responses:
+        '200':
+          description: SharedBrandConfig object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharedBrandConfig'
+  /shared_brand_configs/{id}:
+    delete:
+      summary: Un-share a BrandConfig (Theme)
+      description: >
+        Delete a SharedBrandConfig, which will unshare it so you nor anyone else
+        in your account will see it as an option to pick from.
+      tags:
+        - Shared Brand Configs
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: The id of the SharedBrandConfig to delete.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: SharedBrandConfig object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharedBrandConfig'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Requires a Bearer token in the Authorization header.
+  schemas:
+    SharedBrandConfig:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The shared_brand_config identifier.
+        account_id:
+          type: string
+          description: The id of the account in which this theme is shared.
+        brand_config_md5:
+          type: string
+          description: MD5 of the BrandConfig being shared.
+        name:
+          type: string
+          description: The name under which this theme is shared.
+        created_at:
+          type: string
+          format: date-time
+          description: When this resource was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: When this resource was last updated.
+      required:
+        - id
+        - account_id
+        - brand_config_md5
+        - name
+        - created_at
+        - updated_at

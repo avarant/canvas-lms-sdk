@@ -1,0 +1,181 @@
+openapi: 3.0.0
+info:
+  title: Submission Comments API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions/{user_id}/comments/{id}:
+    put:
+      summary: Edit a submission comment
+      description: Edit the given submission comment.
+      tags:
+        - Submission Comments
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: string
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: path
+          description: ID of the user who made the submission
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ID of the comment
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  description: If this argument is present, edit the text of a comment
+              required:
+                - comment
+      responses:
+        "200":
+          description: SubmissionComment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionComment'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a submission comment
+      description: Delete the given submission comment.
+      tags:
+        - Submission Comments
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: string
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: path
+          description: ID of the user who made the submission
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ID of the comment
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: SubmissionComment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionComment'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions/{user_id}/comments/files:
+    post:
+      summary: Upload a file to attach to a submission comment
+      description: |
+        Upload a file to attach to a submission comment.
+        See the File Upload Documentation for details on the file upload workflow.
+        The final step of the file upload workflow will return the attachment data,
+        including the new file id. The caller can then PUT the file_id to the submission API to attach it to a comment.
+      tags:
+        - Submission Comments
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: string
+        - name: assignment_id
+          in: path
+          description: ID of the assignment
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: path
+          description: ID of the user who made the submission
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload
+      responses:
+        "200":
+          description: Attachment data including the new file id
+          content:
+            application/json:
+              schema:
+                type: object
+                description: File attachment data
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    SubmissionComment:
+      type: object
+      description: A SubmissionComment resource
+      # Detailed properties would be defined here
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message explaining what went wrong

@@ -1,0 +1,311 @@
+openapi: 3.0.0
+info:
+  title: Sections API
+  version: "1.0.0"
+paths:
+  /api/v1/courses/{course_id}/sections:
+    get:
+      summary: "A paginated list of the sections for this course."
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course."
+          required: true
+          schema:
+            type: integer
+        - name: include
+          in: query
+          description: "Associations to include with the section."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - students
+                - avatar_url
+                - enrollments
+                - total_students
+                - passback_status
+                - permissions
+        - name: search_term
+          in: query
+          description: "Search term for course sections, minimum 2 characters."
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "A list of Section objects."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Section'
+    post:
+      summary: "Creates a new section for this course."
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course."
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_section:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    sis_section_id:
+                      type: string
+                    integration_id:
+                      type: string
+                    start_at:
+                      type: string
+                      format: date-time
+                    end_at:
+                      type: string
+                      format: date-time
+                    restrict_enrollments_to_section_dates:
+                      type: boolean
+                enable_sis_reactivation:
+                  type: boolean
+      responses:
+        '201':
+          description: "Section created successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+
+  /api/v1/sections/{id}/crosslist/{new_course_id}:
+    post:
+      summary: "Move the section to another course."
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the section."
+          required: true
+          schema:
+            type: integer
+        - name: new_course_id
+          in: path
+          description: "ID of the new course."
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                override_sis_stickiness:
+                  type: boolean
+      responses:
+        '200':
+          description: "Section cross-listed successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+
+  /api/v1/sections/{id}/crosslist:
+    delete:
+      summary: "Undo cross-listing of a Section."
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the section."
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                override_sis_stickiness:
+                  type: boolean
+      responses:
+        '200':
+          description: "Section de-cross-listed successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+
+  /api/v1/sections/{id}:
+    put:
+      summary: "Modify an existing section."
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the section."
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_section:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    sis_section_id:
+                      type: string
+                    integration_id:
+                      type: string
+                    start_at:
+                      type: string
+                      format: date-time
+                    end_at:
+                      type: string
+                      format: date-time
+                    restrict_enrollments_to_section_dates:
+                      type: boolean
+                override_sis_stickiness:
+                  type: boolean
+      responses:
+        '200':
+          description: "Section updated successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+    get:
+      summary: "Gets details about a specific section."
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the section."
+          required: true
+          schema:
+            type: integer
+        - name: include
+          in: query
+          description: "Associations to include with the section."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - students
+                - avatar_url
+                - enrollments
+                - total_students
+                - passback_status
+                - permissions
+      responses:
+        '200':
+          description: "A Section object."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+    delete:
+      summary: "Delete an existing section."
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the section."
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Section deleted successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+
+  /api/v1/courses/{course_id}/sections/{id}:
+    get:
+      summary: "Gets details about a specific section."
+      parameters:
+        - name: course_id
+          in: path
+          description: "ID of the course."
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: "ID of the section."
+          required: true
+          schema:
+            type: integer
+        - name: include
+          in: query
+          description: "Associations to include with the section."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - students
+                - avatar_url
+                - enrollments
+                - total_students
+                - passback_status
+                - permissions
+      responses:
+        '200':
+          description: "A Section object."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Section'
+
+components:
+  schemas:
+    Section:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        sis_section_id:
+          type: string
+        integration_id:
+          type: string
+        sis_import_id:
+          type: integer
+        course_id:
+          type: integer
+        sis_course_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          nullable: true
+        restrict_enrollments_to_section_dates:
+          type: boolean
+          nullable: true
+        nonxlist_course_id:
+          type: integer
+          nullable: true
+        total_students:
+          type: integer

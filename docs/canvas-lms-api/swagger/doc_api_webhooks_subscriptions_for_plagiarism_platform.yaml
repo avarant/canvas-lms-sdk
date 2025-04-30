@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: Webhooks Subscriptions for Plagiarism Platform API
+  version: 1.0.0
+  description: |
+    LTI API for managing webhook subscriptions in the Plagiarism Detection Platform.
+    Must use JWT access tokens with this API.
+paths:
+  /api/lti/subscriptions:
+    post:
+      tags:
+        - WebhookSubscriptions
+      summary: Create a Webhook Subscription
+      description: Creates a webhook subscription for the specified event type and context.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscription:
+                  type: object
+                  properties:
+                    ContextId:
+                      type: string
+                      description: The id of the context for the subscription.
+                    ContextType:
+                      type: string
+                      description: The type of context for the subscription.
+                      enum:
+                        - assignment
+                        - account
+                        - course
+                    EventTypes:
+                      type: array
+                      items:
+                        type: string
+                      description: Array of strings representing the event types for the subscription.
+                    Format:
+                      type: string
+                      description: Format to deliver the live events.
+                      enum:
+                        - live-event
+                        - caliper
+                    TransportMetadata:
+                      type: object
+                      description: An object with a single key: 'Url'.
+                      properties:
+                        Url:
+                          type: string
+                          description: The endpoint URL or queue identifier to receive events.
+                    TransportType:
+                      type: string
+                      description: Must be either 'sqs' or 'https'.
+                      enum:
+                        - sqs
+                        - https
+                  required:
+                    - ContextId
+                    - ContextType
+                    - EventTypes
+                    - Format
+                    - TransportMetadata
+                    - TransportType
+      responses:
+        '201':
+          description: Subscription created successfully.
+        '400':
+          description: Bad request – invalid parameters.
+        '401':
+          description: Unauthorized – invalid or missing JWT access token.
+    get:
+      tags:
+        - WebhookSubscriptions
+      summary: List all Webhook Subscriptions
+      description: |
+        Returns a paginated list of webhook subscriptions for the tool proxy.
+        Default limit is 100 items per page. To retrieve the next page, supply
+        a StartKey header with the value from the EndKey header of the previous response.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: StartKey
+          in: header
+          description: >
+            Start key header object (JSON string) to retrieve the next page.
+            Example: {"Id":"...","DeveloperKey":"..."}
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of subscriptions.
+        '401':
+          description: Unauthorized – invalid or missing JWT access token.
+
+  /api/lti/subscriptions/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the subscription.
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - WebhookSubscriptions
+      summary: Show a single Webhook Subscription
+      description: Retrieve details of a specific webhook subscription.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Subscription details retrieved successfully.
+        '401':
+          description: Unauthorized – invalid or missing JWT access token.
+        '404':
+          description: Subscription not found.
+    put:
+      tags:
+        - WebhookSubscriptions
+      summary: Update a Webhook Subscription
+      description: Update a webhook subscription using the same parameters as create.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscription:
+                  type: object
+                  properties:
+                    ContextId:
+                      type: string
+                    ContextType:
+                      type: string
+                      enum:
+                        - assignment
+                        - account
+                        - course
+                    EventTypes:
+                      type: array
+                      items:
+                        type: string
+                    Format:
+                      type: string
+                      enum:
+                        - live-event
+                        - caliper
+                    TransportMetadata:
+                      type: object
+                      properties:
+                        Url:
+                          type: string
+                    TransportType:
+                      type: string
+                      enum:
+                        - sqs
+                        - https
+                  required:
+                    - ContextId
+                    - ContextType
+                    - EventTypes
+                    - Format
+                    - TransportMetadata
+                    - TransportType
+      responses:
+        '200':
+          description: Subscription updated successfully.
+        '400':
+          description: Bad request – invalid parameters.
+        '401':
+          description: Unauthorized – invalid or missing JWT access token.
+        '404':
+          description: Subscription not found.
+    delete:
+      tags:
+        - WebhookSubscriptions
+      summary: Delete a Webhook Subscription
+      description: Deletes a specific webhook subscription.
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Subscription deleted successfully.
+        '401':
+          description: Unauthorized – invalid or missing JWT access token.
+        '404':
+          description: Subscription not found.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+tags:
+  - name: WebhookSubscriptions
+    description: Operations related to webhook subscriptions for the Plagiarism Detection Platform.

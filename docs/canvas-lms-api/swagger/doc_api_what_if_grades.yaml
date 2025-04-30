@@ -1,0 +1,160 @@
+paths:
+  /api/v1/submissions/{id}/what_if_grades:
+    put:
+      summary: Update a submission's what-if score and calculate grades
+      description: |
+        Enter a what-if score for a submission and receive the calculated grades.
+        Grade calculation is a costly operation, so this API should be used sparingly.
+      parameters:
+        - name: id
+          in: path
+          description: Submission ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_entered_score:
+                  type: number
+                  description: The score the student wants to test
+              required:
+                - student_entered_score
+      responses:
+        '200':
+          description: A list of Grades objects and the submission
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  grades:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Grades'
+                  submission:
+                    $ref: '#/components/schemas/Submission'
+              example:
+                grades:
+                  - current:
+                      grade: 120.0
+                      total: 24.0
+                      possible: 20.0
+                      dropped: []
+                    current_groups:
+                      "1":
+                        id: 1
+                        global_id: 10000000000001
+                        score: 20.0
+                        possible: 10.0
+                        weight: 0.0
+                        grade: 200.0
+                        dropped: []
+                      "3":
+                        id: 3
+                        global_id: 10000000000003
+                        score: 4.0
+                        possible: 10.0
+                        weight: 0.0
+                        grade: 40.0
+                        dropped: []
+                    final:
+                      grade: 21.82
+                      total: 24.0
+                      possible: 110.0
+                      dropped: []
+                    final_groups:
+                      "1":
+                        id: 1
+                        global_id: 10000000000001
+                        score: 20.0
+                        possible: 100.0
+                        weight: 0.0
+                        grade: 20.0
+                        dropped: []
+                      "3":
+                        id: 3
+                        global_id: 10000000000003
+                        score: 4.0
+                        possible: 10.0
+                        weight: 0.0
+                        grade: 40.0
+                        dropped: []
+                submission:
+                  id: 166
+                  student_entered_score: 20.0
+
+  /api/v1/courses/{course_id}/what_if_grades/reset:
+    put:
+      summary: Reset the what-if scores for the current user for an entire course and recalculate grades
+      parameters:
+        - name: course_id
+          in: path
+          description: Course ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful reset of what-if grades
+
+components:
+  schemas:
+    Grade:
+      type: object
+      properties:
+        grade:
+          type: number
+        total:
+          type: number
+        possible:
+          type: number
+        dropped:
+          type: array
+          items: {}
+    AssignmentGroupGrade:
+      type: object
+      properties:
+        id:
+          type: integer
+        global_id:
+          type: integer
+        score:
+          type: number
+        possible:
+          type: number
+        weight:
+          type: number
+        grade:
+          type: number
+        dropped:
+          type: array
+          items: {}
+    Grades:
+      type: object
+      properties:
+        current:
+          $ref: '#/components/schemas/Grade'
+        current_groups:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AssignmentGroupGrade'
+        final:
+          $ref: '#/components/schemas/Grade'
+        final_groups:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AssignmentGroupGrade'
+    Submission:
+      type: object
+      properties:
+        id:
+          type: integer
+        student_entered_score:
+          type: number{}    			
+
+security: []
