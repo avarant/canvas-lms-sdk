@@ -49,7 +49,7 @@ Refer to the `--help` flag for each script to see available command-line options
 
 ## Viewing API Documentation (Swagger UI)
 
-After generating the Swagger YAML files using `./scripts/generate-swagger-docs.py`, you can view them interactively using Swagger UI locally.
+After generating the individual Swagger YAML files using `./scripts/generate-swagger-docs.py`, they need to be merged into a single file for viewing.
 
 ### Prerequisites
 
@@ -57,24 +57,30 @@ After generating the Swagger YAML files using `./scripts/generate-swagger-docs.p
 
 ### Steps
 
-1.  **Install `http-server`:**
+1.  **Merge the Specification Files:**
+    Navigate to the Swagger directory and use the `openapi-merge-cli` tool (or another suitable tool) to combine the individual `doc_api_*.yaml` files into `openapi_merged.yaml`. You may need to install the tool first (e.g., `npm install -g openapi-merge-cli`) and create a configuration file (`openapi-merge.json`) listing the input files.
+    ```bash
+    cd docs/canvas-lms-api/swagger
+    # (Create openapi-merge.json if it doesn't exist)
+    # Example merge command:
+    npx openapi-merge-cli 
+    cd ../../.. # Go back to project root
+    ```
+    *Note: Ensure the `openapi_merged.yaml` file has a valid `openapi: 3.x.y` version string at the beginning.* 
+
+2.  **Install `http-server`:**
     If you don't have `http-server` installed globally, run:
     ```bash
     npm install -g http-server
     ```
 
-2.  **Navigate to the Swagger directory:**
-    ```bash
-    cd docs/canvas-lms-api/swagger
-    ```
-
-3.  **Start the server:**
+3.  **Start the server from the project root:**
     ```bash
     # The -c-1 flag disables caching
     http-server -c-1
     ```
 
 4.  **Open your browser:**
-    Navigate to the URL provided by `http-server` (usually `http://127.0.0.1:8080`).
+    Navigate to the URL for the local `index.html` file within the swagger directory (usually `http://127.0.0.1:8080/docs/canvas-lms-api/swagger/`).
 
-    You should see the Swagger UI interface with a dropdown menu at the top right allowing you to select and view the different generated API specifications.
+    This `index.html` is configured to load the `openapi_merged.yaml` file, displaying the complete combined API specification in the Swagger UI interface.
