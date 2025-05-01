@@ -142,3 +142,79 @@ The Python SDK located in `generated_python_sdk/` is created using `openapi-gene
 
 4.  **Review and Use:**
     The generated SDK will be in the `./generated_python_sdk` directory. Review the generated code and consult its `README.md` for instructions on installation and usage.
+
+## Usage Examples
+
+Here's a basic example demonstrating how to use the generated Python SDK to list active courses for a user.
+
+1.  **Set up Environment Variables:**
+    Create a `.env` file in the project root directory and add your Canvas host and API token:
+    ```env
+    CANVAS_HOST="https://your-canvas-instance.instructure.com"
+    CANVAS_TOKEN="your_api_token_here"
+    ```
+
+2.  **Write Python Script:**
+    Create a Python file (e.g., `list_courses.py`) with the following code:
+
+    ```python
+    from dotenv import load_dotenv
+    load_dotenv() # Load environment variables from .env file
+    import os
+    import canvas_lms_sdk
+    from canvas_lms_sdk.rest import ApiException
+    from canvas_lms_sdk.api.courses_api import CoursesApi
+    from pprint import pprint
+
+    # Fetch credentials from environment variables
+    CANVAS_HOST = os.getenv("CANVAS_HOST")
+    CANVAS_TOKEN = os.getenv("CANVAS_TOKEN")
+
+    if not CANVAS_HOST or not CANVAS_TOKEN:
+        print("Error: CANVAS_HOST and CANVAS_TOKEN environment variables must be set.")
+        exit(1)
+
+    # Configure API key authorization: api_key
+    configuration = canvas_lms_sdk.Configuration(
+        host = CANVAS_HOST,
+        api_key = {
+            'Authorization': 'Bearer ' + CANVAS_TOKEN
+        }
+    )
+
+    # Enter a context with an instance of the API client
+    with canvas_lms_sdk.ApiClient(configuration) as api_client:
+        # Create an instance of the Courses API class
+        api_instance = CoursesApi(api_client)
+
+        try:
+            # List active courses for the current user
+            print("Attempting to list active courses...")
+            # The specific method call might vary based on the generated SDK version
+            # Check the documentation or generated code for available methods
+            api_response = api_instance.api_v1_courses_get() # Example call
+            print("\nActive Courses:")
+            pprint(api_response)
+        except ApiException as e:
+            print(f"Exception when calling CoursesApi: {e}\n")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+    print("\nScript finished.")
+    ```
+
+3.  **Install Dependencies:**
+    Ensure you have the necessary libraries installed (including the generated SDK itself if installed as a package):
+    ```bash
+    # Example using pip and requirements.txt
+    pip install python-dotenv canvas-lms-sdk # Add other dependencies if needed
+    # Or install directly from the generated SDK source if not packaged:
+    # pip install -e ./generated_python_sdk
+    ```
+
+4.  **Run the Script:**
+    ```bash
+    python list_courses.py
+    ```
+
+This example demonstrates the basic workflow: loading credentials, configuring the client, instantiating an API endpoint class, making a call, and handling potential exceptions. Refer to the generated SDK documentation for details on specific API methods and models.
