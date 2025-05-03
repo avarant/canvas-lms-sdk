@@ -1,37 +1,41 @@
-/api/v1/courses/{course_id}/assignments/{id}:
-  delete:
-    summary: Delete the given assignment.
-    description: Deletes the assignment identified by course_id and id.
-    tags:
-      - Assignments
-    security:
-      - bearerAuth: []
-    parameters:
-      - name: course_id
-        in: path
-        description: ID of the course
-        required: true
-        schema:
-          type: integer
-      - name: id
-        in: path
-        description: ID of the assignment
-        required: true
-        schema:
-          type: integer
-    responses:
-      '200':
-        description: Assignment deleted successfully
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Assignment'
-      '401':
-        description: Unauthorized – invalid or missing authentication credentials
-      '403':
-        description: Forbidden – insufficient permissions to delete the assignment
-      '404':
-        description: Assignment not found
+openapi: 3.0.0
+info:
+  title: Canvas LMS Assignments API
+  version: 1.0.0
+paths:
+  /api/v1/courses/{course_id}/assignments/{id}:
+    delete:
+      summary: Delete the given assignment
+      description: Deletes the specified assignment and returns the deleted Assignment object.
+      operationId: deleteAssignment
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the assignment to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+        '404':
+          description: Assignment not found
+        '401':
+          description: Unauthorized – invalid or missing authentication token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
 components:
   securitySchemes:
     bearerAuth:
@@ -49,9 +53,51 @@ components:
         name:
           type: string
           description: The name of the assignment
+        description:
+          type: string
+          description: The assignment description, in an HTML fragment
+        created_at:
+          type: string
+          format: date-time
+          description: Time at which this assignment was originally created
+        updated_at:
+          type: string
+          format: date-time
+          description: Time at which this assignment was last modified
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The due date for the assignment
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The lock date for the assignment
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The unlock date for the assignment
+        course_id:
+          type: integer
+          description: The ID of the course the assignment belongs to
         html_url:
           type: string
           format: uri
           description: URL to the assignment's web page
-        # ... (other properties as defined in the Assignment model)
-      # Note: For full schema, refer to the Assignment object definition in documentation.
+        points_possible:
+          type: number
+          description: The maximum points possible for the assignment
+        grading_type:
+          type: string
+          description: The type of grading the assignment receives
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - course_id
+        - html_url
+        - points_possible
+        - grading_type

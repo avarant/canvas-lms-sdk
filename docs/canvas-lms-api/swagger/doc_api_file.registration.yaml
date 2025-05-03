@@ -1,0 +1,312 @@
+openapi: "3.0.0"
+info:
+  title: Canvas LMS LTI Dynamic Registration API
+  version: "1.0.0"
+paths:
+  /api/lti/security/openid-configuration:
+    get:
+      summary: Retrieve Canvas OpenID Configuration for LTI dynamic registration
+      description: >
+        Retrieves the OpenID Connect configuration that a tool can use to perform LTI Dynamic Registration
+        with Canvas. Requires a valid registration token as a bearer token.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Canvas OpenID Configuration
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                issuer: "http://canvas.instructure.com"
+                authorization_endpoint: "http://canvas.instructure.com/api/lti/authorize_redirect"
+                registration_endpoint: "http://canvas.instructure.com/api/lti/registrations"
+                jwks_uri: "http://canvas.instructure.com/login/oauth2/jwks"
+                token_endpoint: "http://canvas.instructure.com/login/oauth2/token"
+                token_endpoint_auth_methods_supported:
+                  - "private_key_jwt"
+                token_endpoint_auth_signing_alg_values_supported:
+                  - "RS256"
+                scopes_supported:
+                  - "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem"
+                  - "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly"
+                  - "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly"
+                  - "https://purl.imsglobal.org/spec/lti-ags/scope/score"
+                  - "https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly"
+                  - "https://canvas.instructure.com/lti/public_jwk/scope/update"
+                  - "https://canvas.instructure.com/lti/account_lookup/scope/show"
+                  - "https://canvas.instructure.com/lti-ags/progress/scope/show"
+                response_types_supported:
+                  - "id_token"
+                id_token_signing_alg_values_supported:
+                  - "RS256"
+                claims_supported:
+                  - "sub"
+                  - "locale"
+                subject_types_supported:
+                  - "public"
+                authorization_server: "canvas.instructure.com"
+                "https://purl.imsglobal.org/spec/lti-platform-configuration":
+                  product_family_code: "canvas"
+                  version: "vCloud"
+                  messages_supported:
+                    - type: "LtiResourceLinkRequest"
+                      placements:
+                        - "account_navigation"
+                        - "wiki_page_menu"
+                    - type: "LtiDeepLinkingRequest"
+                      placements:
+                        - "assignment_selection"
+                        - "submission_type_selection"
+                  notice_types_supported:
+                    - "LtiHelloWorldNotice"
+                  variables:
+                    - "ResourceLink.id"
+                    - "Canvas.environment.test"
+                  "https://canvas.instructure.com/lti/account_name": "Test University"
+                  "https://canvas.instructure.com/lti/account_lti_guid": "pNu5F9EoIATW6XqZ33C5tiqomb7bFJ4IGWFoCFy6:canvas-lms"
+        '401':
+          description: Unauthorized – registration token missing or invalid
+        '403':
+          description: Forbidden – access to configuration denied
+  /api/lti/registrations:
+    post:
+      summary: Create an LTI registration
+      description: >
+        Creates a new LTI 1.3 Dynamic Registration in Canvas. The tool must send its registration
+        payload in the request body and include the registration token as a bearer token.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LtiRegistration'
+            example: |
+              {
+                "application_type": "web",
+                "client_name": "Lti Tool",
+                "client_uri": "http://tool.com",
+                "grant_types": ["client_credentials","implicit"],
+                "jwks_uri": "http://tool.com/jwks",
+                "initiate_login_uri": "http://tool.com/login",
+                "redirect_uris": ["http://tool.com/launch"],
+                "response_types": ["id_token"],
+                "scope": "https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly",
+                "token_endpoint_auth_method": "private_key_jwt",
+                "logo_uri": "http://tool.com/icon.svg",
+                "https://purl.imsglobal.org/spec/lti-tool-configuration": {
+                  "domain": "tool.com",
+                  "secondary_domains": [],
+                  "target_link_uri": "http://tool.com/launch",
+                  "custom_parameters": {},
+                  "description": "A sample LTI tool",
+                  "messages": [
+                    {
+                      "type": "LtiResourceLinkRequest",
+                      "icon_uri": "http://tool.com/icon.svg",
+                      "label": "Lti Tool",
+                      "custom_parameters": {
+                        "foo": "bar",
+                        "context_id": "$Context.id"
+                      },
+                      "placements": ["course_navigation"],
+                      "target_link_uri": "http://tool.com/launch?placement=course_navigation"
+                    }
+                  ],
+                  "claims": ["sub","iss","name","email"],
+                  "https://canvas.instructure.com/lti/tool_id": "toolid-123",
+                  "https://canvas.instructure.com/lti/privacy_level": "public"
+                }
+              }
+      responses:
+        '201':
+          description: Successful registration creation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/LtiRegistration'
+                  - type: object
+                    properties:
+                      client_id:
+                        type: string
+                        description: The unique client identifier assigned by Canvas
+        '400':
+          description: Bad Request – invalid registration payload
+        '401':
+          description: Unauthorized – registration token missing or invalid
+        '403':
+          description: Forbidden – registration not permitted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LtiRegistration:
+      type: object
+      required:
+        - application_type
+        - grant_types
+        - initiate_login_uri
+        - redirect_uris
+        - response_types
+        - client_name
+        - jwks_uri
+        - token_endpoint_auth_method
+        - scope
+        - "https://purl.imsglobal.org/spec/lti-tool-configuration"
+      properties:
+        application_type:
+          type: string
+          enum: ["web"]
+        grant_types:
+          type: array
+          items:
+            type: string
+            enum: ["client_credentials", "implicit"]
+        initiate_login_uri:
+          type: string
+          format: uri
+          description: The URL Canvas uses to initiate an LTI launch request
+        redirect_uris:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: URLs the tool can launch to
+        response_types:
+          type: array
+          items:
+            type: string
+            enum: ["id_token"]
+        client_name:
+          type: string
+          description: Name of the tool as it appears in Canvas
+        client_uri:
+          type: string
+          format: uri
+          description: Homepage or information URL for the tool
+        jwks_uri:
+          type: string
+          format: uri
+          description: URL of the tool's JSON Web Key Set
+        token_endpoint_auth_method:
+          type: string
+          enum: ["private_key_jwt"]
+        scope:
+          type: string
+          description: Space-separated list of requested scopes
+        logo_uri:
+          type: string
+          format: uri
+          description: URL to the tool's icon
+        "https://purl.imsglobal.org/spec/lti-tool-configuration":
+          $ref: '#/components/schemas/LtiToolConfiguration'
+    LtiToolConfiguration:
+      type: object
+      required:
+        - domain
+        - target_link_uri
+        - messages
+        - claims
+      properties:
+        domain:
+          type: string
+          description: The primary domain used by this tool
+        secondary_domains:
+          type: array
+          items:
+            type: string
+          description: Additional domains used by this tool
+        target_link_uri:
+          type: string
+          format: uri
+          description: Default launch URL if not defined in a message
+        custom_parameters:
+          type: object
+          additionalProperties:
+            type: string
+          description: Custom parameters included in each launch
+        description:
+          type: string
+          description: Short description of the tool
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/LtiMessage'
+          description: Messages supported by the tool
+        claims:
+          type: array
+          items:
+            type: string
+          description: Claims to be included in each launch token
+        "https://canvas.instructure.com/lti/privacy_level":
+          type: string
+          enum: ["public", "name_only", "email_only", "anonymous"]
+          description: Default privacy level (PII fields sent)
+        "https://canvas.instructure.com/lti/tool_id":
+          type: string
+          description: Tool-provided identifier for correlation across deployments
+    LtiMessage:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: ["LtiResourceLinkRequest", "LtiDeepLinkingRequest"]
+          description: The LTI message type
+        target_link_uri:
+          type: string
+          format: uri
+          description: URL to launch for this message
+        label:
+          type: string
+          description: User-facing label for the launch link
+        icon_uri:
+          type: string
+          format: uri
+          description: URL to an icon for the placement
+        custom_parameters:
+          type: object
+          additionalProperties:
+            type: string
+          description: Custom parameters included in each launch
+        placements:
+          type: array
+          items:
+            type: string
+          description: Canvas placements for this message
+        "https://canvas.instructure.com/lti/course_navigation/default_enabled":
+          type: boolean
+          description: Default enabled state in course navigation
+        "https://canvas.instructure.com/lti/visibility":
+          type: string
+          enum: ["admins", "members", "public"]
+          description: Who can see the link
+        "https://canvas.instructure.com/lti/launch_height":
+          oneOf:
+            - type: string
+            - type: number
+          description: Height of the iframe for the tool
+        "https://canvas.instructure.com/lti/launch_width":
+          oneOf:
+            - type: string
+            - type: number
+          description: Width of the iframe for the tool
+        "https://canvas.instructure.com/lti/display_type":
+          type: string
+          enum:
+            - default
+            - full_width
+            - full_width_in_context
+            - full_width_with_nav
+            - in_nav_context
+            - borderless
+            - new_window
+          description: Display type for the launch iframe or window

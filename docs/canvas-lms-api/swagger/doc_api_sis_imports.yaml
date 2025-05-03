@@ -1,0 +1,346 @@
+openapi: 3.0.0
+info:
+  title: Canvas LMS SIS Imports API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/{account_id}/sis_imports:
+    get:
+      summary: Returns the list of SIS imports for an account
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: Canvas account identifier
+          required: true
+          schema:
+            type: integer
+        - name: created_since
+          in: query
+          description: Only shows imports created after this date (ISO8601)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: Only shows imports created before this date (ISO8601)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: workflow_state[]
+          in: query
+          description: Only returns imports in the given state
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - initializing
+                - created
+                - importing
+                - cleanup_batch
+                - imported
+                - imported_with_messages
+                - aborted
+                - failed
+                - failed_with_messages
+                - restoring
+                - partially_restored
+                - restored
+      responses:
+        '200':
+          description: A list of SisImport objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SisImport'
+    post:
+      summary: Import SIS data into Canvas
+      description: |
+        Must be on a root account with SIS imports enabled.  
+        For CSV format details see the SIS CSV Format documentation.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: Canvas account identifier
+          required: true
+          schema:
+            type: integer
+        - name: import_type
+          in: query
+          description: Data format for SIS import (defaults to "instructure_csv")
+          required: false
+          schema:
+            type: string
+        - name: extension
+          in: query
+          description: File extension for raw post (zip, csv, etc.)
+          required: false
+          schema:
+            type: string
+        - name: batch_mode
+          in: query
+          description: Run import in batch mode, deleting SIS-imported data not present
+          required: false
+          schema:
+            type: boolean
+        - name: batch_mode_term_id
+          in: query
+          description: Limit deletions to this term (required if batch_mode=true)
+          required: false
+          schema:
+            type: string
+        - name: multi_term_batch_mode
+          in: query
+          description: Run batch mode against all terms (requires change_threshold)
+          required: false
+          schema:
+            type: boolean
+        - name: skip_deletes
+          in: query
+          description: Skip deletes during import
+          required: false
+          schema:
+            type: boolean
+        - name: override_sis_stickiness
+          in: query
+          description: Override UI-sticky fields
+          required: false
+          schema:
+            type: boolean
+        - name: add_sis_stickiness
+          in: query
+          description: Treat all changes as UI changes (requires override_sis_stickiness)
+          required: false
+          schema:
+            type: boolean
+        - name: clear_sis_stickiness
+          in: query
+          description: Clear stickiness from touched fields (requires override_sis_stickiness)
+          required: false
+          schema:
+            type: boolean
+        - name: update_sis_id_if_login_claimed
+          in: query
+          description: Override old SIS ID if login claimed
+          required: false
+          schema:
+            type: boolean
+        - name: diffing_data_set_identifier
+          in: query
+          description: Identifier for diffing optimization (cannot be used with batch_mode)
+          required: false
+          schema:
+            type: string
+        - name: diffing_remaster_data_set
+          in: query
+          description: Include in diff set but skip diffing
+          required: false
+          schema:
+            type: boolean
+        - name: diffing_drop_status
+          in: query
+          description: Status for enrollments dropped in diffing
+          required: false
+          schema:
+            type: string
+            enum: [deleted, completed, inactive]
+        - name: diffing_user_remove_status
+          in: query
+          description: Status for users removed in diffing
+          required: false
+          schema:
+            type: string
+            enum: [deleted, suspended]
+        - name: batch_mode_enrollment_drop_status
+          in: query
+          description: Status for enrollments dropped in batch mode
+          required: false
+          schema:
+            type: string
+            enum: [deleted, completed, inactive]
+        - name: change_threshold
+          in: query
+          description: Abort batch cleanup if deletions exceed this percent
+          required: false
+          schema:
+            type: integer
+        - name: diff_row_count_threshold
+          in: query
+          description: Skip diffing if row count difference exceeds this threshold
+          required: false
+          schema:
+            type: integer
+      requestBody:
+        description: SIS data file upload
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  format: binary
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: The created SisImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SisImport'
+  /api/v1/accounts/{account_id}/sis_imports/importing:
+    get:
+      summary: Returns the SIS imports currently processing for an account
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: Canvas account identifier
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Array of SisImport objects currently importing (empty if none)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SisImport'
+  /api/v1/accounts/{account_id}/sis_imports/{id}:
+    get:
+      summary: Get the status of an existing SIS import
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: Canvas account identifier
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: SIS import identifier
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A SisImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SisImport'
+    put:
+      summary: Restore workflow_states of SIS imported items
+      security:
+        - bearerAuth: []
+      description: |
+        Restores items to their pre-import workflow_state.  
+        Available up to 30 days after import.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: batch_mode
+          in: query
+          description: Restore only items deleted in batch mode
+          required: false
+          schema:
+            type: boolean
+        - name: undelete_only
+          in: query
+          description: Restore only deleted items
+          required: false
+          schema:
+            type: boolean
+        - name: unconclude_only
+          in: query
+          description: Restore only enrollments that were concluded
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Progress of the restore operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Progress'
+  /api/v1/accounts/{account_id}/sis_imports/{id}/abort:
+    put:
+      summary: Abort a SIS import that has not completed
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The aborted SisImport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SisImport'
+  /api/v1/accounts/{account_id}/sis_imports/abort_all_pending:
+    put:
+      summary: Abort all pending SIS imports for an account
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: account_id
+          in: path
+          description: Canvas account identifier
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: All pending SIS imports aborted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+  schemas:
+    SisImport:
+      type: object
+      description: |
+        A SisImport object represents the status and metadata of a SIS import operation.
+        See Canvas API documentation for full field definitions.
+    Progress:
+      type: object
+      description: |
+        A Progress object representing completion percentage and status message.
+        See Canvas API documentation for full field definitions.

@@ -1,0 +1,195 @@
+openapi: 3.0.3
+info:
+  title: Canvas LMS API
+  version: "1.0"
+paths:
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions:
+    post:
+      tags:
+        - Submissions
+      summary: Submit an assignment
+      description: |
+        Make a submission for an assignment. You must be actively enrolled as a student
+        in the course to do this. Concluded and pending enrollments are not permitted.
+        Supports all online submission types (text entry, URL, file upload, media recording,
+        LTI launch, student annotation).
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: >
+            ID of the course (or SIS-formatted ID: "sis_course_id:...").
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - submission[submission_type]
+              properties:
+                comment[text_comment]:
+                  type: string
+                  description: Include a textual comment with the submission.
+                submission[group_comment]:
+                  type: boolean
+                  description: Whether this comment should be sent to the entire group.
+                submission[submission_type]:
+                  type: string
+                  description: >
+                    The type of submission being made. Must be one of the allowed
+                    types supported by the assignment.
+                  enum:
+                    - online_text_entry
+                    - online_url
+                    - online_upload
+                    - media_recording
+                    - basic_lti_launch
+                    - student_annotation
+                submission[body]:
+                  type: string
+                  description: >
+                    HTML snippet submission. Requires submission_type=online_text_entry.
+                submission[url]:
+                  type: string
+                  description: >
+                    URL submission. Requires submission_type=online_url or basic_lti_launch.
+                submission[file_ids][]:
+                  type: array
+                  items:
+                    type: integer
+                  description: >
+                    IDs of previously uploaded files. Requires submission_type=online_upload.
+                submission[media_comment_id]:
+                  type: string
+                  description: >
+                    Media comment ID to submit. Requires submission_type=media_recording.
+                submission[media_comment_type]:
+                  type: string
+                  description: The type of media comment being submitted.
+                  enum:
+                    - audio
+                    - video
+                submission[user_id]:
+                  type: integer
+                  description: Submit on behalf of the given user (requires grading permission).
+                submission[annotatable_attachment_id]:
+                  type: integer
+                  description: >
+                    Attachment ID of the document being annotated.
+                    Requires submission_type=student_annotation.
+                submission[submitted_at]:
+                  type: string
+                  format: date-time
+                  description: >
+                    Timestamp to record the submission as submitted at (requires grading permission).
+      responses:
+        '200':
+          description: Submission created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+        '400':
+          description: Bad Request – invalid parameters or submission_type not allowed
+        '403':
+          description: Forbidden – user not enrolled or lacks permission
+        '404':
+          description: Not Found – course or assignment not found
+  /api/v1/sections/{section_id}/assignments/{assignment_id}/submissions:
+    post:
+      tags:
+        - Submissions
+      summary: Submit an assignment (by section)
+      description: Identical to the course‐based submission endpoint; identifies the context by section.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: section_id
+          in: path
+          description: >
+            ID of the section (or SIS-formatted ID: "sis_section_id:...").
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/paths//api/v1/courses/{course_id}/assignments/{assignment_id}/submissions/post/requestBody'
+      responses:
+        $ref: '#/paths//api/v1/courses/{course_id}/assignments/{assignment_id}/submissions/post/responses'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Submission:
+      type: object
+      properties:
+        assignment_id:
+          type: integer
+        attempt:
+          type: integer
+        body:
+          type: string
+        grade:
+          type: string
+        score:
+          type: number
+        submission_type:
+          type: string
+        submitted_at:
+          type: string
+          format: date-time
+        url:
+          type: string
+          nullable: true
+        user_id:
+          type: integer
+        grader_id:
+          type: integer
+          nullable: true
+        graded_at:
+          type: string
+          format: date-time
+          nullable: true
+        html_url:
+          type: string
+        preview_url:
+          type: string
+        late:
+          type: boolean
+        excused:
+          type: boolean
+        missing:
+          type: boolean
+        workflow_state:
+          type: string
+        points_deducted:
+          type: number
+        seconds_late:
+          type: integer
+        anonymous_id:
+          type: string
+          nullable: true
+        read_status:
+          type: string
+        redo_request:
+          type: boolean
+      description: A submission object

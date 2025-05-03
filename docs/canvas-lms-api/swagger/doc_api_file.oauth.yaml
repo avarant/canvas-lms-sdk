@@ -1,4 +1,3 @@
-```yaml
 paths:
   /login/oauth2/token:
     post:
@@ -81,4 +80,3 @@ paths:
           description: Bad Request — invalid or missing parameters
         '401':
           description: Unauthorized — invalid client credentials or invalid grant
-```

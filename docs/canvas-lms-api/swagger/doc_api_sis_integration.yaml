@@ -1,0 +1,129 @@
+openapi: 3.0.0
+info:
+  title: SIS Integration API
+  version: 1.0.0
+paths:
+  /api/sis/accounts/{account_id}/assignments:
+    get:
+      summary: Retrieve assignments enabled for grade export to SIS
+      description: |
+        Retrieve a list of published assignments flagged as “post_to_sis”. 
+        Assignment group and section information are included for convenience.
+        Each section includes course information for the origin course and the cross-listed course, if applicable.
+        The `override` is only provided if the Differentiated Assignments feature is enabled and the assignment has an override for that section.
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the account to query.
+        - name: starts_before
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: Restricts to courses that start before this date (if they have a start date).
+        - name: ends_after
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: Restricts to courses that end after this date (if they have an end date).
+        - name: include
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - student_overrides
+          description: Array of additional information to include. Allowed value: student_overrides.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of assignments enabled for SIS export
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          description: Bad Request
+  /api/sis/courses/{course_id}/assignments:
+    get:
+      summary: Retrieve assignments enabled for grade export to SIS
+      description: |
+        Retrieve a list of published assignments flagged as “post_to_sis” in a specific course.
+        Assignment group and section information are included for convenience.
+        Each section includes course information for the origin course and the cross-listed course, if applicable.
+        The `override` is only provided if the Differentiated Assignments feature is enabled and the assignment has an override for that section.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the course to query.
+        - name: include
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - student_overrides
+          description: Array of additional information to include. Allowed value: student_overrides.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of assignments enabled for SIS export
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          description: Bad Request
+  /api/sis/courses/{course_id}/disable_post_to_sis:
+    put:
+      summary: Disable assignments currently enabled for grade export to SIS
+      description: Disable all assignments flagged as “post_to_sis”, with an optional filter by grading period, in a course.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the course.
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grading_period_id:
+                  type: integer
+                  description: The ID of the grading period to restrict the operation to.
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
