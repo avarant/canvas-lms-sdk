@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,10 +27,19 @@ class Assignment(BaseModel):
     """
     An Assignment object
     """ # noqa: E501
-    id: Optional[StrictInt] = Field(default=None, description="The ID of the assignment")
-    name: Optional[StrictStr] = Field(default=None, description="The name of the assignment")
-    html_url: Optional[StrictStr] = Field(default=None, description="URL to the assignment's web page")
-    __properties: ClassVar[List[str]] = ["id", "name", "html_url"]
+    id: StrictInt = Field(description="The ID of the assignment")
+    name: StrictStr = Field(description="The name of the assignment")
+    description: Optional[StrictStr] = Field(default=None, description="The assignment description, in an HTML fragment")
+    created_at: datetime = Field(description="Time at which this assignment was originally created")
+    updated_at: datetime = Field(description="Time at which this assignment was last modified")
+    due_at: Optional[datetime] = Field(default=None, description="The due date for the assignment")
+    lock_at: Optional[datetime] = Field(default=None, description="The lock date for the assignment")
+    unlock_at: Optional[datetime] = Field(default=None, description="The unlock date for the assignment")
+    course_id: StrictInt = Field(description="The ID of the course the assignment belongs to")
+    html_url: StrictStr = Field(description="URL to the assignment's web page")
+    points_possible: Union[StrictFloat, StrictInt] = Field(description="The maximum points possible for the assignment")
+    grading_type: StrictStr = Field(description="The type of grading the assignment receives")
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "created_at", "updated_at", "due_at", "lock_at", "unlock_at", "course_id", "html_url", "points_possible", "grading_type"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -70,6 +80,21 @@ class Assignment(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if due_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.due_at is None and "due_at" in self.model_fields_set:
+            _dict['due_at'] = None
+
+        # set to None if lock_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.lock_at is None and "lock_at" in self.model_fields_set:
+            _dict['lock_at'] = None
+
+        # set to None if unlock_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.unlock_at is None and "unlock_at" in self.model_fields_set:
+            _dict['unlock_at'] = None
+
         return _dict
 
     @classmethod
@@ -84,7 +109,16 @@ class Assignment(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "name": obj.get("name"),
-            "html_url": obj.get("html_url")
+            "description": obj.get("description"),
+            "created_at": obj.get("created_at"),
+            "updated_at": obj.get("updated_at"),
+            "due_at": obj.get("due_at"),
+            "lock_at": obj.get("lock_at"),
+            "unlock_at": obj.get("unlock_at"),
+            "course_id": obj.get("course_id"),
+            "html_url": obj.get("html_url"),
+            "points_possible": obj.get("points_possible"),
+            "grading_type": obj.get("grading_type")
         })
         return _obj
 

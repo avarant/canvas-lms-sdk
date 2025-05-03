@@ -101,6 +101,7 @@ Method | HTTP request | Description
 [**courses_course_id_quizzes_assignment_id_patch**](DefaultApi.md#courses_course_id_quizzes_assignment_id_patch) | **PATCH** /courses/{course_id}/quizzes/{assignment_id} | Update a single quiz
 [**courses_course_id_quizzes_get**](DefaultApi.md#courses_course_id_quizzes_get) | **GET** /courses/{course_id}/quizzes | List new quizzes
 [**courses_course_id_quizzes_post**](DefaultApi.md#courses_course_id_quizzes_post) | **POST** /courses/{course_id}/quizzes | Create a new quiz
+[**delete_assignment**](DefaultApi.md#delete_assignment) | **DELETE** /api/v1/courses/{course_id}/assignments/{id} | Delete the given assignment
 [**group_categories_group_category_id_assign_unassigned_members_post**](DefaultApi.md#group_categories_group_category_id_assign_unassigned_members_post) | **POST** /group_categories/{group_category_id}/assign_unassigned_members | Assign unassigned members
 [**group_categories_group_category_id_delete**](DefaultApi.md#group_categories_group_category_id_delete) | **DELETE** /group_categories/{group_category_id} | Delete a Group Category
 [**group_categories_group_category_id_export_get**](DefaultApi.md#group_categories_group_category_id_export_get) | **GET** /group_categories/{group_category_id}/export | Export groups and users in category
@@ -7530,6 +7531,89 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | The created NewQuiz object |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **delete_assignment**
+> Assignment delete_assignment(course_id, id)
+
+Delete the given assignment
+
+Deletes the specified assignment and returns the deleted Assignment object.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import canvas_lms_sdk
+from canvas_lms_sdk.models.assignment import Assignment
+from canvas_lms_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://canvas.instructure.com/api/v1
+# See configuration.py for a list of all supported configuration parameters.
+configuration = canvas_lms_sdk.Configuration(
+    host = "https://canvas.instructure.com/api/v1"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = canvas_lms_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with canvas_lms_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = canvas_lms_sdk.DefaultApi(api_client)
+    course_id = 56 # int | ID of the course
+    id = 56 # int | ID of the assignment to delete
+
+    try:
+        # Delete the given assignment
+        api_response = api_instance.delete_assignment(course_id, id)
+        print("The response of DefaultApi->delete_assignment:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->delete_assignment: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **course_id** | **int**| ID of the course | 
+ **id** | **int**| ID of the assignment to delete | 
+
+### Return type
+
+[**Assignment**](Assignment.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successfully deleted assignment |  -  |
+**401** | Unauthorized – invalid or missing authentication token |  -  |
+**404** | Assignment not found |  -  |
+**500** | Internal server error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

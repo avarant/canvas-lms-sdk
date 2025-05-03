@@ -18,9 +18,9 @@ Python 3.9+
 If the python package is hosted on a repository, you can install directly using:
 
 ```sh
-pip install git+https://github.com/avarant/canvas-lms-sdk.git#subdirectory=generated_python_sdk
+pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
 ```
-(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/avarant/canvas-lms-sdk.git#subdirectory=generated_python_sdk`)
+(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git`)
 
 Then import the package:
 ```python
@@ -78,7 +78,7 @@ with canvas_lms_sdk.ApiClient(configuration) as api_client:
     api_instance = canvas_lms_sdk.AccountNotificationsApi(api_client)
     account_id = 56 # int | ID of the account
     include_past = True # bool | Include past and dismissed global announcements. (optional)
-    include_all = True # bool | Include all global announcements, regardless of user's role or availability date. Only available to account admins. (optional)
+    include_all = True # bool | Include all global announcements, regardless of user’s role or availability date. Only available to account admins. (optional)
     show_is_closed = True # bool | Include a flag for each notification indicating whether it has been read by the user. (optional)
 
     try:
@@ -159,7 +159,7 @@ Class | Method | HTTP request | Description
 *SearchApi* | [**api_v1_search_all_courses_get**](docs/SearchApi.md#api_v1_search_all_courses_get) | **GET** /api/v1/search/all_courses | A paginated list of all courses visible in the public index.
 *SearchApi* | [**api_v1_search_recipients_get**](docs/SearchApi.md#api_v1_search_recipients_get) | **GET** /api/v1/search/recipients | Find valid recipients (users, courses and groups) that the current user can send messages to. The /api/v1/search/recipients path is the preferred endpoint; /api/v1/conversations/find_recipients is deprecated. Pagination is supported. 
 *ServicesApi* | [**api_v1_services_kaltura_get**](docs/ServicesApi.md#api_v1_services_kaltura_get) | **GET** /api/v1/services/kaltura | Return the config information for the Kaltura plugin in JSON format.
-*ServicesApi* | [**api_v1_services_kaltura_session_post**](docs/ServicesApi.md#api_v1_services_kaltura_session_post) | **POST** /api/v1/services/kaltura_session | Start a new Kaltura session, so that new media can be recorded and uploaded to this Canvas instance's Kaltura instance.
+*ServicesApi* | [**api_v1_services_kaltura_session_post**](docs/ServicesApi.md#api_v1_services_kaltura_session_post) | **POST** /api/v1/services/kaltura_session | Start a new Kaltura session, so that new media can be recorded and uploaded to this Canvas instance’s Kaltura instance.
 *SharedBrandConfigsApi* | [**accounts_account_id_shared_brand_configs_id_put**](docs/SharedBrandConfigsApi.md#accounts_account_id_shared_brand_configs_id_put) | **PUT** /accounts/{account_id}/shared_brand_configs/{id} | Update a shared theme
 *SharedBrandConfigsApi* | [**accounts_account_id_shared_brand_configs_post**](docs/SharedBrandConfigsApi.md#accounts_account_id_shared_brand_configs_post) | **POST** /accounts/{account_id}/shared_brand_configs | Share a BrandConfig (Theme)
 *SharedBrandConfigsApi* | [**shared_brand_configs_id_delete**](docs/SharedBrandConfigsApi.md#shared_brand_configs_id_delete) | **DELETE** /shared_brand_configs/{id} | Un-share a BrandConfig (Theme)
@@ -253,7 +253,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**api_v1_quiz_submissions_quiz_submission_id_questions_get**](docs/DefaultApi.md#api_v1_quiz_submissions_quiz_submission_id_questions_get) | **GET** /api/v1/quiz_submissions/{quiz_submission_id}/questions | Get a list of all the question records for this quiz submission.
 *DefaultApi* | [**api_v1_quiz_submissions_quiz_submission_id_questions_id_flag_put**](docs/DefaultApi.md#api_v1_quiz_submissions_quiz_submission_id_questions_id_flag_put) | **PUT** /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/flag | Set a flag on a quiz question to indicate that you want to return to it later.
 *DefaultApi* | [**api_v1_quiz_submissions_quiz_submission_id_questions_id_formatted_answer_get**](docs/DefaultApi.md#api_v1_quiz_submissions_quiz_submission_id_questions_id_formatted_answer_get) | **GET** /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/formatted_answer | Matches the intended behavior of the UI when a numerical answer is entered and returns the resulting formatted number.
-*DefaultApi* | [**api_v1_quiz_submissions_quiz_submission_id_questions_id_unflag_put**](docs/DefaultApi.md#api_v1_quiz_submissions_quiz_submission_id_questions_id_unflag_put) | **PUT** /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/unflag | Remove the flag that you previously set on a quiz question after you've returned to it.
+*DefaultApi* | [**api_v1_quiz_submissions_quiz_submission_id_questions_id_unflag_put**](docs/DefaultApi.md#api_v1_quiz_submissions_quiz_submission_id_questions_id_unflag_put) | **PUT** /api/v1/quiz_submissions/{quiz_submission_id}/questions/{id}/unflag | Remove the flag that you previously set on a quiz question after you&#39;ve returned to it.
 *DefaultApi* | [**api_v1_quiz_submissions_quiz_submission_id_questions_post**](docs/DefaultApi.md#api_v1_quiz_submissions_quiz_submission_id_questions_post) | **POST** /api/v1/quiz_submissions/{quiz_submission_id}/questions | Provide or update an answer to one or more QuizQuestions.
 *DefaultApi* | [**api_v1_sections_id_crosslist_delete**](docs/DefaultApi.md#api_v1_sections_id_crosslist_delete) | **DELETE** /api/v1/sections/{id}/crosslist | Undo cross-listing of a Section.
 *DefaultApi* | [**api_v1_sections_id_crosslist_new_course_id_post**](docs/DefaultApi.md#api_v1_sections_id_crosslist_new_course_id_post) | **POST** /api/v1/sections/{id}/crosslist/{new_course_id} | Move the section to another course.
@@ -261,7 +261,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**api_v1_sections_id_get**](docs/DefaultApi.md#api_v1_sections_id_get) | **GET** /api/v1/sections/{id} | Gets details about a specific section.
 *DefaultApi* | [**api_v1_sections_id_put**](docs/DefaultApi.md#api_v1_sections_id_put) | **PUT** /api/v1/sections/{id} | Modify an existing section.
 *DefaultApi* | [**api_v1_sections_section_id_enrollments_get**](docs/DefaultApi.md#api_v1_sections_section_id_enrollments_get) | **GET** /api/v1/sections/{section_id}/enrollments | Return a paginated list of enrollments in a section
-*DefaultApi* | [**api_v1_submissions_id_what_if_grades_put**](docs/DefaultApi.md#api_v1_submissions_id_what_if_grades_put) | **PUT** /api/v1/submissions/{id}/what_if_grades | Update a submission's what-if score and calculate grades
+*DefaultApi* | [**api_v1_submissions_id_what_if_grades_put**](docs/DefaultApi.md#api_v1_submissions_id_what_if_grades_put) | **PUT** /api/v1/submissions/{id}/what_if_grades | Update a submission&#39;s what-if score and calculate grades
 *DefaultApi* | [**api_v1_users_self_groups_get**](docs/DefaultApi.md#api_v1_users_self_groups_get) | **GET** /api/v1/users/self/groups | List your groups
 *DefaultApi* | [**api_v1_users_user_id_content_shares_id_add_users_post**](docs/DefaultApi.md#api_v1_users_user_id_content_shares_id_add_users_post) | **POST** /api/v1/users/{user_id}/content_shares/{id}/add_users | Send a previously created content share to additional users
 *DefaultApi* | [**api_v1_users_user_id_content_shares_id_delete**](docs/DefaultApi.md#api_v1_users_user_id_content_shares_id_delete) | **DELETE** /api/v1/users/{user_id}/content_shares/{id} | Remove a content share from your list
@@ -271,7 +271,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**api_v1_users_user_id_content_shares_received_get**](docs/DefaultApi.md#api_v1_users_user_id_content_shares_received_get) | **GET** /api/v1/users/{user_id}/content_shares/received | List content shares received by a user
 *DefaultApi* | [**api_v1_users_user_id_content_shares_sent_get**](docs/DefaultApi.md#api_v1_users_user_id_content_shares_sent_get) | **GET** /api/v1/users/{user_id}/content_shares/sent | List content shares sent by a user
 *DefaultApi* | [**api_v1_users_user_id_content_shares_unread_count_get**](docs/DefaultApi.md#api_v1_users_user_id_content_shares_unread_count_get) | **GET** /api/v1/users/{user_id}/content_shares/unread_count | Get the number of unread content shares received by a user
-*DefaultApi* | [**api_v1_users_user_id_enrollments_get**](docs/DefaultApi.md#api_v1_users_user_id_enrollments_get) | **GET** /api/v1/users/{user_id}/enrollments | Return a paginated list of a user's enrollments
+*DefaultApi* | [**api_v1_users_user_id_enrollments_get**](docs/DefaultApi.md#api_v1_users_user_id_enrollments_get) | **GET** /api/v1/users/{user_id}/enrollments | Return a paginated list of a user&#39;s enrollments
 *DefaultApi* | [**api_v1_users_user_id_temporary_enrollment_status_get**](docs/DefaultApi.md#api_v1_users_user_id_temporary_enrollment_status_get) | **GET** /api/v1/users/{user_id}/temporary_enrollment_status | Show temporary enrollment recipient and provider status
 *DefaultApi* | [**courses_course_id_group_categories_bulk_manage_differentiation_tag_post**](docs/DefaultApi.md#courses_course_id_group_categories_bulk_manage_differentiation_tag_post) | **POST** /courses/{course_id}/group_categories/bulk_manage_differentiation_tag | Bulk manage differentiation tags
 *DefaultApi* | [**courses_course_id_group_categories_get**](docs/DefaultApi.md#courses_course_id_group_categories_get) | **GET** /courses/{course_id}/group_categories | List group categories for a course
@@ -281,6 +281,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**courses_course_id_quizzes_assignment_id_patch**](docs/DefaultApi.md#courses_course_id_quizzes_assignment_id_patch) | **PATCH** /courses/{course_id}/quizzes/{assignment_id} | Update a single quiz
 *DefaultApi* | [**courses_course_id_quizzes_get**](docs/DefaultApi.md#courses_course_id_quizzes_get) | **GET** /courses/{course_id}/quizzes | List new quizzes
 *DefaultApi* | [**courses_course_id_quizzes_post**](docs/DefaultApi.md#courses_course_id_quizzes_post) | **POST** /courses/{course_id}/quizzes | Create a new quiz
+*DefaultApi* | [**delete_assignment**](docs/DefaultApi.md#delete_assignment) | **DELETE** /api/v1/courses/{course_id}/assignments/{id} | Delete the given assignment
 *DefaultApi* | [**group_categories_group_category_id_assign_unassigned_members_post**](docs/DefaultApi.md#group_categories_group_category_id_assign_unassigned_members_post) | **POST** /group_categories/{group_category_id}/assign_unassigned_members | Assign unassigned members
 *DefaultApi* | [**group_categories_group_category_id_delete**](docs/DefaultApi.md#group_categories_group_category_id_delete) | **DELETE** /group_categories/{group_category_id} | Delete a Group Category
 *DefaultApi* | [**group_categories_group_category_id_export_get**](docs/DefaultApi.md#group_categories_group_category_id_export_get) | **GET** /group_categories/{group_category_id}/export | Export groups and users in category
