@@ -1,21 +1,16 @@
 # Progress
 
+Represents the progress of a background job.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **int** |  | [optional] 
-**completion** | **int** |  | [optional] 
-**context_id** | **int** |  | [optional] 
-**context_type** | **str** |  | [optional] 
-**created_at** | **datetime** |  | [optional] 
-**updated_at** | **datetime** |  | [optional] 
-**message** | **str** |  | [optional] 
-**tag** | **str** |  | [optional] 
-**workflow_state** | **str** |  | [optional] 
-**user_id** | **int** |  | [optional] 
-**url** | **str** |  | [optional] 
+**id** | **int** | The ID of the progress object. | 
+**workflow_state** | **str** | The current state of the job. | 
+**message** | **str** | A message associated with the job&#39;s progress. | [optional] 
+**completion** | **float** | Percentage completion of the job. | 
+**url** | **str** | URL to query the status of the job. | 
 
 ## Example
 

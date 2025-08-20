@@ -108,6 +108,26 @@ Class | Method | HTTP request | Description
 *AccountReportsApi* | [**api_v1_accounts_account_id_reports_report_id_delete**](docs/AccountReportsApi.md#api_v1_accounts_account_id_reports_report_id_delete) | **DELETE** /api/v1/accounts/{account_id}/reports/{report}/{id} | Delete a Report
 *AccountReportsApi* | [**api_v1_accounts_account_id_reports_report_id_get**](docs/AccountReportsApi.md#api_v1_accounts_account_id_reports_report_id_get) | **GET** /api/v1/accounts/{account_id}/reports/{report}/{id} | Status of a Report
 *AccountReportsApi* | [**api_v1_accounts_account_id_reports_report_post**](docs/AccountReportsApi.md#api_v1_accounts_account_id_reports_report_post) | **POST** /api/v1/accounts/{account_id}/reports/{report} | Start a Report
+*AssignmentOverridesApi* | [**batch_create_assignment_overrides**](docs/AssignmentOverridesApi.md#batch_create_assignment_overrides) | **POST** /api/v1/courses/{course_id}/assignments/overrides | Batch create overrides in a course
+*AssignmentOverridesApi* | [**batch_retrieve_assignment_overrides**](docs/AssignmentOverridesApi.md#batch_retrieve_assignment_overrides) | **GET** /api/v1/courses/{course_id}/assignments/overrides | Batch retrieve overrides in a course
+*AssignmentOverridesApi* | [**batch_update_assignment_overrides**](docs/AssignmentOverridesApi.md#batch_update_assignment_overrides) | **PUT** /api/v1/courses/{course_id}/assignments/overrides | Batch update overrides in a course
+*AssignmentOverridesApi* | [**create_assignment_override**](docs/AssignmentOverridesApi.md#create_assignment_override) | **POST** /api/v1/courses/{course_id}/assignments/{assignment_id}/overrides | Create an assignment override
+*AssignmentOverridesApi* | [**delete_assignment_override**](docs/AssignmentOverridesApi.md#delete_assignment_override) | **DELETE** /api/v1/courses/{course_id}/assignments/{assignment_id}/overrides/{id} | Delete an assignment override
+*AssignmentOverridesApi* | [**get_assignment_override**](docs/AssignmentOverridesApi.md#get_assignment_override) | **GET** /api/v1/courses/{course_id}/assignments/{assignment_id}/overrides/{id} | Get a single assignment override
+*AssignmentOverridesApi* | [**get_assignment_override_for_group**](docs/AssignmentOverridesApi.md#get_assignment_override_for_group) | **GET** /api/v1/groups/{group_id}/assignments/{assignment_id}/override | Redirect to the assignment override for a group
+*AssignmentOverridesApi* | [**get_assignment_override_for_section**](docs/AssignmentOverridesApi.md#get_assignment_override_for_section) | **GET** /api/v1/sections/{course_section_id}/assignments/{assignment_id}/override | Redirect to the assignment override for a section
+*AssignmentOverridesApi* | [**list_assignment_overrides**](docs/AssignmentOverridesApi.md#list_assignment_overrides) | **GET** /api/v1/courses/{course_id}/assignments/{assignment_id}/overrides | List assignment overrides
+*AssignmentOverridesApi* | [**update_assignment_override**](docs/AssignmentOverridesApi.md#update_assignment_override) | **PUT** /api/v1/courses/{course_id}/assignments/{assignment_id}/overrides/{id} | Update an assignment override
+*AssignmentsApi* | [**bulk_update_assignment_dates**](docs/AssignmentsApi.md#bulk_update_assignment_dates) | **PUT** /api/v1/courses/{course_id}/assignments/bulk_update | Bulk update assignment dates
+*AssignmentsApi* | [**create_assignment**](docs/AssignmentsApi.md#create_assignment) | **POST** /api/v1/courses/{course_id}/assignments | Create an assignment
+*AssignmentsApi* | [**delete_assignment**](docs/AssignmentsApi.md#delete_assignment) | **DELETE** /api/v1/courses/{course_id}/assignments/{id} | Delete an assignment
+*AssignmentsApi* | [**duplicate_assignment**](docs/AssignmentsApi.md#duplicate_assignment) | **POST** /api/v1/courses/{course_id}/assignments/{assignment_id}/duplicate | Duplicate assignment
+*AssignmentsApi* | [**edit_assignment**](docs/AssignmentsApi.md#edit_assignment) | **PUT** /api/v1/courses/{course_id}/assignments/{id} | Edit an assignment
+*AssignmentsApi* | [**get_assignment**](docs/AssignmentsApi.md#get_assignment) | **GET** /api/v1/courses/{course_id}/assignments/{id} | Get a single assignment
+*AssignmentsApi* | [**list_assignment_group_members_for_user**](docs/AssignmentsApi.md#list_assignment_group_members_for_user) | **GET** /api/v1/courses/{course_id}/assignments/{assignment_id}/users/{user_id}/group_members | List group members for a student on an assignment
+*AssignmentsApi* | [**list_assignments_for_course**](docs/AssignmentsApi.md#list_assignments_for_course) | **GET** /api/v1/courses/{course_id}/assignments | List assignments
+*AssignmentsApi* | [**list_assignments_for_group**](docs/AssignmentsApi.md#list_assignments_for_group) | **GET** /api/v1/courses/{course_id}/assignment_groups/{assignment_group_id}/assignments | List assignments for assignment group
+*AssignmentsApi* | [**list_assignments_for_user**](docs/AssignmentsApi.md#list_assignments_for_user) | **GET** /api/v1/users/{user_id}/courses/{course_id}/assignments | List assignments for user
 *AuthenticationApi* | [**api_lti_accounts_account_id_authorize_post**](docs/AuthenticationApi.md#api_lti_accounts_account_id_authorize_post) | **POST** /api/lti/accounts/{account_id}/authorize | Retrieve a JWT access token
 *AuthenticationProvidersApi* | [**api_v1_accounts_account_id_authentication_providers_get**](docs/AuthenticationProvidersApi.md#api_v1_accounts_account_id_authentication_providers_get) | **GET** /api/v1/accounts/{account_id}/authentication_providers | List authentication providers
 *AuthenticationProvidersApi* | [**api_v1_accounts_account_id_authentication_providers_id_delete**](docs/AuthenticationProvidersApi.md#api_v1_accounts_account_id_authentication_providers_id_delete) | **DELETE** /api/v1/accounts/{account_id}/authentication_providers/{id} | Delete authentication provider
@@ -127,6 +147,8 @@ Class | Method | HTTP request | Description
 *FilesApi* | [**api_v1_courses_course_id_files_quota_get**](docs/FilesApi.md#api_v1_courses_course_id_files_quota_get) | **GET** /api/v1/courses/{course_id}/files/quota | Get quota information for a course
 *FilesApi* | [**api_v1_groups_group_id_files_quota_get**](docs/FilesApi.md#api_v1_groups_group_id_files_quota_get) | **GET** /api/v1/groups/{group_id}/files/quota | Get quota information for a group
 *FilesApi* | [**api_v1_users_user_id_files_quota_get**](docs/FilesApi.md#api_v1_users_user_id_files_quota_get) | **GET** /api/v1/users/{user_id}/files/quota | Get quota information for a user
+*GroupsApi* | [**get_assignment_override_for_group**](docs/GroupsApi.md#get_assignment_override_for_group) | **GET** /api/v1/groups/{group_id}/assignments/{assignment_id}/override | Redirect to the assignment override for a group
+*GroupsApi* | [**list_assignment_group_members_for_user**](docs/GroupsApi.md#list_assignment_group_members_for_user) | **GET** /api/v1/courses/{course_id}/assignments/{assignment_id}/users/{user_id}/group_members | List group members for a student on an assignment
 *LTI2Api* | [**api_lti_accounts_account_id_authorize_post**](docs/LTI2Api.md#api_lti_accounts_account_id_authorize_post) | **POST** /api/lti/accounts/{account_id}/authorize | Retrieve a JWT access token
 *NewQuizItemsApi* | [**api_quiz_v1_courses_course_id_quizzes_assignment_id_items_get**](docs/NewQuizItemsApi.md#api_quiz_v1_courses_course_id_quizzes_assignment_id_items_get) | **GET** /api/quiz/v1/courses/{course_id}/quizzes/{assignment_id}/items | List quiz items
 *NewQuizItemsApi* | [**api_quiz_v1_courses_course_id_quizzes_assignment_id_items_item_id_delete**](docs/NewQuizItemsApi.md#api_quiz_v1_courses_course_id_quizzes_assignment_id_items_item_id_delete) | **DELETE** /api/quiz/v1/courses/{course_id}/quizzes/{assignment_id}/items/{item_id} | Delete a quiz item
@@ -158,6 +180,7 @@ Class | Method | HTTP request | Description
 *PollSessionsApi* | [**api_v1_polls_poll_id_poll_sessions_post**](docs/PollSessionsApi.md#api_v1_polls_poll_id_poll_sessions_post) | **POST** /api/v1/polls/{poll_id}/poll_sessions | Create a single poll session
 *SearchApi* | [**api_v1_search_all_courses_get**](docs/SearchApi.md#api_v1_search_all_courses_get) | **GET** /api/v1/search/all_courses | A paginated list of all courses visible in the public index.
 *SearchApi* | [**api_v1_search_recipients_get**](docs/SearchApi.md#api_v1_search_recipients_get) | **GET** /api/v1/search/recipients | Find valid recipients (users, courses and groups) that the current user can send messages to. The /api/v1/search/recipients path is the preferred endpoint; /api/v1/conversations/find_recipients is deprecated. Pagination is supported. 
+*SectionsApi* | [**get_assignment_override_for_section**](docs/SectionsApi.md#get_assignment_override_for_section) | **GET** /api/v1/sections/{course_section_id}/assignments/{assignment_id}/override | Redirect to the assignment override for a section
 *ServicesApi* | [**api_v1_services_kaltura_get**](docs/ServicesApi.md#api_v1_services_kaltura_get) | **GET** /api/v1/services/kaltura | Return the config information for the Kaltura plugin in JSON format.
 *ServicesApi* | [**api_v1_services_kaltura_session_post**](docs/ServicesApi.md#api_v1_services_kaltura_session_post) | **POST** /api/v1/services/kaltura_session | Start a new Kaltura session, so that new media can be recorded and uploaded to this Canvas instance’s Kaltura instance.
 *SharedBrandConfigsApi* | [**accounts_account_id_shared_brand_configs_id_put**](docs/SharedBrandConfigsApi.md#accounts_account_id_shared_brand_configs_id_put) | **PUT** /accounts/{account_id}/shared_brand_configs/{id} | Update a shared theme
@@ -281,7 +304,6 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**courses_course_id_quizzes_assignment_id_patch**](docs/DefaultApi.md#courses_course_id_quizzes_assignment_id_patch) | **PATCH** /courses/{course_id}/quizzes/{assignment_id} | Update a single quiz
 *DefaultApi* | [**courses_course_id_quizzes_get**](docs/DefaultApi.md#courses_course_id_quizzes_get) | **GET** /courses/{course_id}/quizzes | List new quizzes
 *DefaultApi* | [**courses_course_id_quizzes_post**](docs/DefaultApi.md#courses_course_id_quizzes_post) | **POST** /courses/{course_id}/quizzes | Create a new quiz
-*DefaultApi* | [**delete_assignment**](docs/DefaultApi.md#delete_assignment) | **DELETE** /api/v1/courses/{course_id}/assignments/{id} | Delete the given assignment
 *DefaultApi* | [**group_categories_group_category_id_assign_unassigned_members_post**](docs/DefaultApi.md#group_categories_group_category_id_assign_unassigned_members_post) | **POST** /group_categories/{group_category_id}/assign_unassigned_members | Assign unassigned members
 *DefaultApi* | [**group_categories_group_category_id_delete**](docs/DefaultApi.md#group_categories_group_category_id_delete) | **DELETE** /group_categories/{group_category_id} | Delete a Group Category
 *DefaultApi* | [**group_categories_group_category_id_export_get**](docs/DefaultApi.md#group_categories_group_category_id_export_get) | **GET** /group_categories/{group_category_id}/export | Export groups and users in category
@@ -350,11 +372,23 @@ Class | Method | HTTP request | Description
  - [ApiV1UsersUserIdObserveesPostRequestObservee](docs/ApiV1UsersUserIdObserveesPostRequestObservee.md)
  - [ApiV1UsersUserIdTemporaryEnrollmentStatusGet200Response](docs/ApiV1UsersUserIdTemporaryEnrollmentStatusGet200Response.md)
  - [Assignment](docs/Assignment.md)
+ - [AssignmentDate](docs/AssignmentDate.md)
+ - [AssignmentDateInput](docs/AssignmentDateInput.md)
  - [AssignmentGroup](docs/AssignmentGroup.md)
  - [AssignmentGroupGrade](docs/AssignmentGroupGrade.md)
+ - [AssignmentOverride](docs/AssignmentOverride.md)
+ - [AssignmentOverrideInput](docs/AssignmentOverrideInput.md)
+ - [AssignmentRubricSettings](docs/AssignmentRubricSettings.md)
  - [AuthenticationProvider](docs/AuthenticationProvider.md)
  - [AvailableReport](docs/AvailableReport.md)
  - [AvailableReportParametersValue](docs/AvailableReportParametersValue.md)
+ - [BasicUser](docs/BasicUser.md)
+ - [BatchCreateAssignmentOverridesRequest](docs/BatchCreateAssignmentOverridesRequest.md)
+ - [BatchCreateAssignmentOverridesRequestAssignmentOverridesInner](docs/BatchCreateAssignmentOverridesRequestAssignmentOverridesInner.md)
+ - [BatchRetrieveAssignmentOverrides200ResponseInner](docs/BatchRetrieveAssignmentOverrides200ResponseInner.md)
+ - [BatchUpdateAssignmentOverridesRequest](docs/BatchUpdateAssignmentOverridesRequest.md)
+ - [BatchUpdateAssignmentOverridesRequestAssignmentOverridesInner](docs/BatchUpdateAssignmentOverridesRequestAssignmentOverridesInner.md)
+ - [BulkUpdateAssignmentDatesRequestInner](docs/BulkUpdateAssignmentDatesRequestInner.md)
  - [ContentShare](docs/ContentShare.md)
  - [ContentShareContentExport](docs/ContentShareContentExport.md)
  - [ContentShareSender](docs/ContentShareSender.md)
@@ -365,11 +399,16 @@ Class | Method | HTTP request | Description
  - [CoursesCourseIdGroupCategoriesBulkManageDifferentiationTagPostRequest](docs/CoursesCourseIdGroupCategoriesBulkManageDifferentiationTagPostRequest.md)
  - [CoursesCourseIdGroupCategoriesBulkManageDifferentiationTagPostRequestGroupCategory](docs/CoursesCourseIdGroupCategoriesBulkManageDifferentiationTagPostRequestGroupCategory.md)
  - [CoursesCourseIdQuizzesPostRequest](docs/CoursesCourseIdQuizzesPostRequest.md)
+ - [CreateAssignmentOverrideRequest](docs/CreateAssignmentOverrideRequest.md)
+ - [CreateAssignmentRequest](docs/CreateAssignmentRequest.md)
+ - [CreateAssignmentRequestAssignment](docs/CreateAssignmentRequestAssignment.md)
  - [DeveloperKey](docs/DeveloperKey.md)
  - [DeveloperKeyInput](docs/DeveloperKeyInput.md)
  - [DeveloperKeyInputDeveloperKey](docs/DeveloperKeyInputDeveloperKey.md)
  - [DiscussionTopic](docs/DiscussionTopic.md)
  - [DiscussionTopicGroupTopicChildrenInner](docs/DiscussionTopicGroupTopicChildrenInner.md)
+ - [EditAssignmentRequest](docs/EditAssignmentRequest.md)
+ - [EditAssignmentRequestAssignment](docs/EditAssignmentRequestAssignment.md)
  - [Enrollment](docs/Enrollment.md)
  - [EnrollmentTerm](docs/EnrollmentTerm.md)
  - [EnrollmentTermInput](docs/EnrollmentTermInput.md)
@@ -382,6 +421,8 @@ Class | Method | HTTP request | Description
  - [Error4](docs/Error4.md)
  - [Error5](docs/Error5.md)
  - [ExternalTool](docs/ExternalTool.md)
+ - [ExternalToolTagAttributes](docs/ExternalToolTagAttributes.md)
+ - [ExternalToolTagAttributesInput](docs/ExternalToolTagAttributesInput.md)
  - [FederatedAttributeConfig](docs/FederatedAttributeConfig.md)
  - [FederatedAttributesConfigValue](docs/FederatedAttributesConfigValue.md)
  - [File](docs/File.md)
@@ -393,10 +434,12 @@ Class | Method | HTTP request | Description
  - [GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response](docs/GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response.md)
  - [GroupCategory](docs/GroupCategory.md)
  - [ListLtiRegistrationsResponse](docs/ListLtiRegistrationsResponse.md)
+ - [LockInfo](docs/LockInfo.md)
  - [LtiAssignment](docs/LtiAssignment.md)
  - [MediaUploadUrl](docs/MediaUploadUrl.md)
  - [MigrationIssue](docs/MigrationIssue.md)
  - [MultipleAttemptsSettings](docs/MultipleAttemptsSettings.md)
+ - [NeedsGradingCount](docs/NeedsGradingCount.md)
  - [NewQuiz](docs/NewQuiz.md)
  - [NewQuizInput](docs/NewQuizInput.md)
  - [OutcomeImport](docs/OutcomeImport.md)
@@ -406,6 +449,7 @@ Class | Method | HTTP request | Description
  - [PairingCode](docs/PairingCode.md)
  - [PollSession](docs/PollSession.md)
  - [Progress](docs/Progress.md)
+ - [Progress1](docs/Progress1.md)
  - [QuizQuestion](docs/QuizQuestion.md)
  - [QuizQuestionInput](docs/QuizQuestionInput.md)
  - [QuizSettings](docs/QuizSettings.md)
@@ -418,7 +462,10 @@ Class | Method | HTTP request | Description
  - [Report](docs/Report.md)
  - [ResourceLink](docs/ResourceLink.md)
  - [ResultViewSettings](docs/ResultViewSettings.md)
+ - [RubricCriteria](docs/RubricCriteria.md)
+ - [RubricRating](docs/RubricRating.md)
  - [SSOSettings](docs/SSOSettings.md)
+ - [ScoreStatistic](docs/ScoreStatistic.md)
  - [SearchResult](docs/SearchResult.md)
  - [Section](docs/Section.md)
  - [SharedBrandConfig](docs/SharedBrandConfig.md)
@@ -427,6 +474,8 @@ Class | Method | HTTP request | Description
  - [Submission1](docs/Submission1.md)
  - [Tab](docs/Tab.md)
  - [TemporaryEnrollmentPairing](docs/TemporaryEnrollmentPairing.md)
+ - [TurnitinSettings](docs/TurnitinSettings.md)
+ - [TurnitinSettingsInput](docs/TurnitinSettingsInput.md)
  - [User2](docs/User2.md)
  - [XAPIStatement](docs/XAPIStatement.md)
  - [XAPIStatementResult](docs/XAPIStatementResult.md)

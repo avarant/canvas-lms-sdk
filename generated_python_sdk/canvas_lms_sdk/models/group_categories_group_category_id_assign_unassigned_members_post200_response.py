@@ -17,23 +17,23 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, Dict, List, Optional
-from canvas_lms_sdk.models.progress import Progress
+from canvas_lms_sdk.models.progress1 import Progress1
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-GROUPCATEGORIESGROUPCATEGORYIDASSIGNUNASSIGNEDMEMBERSPOST200RESPONSE_ONE_OF_SCHEMAS = ["List[object]", "Progress"]
+GROUPCATEGORIESGROUPCATEGORYIDASSIGNUNASSIGNEDMEMBERSPOST200RESPONSE_ONE_OF_SCHEMAS = ["List[object]", "Progress1"]
 
 class GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response(BaseModel):
     """
     GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response
     """
-    # data type: Progress
-    oneof_schema_1_validator: Optional[Progress] = None
+    # data type: Progress1
+    oneof_schema_1_validator: Optional[Progress1] = None
     # data type: List[object]
     oneof_schema_2_validator: Optional[List[Dict[str, Any]]] = None
-    actual_instance: Optional[Union[List[object], Progress]] = None
-    one_of_schemas: Set[str] = { "List[object]", "Progress" }
+    actual_instance: Optional[Union[List[object], Progress1]] = None
+    one_of_schemas: Set[str] = { "List[object]", "Progress1" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -56,9 +56,9 @@ class GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response(BaseM
         instance = GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response.model_construct()
         error_messages = []
         match = 0
-        # validate data type: Progress
-        if not isinstance(v, Progress):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `Progress`")
+        # validate data type: Progress1
+        if not isinstance(v, Progress1):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `Progress1`")
         else:
             match += 1
         # validate data type: List[object]
@@ -69,10 +69,10 @@ class GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response(BaseM
             error_messages.append(str(e))
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress1. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress1. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -87,9 +87,9 @@ class GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response(BaseM
         error_messages = []
         match = 0
 
-        # deserialize data into Progress
+        # deserialize data into Progress1
         try:
-            instance.actual_instance = Progress.from_json(json_str)
+            instance.actual_instance = Progress1.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
@@ -105,10 +105,10 @@ class GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response(BaseM
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress1. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response with oneOf schemas: List[object], Progress1. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -122,7 +122,7 @@ class GroupCategoriesGroupCategoryIdAssignUnassignedMembersPost200Response(BaseM
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], List[object], Progress]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], List[object], Progress1]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

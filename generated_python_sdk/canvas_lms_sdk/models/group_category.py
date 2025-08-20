@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from canvas_lms_sdk.models.progress import Progress
+from canvas_lms_sdk.models.progress1 import Progress1
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -38,7 +38,7 @@ class GroupCategory(BaseModel):
     group_limit: Optional[StrictInt] = None
     sis_group_category_id: Optional[StrictStr] = None
     sis_import_id: Optional[StrictInt] = None
-    progress: Optional[Progress] = None
+    progress: Optional[Progress1] = None
     non_collaborative: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["id", "name", "role", "self_signup", "auto_leader", "context_type", "account_id", "course_id", "group_limit", "sis_group_category_id", "sis_import_id", "progress", "non_collaborative"]
 
@@ -142,7 +142,7 @@ class GroupCategory(BaseModel):
             "group_limit": obj.get("group_limit"),
             "sis_group_category_id": obj.get("sis_group_category_id"),
             "sis_import_id": obj.get("sis_import_id"),
-            "progress": Progress.from_dict(obj["progress"]) if obj.get("progress") is not None else None,
+            "progress": Progress1.from_dict(obj["progress"]) if obj.get("progress") is not None else None,
             "non_collaborative": obj.get("non_collaborative")
         })
         return _obj

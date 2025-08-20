@@ -3,12 +3,15 @@
 # import apis into api package
 from canvas_lms_sdk.api.account_notifications_api import AccountNotificationsApi
 from canvas_lms_sdk.api.account_reports_api import AccountReportsApi
+from canvas_lms_sdk.api.assignment_overrides_api import AssignmentOverridesApi
+from canvas_lms_sdk.api.assignments_api import AssignmentsApi
 from canvas_lms_sdk.api.authentication_api import AuthenticationApi
 from canvas_lms_sdk.api.authentication_providers_api import AuthenticationProvidersApi
 from canvas_lms_sdk.api.conversations_api import ConversationsApi
 from canvas_lms_sdk.api.courses_api import CoursesApi
 from canvas_lms_sdk.api.enrollment_terms_api import EnrollmentTermsApi
 from canvas_lms_sdk.api.files_api import FilesApi
+from canvas_lms_sdk.api.groups_api import GroupsApi
 from canvas_lms_sdk.api.lti2_api import LTI2Api
 from canvas_lms_sdk.api.new_quiz_items_api import NewQuizItemsApi
 from canvas_lms_sdk.api.outcome_imports_api import OutcomeImportsApi
@@ -17,6 +20,7 @@ from canvas_lms_sdk.api.plagiarism_detection_platform_assignments_api import Pla
 from canvas_lms_sdk.api.platform_notification_service_api import PlatformNotificationServiceApi
 from canvas_lms_sdk.api.poll_sessions_api import PollSessionsApi
 from canvas_lms_sdk.api.search_api import SearchApi
+from canvas_lms_sdk.api.sections_api import SectionsApi
 from canvas_lms_sdk.api.services_api import ServicesApi
 from canvas_lms_sdk.api.shared_brand_configs_api import SharedBrandConfigsApi
 from canvas_lms_sdk.api.submission_comments_api import SubmissionCommentsApi

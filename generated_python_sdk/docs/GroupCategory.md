@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **group_limit** | **int** |  | [optional] 
 **sis_group_category_id** | **str** |  | [optional] 
 **sis_import_id** | **int** |  | [optional] 
-**progress** | [**Progress**](Progress.md) |  | [optional] 
+**progress** | [**Progress1**](Progress1.md) |  | [optional] 
 **non_collaborative** | **bool** |  | [optional] 
 
 ## Example
