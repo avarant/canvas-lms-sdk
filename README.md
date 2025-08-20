@@ -128,9 +128,9 @@ The Python SDK located in `generated_python_sdk/` is created using `openapi-gene
     From the project root directory, run the generator command:
     ```bash
     # Ensure openapi_merged.yaml exists and is valid
-    openapi-generator generate -g python \\
-      -i docs/canvas-lms-api/swagger/openapi_merged.yaml \\
-      -o ./generated_python_sdk \\
+    openapi-generator generate -g python \
+      -i docs/canvas-lms-api/swagger/openapi_merged.yaml \
+      -o ./generated_python_sdk \
       --additional-properties=packageName=canvas_lms_sdk
     ```
     *   `-g python`: Specifies the Python generator.

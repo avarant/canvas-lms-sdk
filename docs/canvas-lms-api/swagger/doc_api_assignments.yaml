@@ -2,102 +2,2106 @@ openapi: 3.0.0
 info:
   title: Canvas LMS Assignments API
   version: 1.0.0
+  description: API endpoints for managing Assignments and Assignment Overrides in Canvas LMS.
 paths:
-  /api/v1/courses/{course_id}/assignments/{id}:
-    delete:
-      summary: Delete the given assignment
-      description: Deletes the specified assignment and returns the deleted Assignment object.
-      operationId: deleteAssignment
+  /api/v1/courses/{course_id}/assignments:
+    get:
+      summary: List assignments
+      description: Returns the paginated list of assignments for the current course.
+      operationId: listAssignmentsForCourse
       parameters:
         - name: course_id
           in: path
-          description: ID of the course
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/assignmentInclude'
+        - $ref: '#/components/parameters/searchTerm'
+        - $ref: '#/components/parameters/overrideAssignmentDates'
+        - $ref: '#/components/parameters/needsGradingCountBySection'
+        - $ref: '#/components/parameters/bucket'
+        - $ref: '#/components/parameters/assignmentIds'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/postToSisParam'
+        - $ref: '#/components/parameters/newQuizzesParam'
+      responses:
+        '200':
+          description: A paginated list of Assignment objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course not found.
+      tags:
+       - Assignments
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create an assignment
+      description: Create a new assignment for this course. The assignment is created in the active state.
+      operationId: createAssignment
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignment:
+                  type: object
+                  required: [name]
+                  properties:
+                    name:
+                      type: string
+                    position:
+                      type: integer
+                    submission_types:
+                      type: array
+                      items:
+                        type: string
+                        enum: [online_quiz, none, on_paper, discussion_topic, external_tool, online_upload, online_text_entry, online_url, media_recording, student_annotation]
+                      description: List of supported submission types.
+                    allowed_extensions:
+                      type: array
+                      items:
+                        type: string
+                      description: Allowed extensions for online_upload.
+                    turnitin_enabled:
+                      type: boolean
+                      description: Enable Turnitin submissions (Requires plugin and online_upload type).
+                    vericite_enabled:
+                      type: boolean
+                      description: Enable VeriCite submissions (Requires plugin and online_upload type).
+                    turnitin_settings:
+                      $ref: '#/components/schemas/TurnitinSettingsInput' # Use input variant if different from output
+                    integration_data:
+                      type: object
+                      additionalProperties: true
+                      description: Data used for SIS integrations (Requires admin permission 'Manage SIS'). JSON string required.
+                    integration_id:
+                      type: string
+                      description: Unique ID from third party integrations.
+                    peer_reviews:
+                      type: boolean
+                      description: Enable peer reviews (Not applicable for external_tool, discussion_topic, online_quiz, or on_paper).
+                    automatic_peer_reviews:
+                      type: boolean
+                      description: Assign peer reviews automatically (Requires peer_reviews=true).
+                    notify_of_update:
+                      type: boolean
+                      description: Notify students of content change.
+                    group_category_id:
+                      type: integer
+                      description: If present, makes it a group assignment assigned to this group set ID.
+                    grade_group_students_individually:
+                      type: boolean # Changed from integer based on boolean logic description
+                      description: Grade group members individually (Requires group_category_id).
+                    external_tool_tag_attributes:
+                       $ref: '#/components/schemas/ExternalToolTagAttributesInput' # Use input variant
+                    points_possible:
+                      type: number
+                      format: double
+                      description: Maximum points possible.
+                    grading_type:
+                      type: string
+                      enum: [pass_fail, percent, letter_grade, gpa_scale, points, not_graded]
+                      description: Grading strategy. Defaults to 'points'.
+                    due_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                      description: Due date/time in ISO 8601 format.
+                    lock_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                      description: Lock date/time in ISO 8601 format.
+                    unlock_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                      description: Unlock date/time in ISO 8601 format.
+                    description:
+                      type: string
+                      description: Assignment description (supports HTML).
+                    assignment_group_id:
+                      type: integer
+                      description: Assignment group ID. Defaults to the top group.
+                    assignment_overrides:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/AssignmentOverrideInput'
+                      description: List of overrides for the assignment.
+                    only_visible_to_overrides:
+                      type: boolean
+                      description: Only visible to overrides (Requires 'differentiated assignments' setting).
+                    published:
+                      type: boolean
+                      description: Whether the assignment is published (Requires 'draft state' setting).
+                    grading_standard_id:
+                      type: integer
+                      nullable: true
+                      description: Grading standard ID. Updates grading_type to 'letter_grade' or 'gpa_scale'. Null removes standard.
+                    omit_from_final_grade:
+                      type: boolean
+                      description: Omit from final grade calculation.
+                    hide_in_gradebook:
+                      type: boolean
+                      description: Hide assignment in gradebook.
+                    quiz_lti:
+                      type: boolean
+                      description: Use Quizzes 2 LTI tool (Sets submission_types and external_tool_tag_attributes).
+                    moderated_grading:
+                      type: boolean
+                      description: Enable moderated grading.
+                    grader_count:
+                      type: integer
+                      description: Max number of provisional graders (If moderated). See docs for constraints.
+                    final_grader_id:
+                      type: integer
+                      description: User ID of the final grader (If moderated).
+                    grader_comments_visible_to_graders:
+                      type: boolean
+                      description: Provisional grader comments visibility (If moderated).
+                    graders_anonymous_to_graders:
+                      type: boolean
+                      description: Hide provisional grader identities from others (If moderated).
+                    graders_names_visible_to_final_grader:
+                      type: boolean
+                      description: Provisional grader identities visibility to final grader (If moderated).
+                    anonymous_grading:
+                      type: boolean
+                      description: Enable anonymous grading.
+                    allowed_attempts:
+                      type: integer
+                      nullable: true # Can be null for unlimited
+                      description: Number of submission attempts (-1 or null for unlimited).
+                    annotatable_attachment_id:
+                      type: integer
+                      description: Attachment ID for student annotation (If submission_types includes 'student_annotation').
+      responses:
+        '201':
+          description: Successfully created assignment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+        '400':
+          description: Invalid input parameters.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden (e.g., insufficient permissions).
+        '404':
+          description: Course not found.
+      tags:
+       - Assignments
+      security:
+        - bearerAuth: []
+
+  /api/v1/courses/{course_id}/assignments/{id}:
+    get:
+      summary: Get a single assignment
+      description: Returns the assignment with the given id.
+      operationId: getAssignment
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
           required: true
           schema:
             type: integer
         - name: id
           in: path
-          description: ID of the assignment to delete
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/assignmentInclude'
+        - $ref: '#/components/parameters/overrideAssignmentDates'
+        - $ref: '#/components/parameters/needsGradingCountBySection'
+        - name: all_dates # Specific to GET single assignment
+          in: query
+          description: If true, include all dates associated with the assignment, if applicable.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved assignment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Assignment or Course not found.
+      tags:
+        - Assignments
+      security:
+        - bearerAuth: []
+    put:
+      summary: Edit an assignment
+      description: Modify an existing assignment. If assignment[assignment_overrides] is provided, all existing overrides are deleted and replaced by the new ones.
+      operationId: editAssignment
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignment:
+                  type: object
+                  # Most fields from POST are applicable, with notes below
+                  properties:
+                    name:
+                      type: string
+                    position:
+                      type: integer
+                    submission_types:
+                      type: array
+                      items:
+                        type: string
+                        enum: [online_quiz, none, on_paper, discussion_topic, external_tool, online_upload, online_text_entry, online_url, media_recording, student_annotation]
+                      description: "(Only applies if no student submissions)"
+                    allowed_extensions:
+                      type: array
+                      items:
+                        type: string
+                    turnitin_enabled:
+                      type: boolean
+                    vericite_enabled:
+                      type: boolean
+                    turnitin_settings:
+                      $ref: '#/components/schemas/TurnitinSettingsInput'
+                    sis_assignment_id: # Added from HTML
+                      type: string
+                      description: The sis id of the Assignment
+                    integration_data:
+                      type: object
+                      additionalProperties: true
+                      description: Data used for SIS integrations (Requires admin permission 'Manage SIS'). JSON string required.
+                    integration_id:
+                      type: string
+                    peer_reviews:
+                      type: boolean
+                    automatic_peer_reviews:
+                      type: boolean
+                    notify_of_update:
+                      type: boolean
+                    group_category_id:
+                      type: integer
+                    grade_group_students_individually:
+                      type: boolean # Changed based on boolean logic description
+                    external_tool_tag_attributes:
+                       $ref: '#/components/schemas/ExternalToolTagAttributesInput'
+                    points_possible:
+                      type: number
+                      format: double
+                    grading_type:
+                      type: string
+                      enum: [pass_fail, percent, letter_grade, gpa_scale, points, not_graded]
+                    due_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    lock_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    unlock_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    description:
+                      type: string
+                    assignment_group_id:
+                      type: integer
+                    assignment_overrides:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/AssignmentOverrideInput'
+                      description: Updates/deletes existing overrides to match list. Omit key to leave overrides untouched.
+                    only_visible_to_overrides:
+                      type: boolean
+                    published:
+                      type: boolean
+                    grading_standard_id:
+                      type: integer
+                    omit_from_final_grade:
+                      type: boolean
+                    hide_in_gradebook:
+                      type: boolean
+                    moderated_grading:
+                      type: boolean
+                    grader_count:
+                      type: integer
+                    final_grader_id:
+                      type: integer
+                    grader_comments_visible_to_graders:
+                      type: boolean
+                    graders_anonymous_to_graders:
+                      type: boolean
+                    graders_names_visible_to_final_grader:
+                      type: boolean
+                    anonymous_grading:
+                      type: boolean
+                    allowed_attempts:
+                      type: integer
+                      nullable: true # Can be null for unlimited
+                      description: Number of submission attempts (-1 or null for unlimited).
+                    annotatable_attachment_id:
+                      type: integer
+                    force_updated_at: # Added from HTML
+                      type: boolean
+                      description: Force updated_at even if no changes were made.
+      responses:
+        '200':
+          description: Successfully updated assignment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+        '400':
+          description: Invalid input parameters.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden (e.g., trying to modify frozen attributes or attributes locked due to submissions).
+        '404':
+          description: Assignment or Course not found.
+      tags:
+        - Assignments
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Delete an assignment
+      description: Delete the given assignment.
+      operationId: deleteAssignment
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the assignment to delete.
           required: true
           schema:
             type: integer
       responses:
         '200':
-          description: Successfully deleted assignment
+          description: Successfully deleted assignment.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Assignment'
-        '404':
-          description: Assignment not found
+                $ref: '#/components/schemas/Assignment' # Returns the deleted assignment object
         '401':
-          description: Unauthorized – invalid or missing authentication token
-        '500':
-          description: Internal server error
+          description: Unauthorized.
+        '404':
+          description: Assignment or Course not found.
+      tags:
+        - Assignments
       security:
         - bearerAuth: []
+
+  /api/v1/courses/{course_id}/assignment_groups/{assignment_group_id}/assignments:
+    get:
+      summary: List assignments for assignment group
+      description: Returns the paginated list of assignments for the assignment group.
+      operationId: listAssignmentsForGroup
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_group_id
+          in: path
+          description: ID of the assignment group.
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/assignmentInclude'
+        - $ref: '#/components/parameters/searchTerm'
+        - $ref: '#/components/parameters/overrideAssignmentDates'
+        - $ref: '#/components/parameters/needsGradingCountBySection'
+        - $ref: '#/components/parameters/bucket'
+        - $ref: '#/components/parameters/assignmentIds'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/postToSisParam'
+        - $ref: '#/components/parameters/newQuizzesParam'
+      responses:
+        '200':
+          description: A paginated list of Assignment objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course or AssignmentGroup not found.
+      tags:
+       - Assignments
+      security:
+        - bearerAuth: []
+
+  /api/v1/users/{user_id}/courses/{course_id}/assignments:
+    get:
+      summary: List assignments for user
+      description: Returns the paginated list of assignments for the specified user if the current user has rights to view. See List assignments for valid arguments.
+      operationId: listAssignmentsForUser
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user.
+          required: true
+          schema:
+            type: string # Often 'self' or integer ID
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        # Reuse parameters from listAssignmentsForCourse
+        - $ref: '#/components/parameters/assignmentInclude'
+        - $ref: '#/components/parameters/searchTerm'
+        - $ref: '#/components/parameters/overrideAssignmentDates'
+        - $ref: '#/components/parameters/needsGradingCountBySection'
+        - $ref: '#/components/parameters/bucket'
+        - $ref: '#/components/parameters/assignmentIds'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/postToSisParam'
+        - $ref: '#/components/parameters/newQuizzesParam'
+      responses:
+        '200':
+          description: A paginated list of Assignment objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: User or Course not found.
+      tags:
+       - Assignments
+      security:
+        - bearerAuth: []
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/duplicate:
+    post:
+      summary: Duplicate assignment
+      description: Duplicate an assignment and return the new assignment. Optionally returns a Quiz object if result_type=Quiz and New Quizzes are enabled.
+      operationId: duplicateAssignment
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment to duplicate.
+          required: true
+          schema:
+            type: integer
+        - name: result_type
+          in: query
+          description: If 'Quiz' and New Quizzes are enabled, returns a Quiz object instead.
+          required: false
+          schema:
+            type: string
+            enum: [Quiz]
+      responses:
+        '200': # Duplicate seems to return 200 OK based on curl example, not 201
+          description: Successfully duplicated assignment.
+          content:
+            application/json:
+              schema:
+                oneOf: # Can return Assignment or potentially Quiz
+                 - $ref: '#/components/schemas/Assignment'
+                 # - $ref: '#/components/schemas/Quiz' # Add if Quiz schema is defined
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course or Assignment not found.
+      tags:
+       - Assignments
+      security:
+        - bearerAuth: []
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/users/{user_id}/group_members:
+    get:
+      summary: List group members for a student on an assignment
+      description: Returns student ids and names for the group the specified user is in for the given assignment.
+      operationId: listAssignmentGroupMembersForUser
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+        - name: user_id
+          in: path
+          description: ID of the user.
+          required: true
+          schema:
+            type: string # Often 'self' or integer ID
+      responses:
+        '200':
+          description: A list of basic user information for group members.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicUser'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course, Assignment, or User not found, or User not in a group for this assignment.
+      tags:
+       - Assignments
+       - Groups # Potentially relevant tag
+      security:
+        - bearerAuth: []
+
+  /api/v1/courses/{course_id}/assignments/bulk_update:
+    put:
+      summary: Bulk update assignment dates
+      description: Update due dates and availability dates for multiple assignments in a course. Accepts a JSON array of objects containing 'id' and 'all_dates' (array of AssignmentDate structures). Performs update in a background job.
+      operationId: bulkUpdateAssignmentDates
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The ID of the assignment to update.
+                  all_dates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignmentDateInput' # Use input variant
+                    description: Array of AssignmentDate structures (base and/or overrides).
+                required:
+                  - id
+                  - all_dates
+      responses:
+        '200':
+          description: Successfully started the bulk update job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Progress' # Assuming Progress schema exists
+        '400':
+          description: Invalid input data (validation errors).
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course not found.
+      tags:
+       - Assignments
+      security:
+        - bearerAuth: []
+
+  # --- Assignment Overrides ---
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/overrides:
+    get:
+      summary: List assignment overrides
+      description: Returns the paginated list of overrides for this assignment that target sections/groups/students visible to the current user.
+      operationId: listAssignmentOverrides
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A paginated list of AssignmentOverride objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssignmentOverride'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course or Assignment not found.
+      tags:
+       - Assignment Overrides
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create an assignment override
+      description: Create a new override for this assignment. One of student_ids, group_id, or course_section_id must be present and valid.
+      operationId: createAssignmentOverride
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json: # HTML examples use form data, but JSON is more standard for complex objects
+            schema:
+              type: object
+              properties:
+                assignment_override:
+                  $ref: '#/components/schemas/AssignmentOverrideInput'
+      responses:
+        '201': # Should be 201 Created
+          description: Successfully created assignment override.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignmentOverride'
+        '400':
+          description: Invalid input parameters (e.g., missing target, invalid ID, target already overridden).
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course or Assignment not found.
+      tags:
+       - Assignment Overrides
+      security:
+        - bearerAuth: []
+
+  /api/v1/courses/{course_id}/assignments/{assignment_id}/overrides/{id}:
+    get:
+      summary: Get a single assignment override
+      description: Returns details of the assignment override with the given id.
+      operationId: getAssignmentOverride
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the assignment override.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved assignment override.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignmentOverride'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course, Assignment, or AssignmentOverride not found.
+      tags:
+        - Assignment Overrides
+      security:
+        - bearerAuth: []
+    put:
+      summary: Update an assignment override
+      description: Update an existing assignment override. All current overridden values must be supplied if they are to be retained. Target override sets cannot be changed for group or section overrides.
+      operationId: updateAssignmentOverride
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the assignment override to update.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json: # Assuming JSON input
+            schema:
+              type: object
+              properties:
+                assignment_override:
+                  $ref: '#/components/schemas/AssignmentOverrideInput' # Reusing input schema, requires careful handling server-side
+      responses:
+        '200':
+          description: Successfully updated assignment override.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignmentOverride'
+        '400':
+          description: Invalid input parameters.
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course, Assignment, or AssignmentOverride not found.
+      tags:
+        - Assignment Overrides
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Delete an assignment override
+      description: Deletes the assignment override with the given id.
+      operationId: deleteAssignmentOverride
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          description: ID of the assignment override to delete.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted assignment override.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignmentOverride' # Returns the deleted override object
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course, Assignment, or AssignmentOverride not found.
+      tags:
+        - Assignment Overrides
+      security:
+        - bearerAuth: []
+
+  /api/v1/groups/{group_id}/assignments/{assignment_id}/override:
+    get:
+      summary: Redirect to the assignment override for a group
+      description: Responds with a redirect to the override for the given group and assignment, if one exists (404 otherwise).
+      operationId: getAssignmentOverrideForGroup
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302': # Redirect
+          description: Redirects to the group's assignment override URL.
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Group, Assignment not found, or no override exists for this group/assignment.
+      tags:
+       - Assignment Overrides
+       - Groups
+      security:
+        - bearerAuth: []
+
+  /api/v1/sections/{course_section_id}/assignments/{assignment_id}/override:
+    get:
+      summary: Redirect to the assignment override for a section
+      description: Responds with a redirect to the override for the given section and assignment, if one exists (404 otherwise).
+      operationId: getAssignmentOverrideForSection
+      parameters:
+        - name: course_section_id # Name matches HTML
+          in: path
+          description: ID of the course section.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_id
+          in: path
+          description: ID of the assignment.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302': # Redirect
+          description: Redirects to the section's assignment override URL.
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Section, Assignment not found, or no override exists for this section/assignment.
+      tags:
+       - Assignment Overrides
+       - Sections
+      security:
+        - bearerAuth: []
+
+  /api/v1/courses/{course_id}/assignments/overrides:
+    get:
+      summary: Batch retrieve overrides in a course
+      description: Returns a list of specified overrides in this course. Requires assignment_overrides[][id] and assignment_overrides[][assignment_id] parameters. Returns null for unfound overrides.
+      operationId: batchRetrieveAssignmentOverrides
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+        - name: assignment_overrides[][id]
+          in: query
+          description: IDs of the overrides to retrieve. Match index with assignment_id.
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form # Default style for array in query
+          explode: true # Default style for array in query
+        - name: assignment_overrides[][assignment_id]
+          in: query
+          description: IDs of the assignments for each override. Match index with id.
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: A list containing the retrieved AssignmentOverride objects or null elements.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object # Could be AssignmentOverride or null
+                  nullable: true
+                  oneOf:
+                    - $ref: '#/components/schemas/AssignmentOverride'
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course not found.
+      tags:
+       - Assignment Overrides
+      security:
+        - bearerAuth: []
+    post:
+      summary: Batch create overrides in a course
+      description: Creates the specified overrides for each assignment in a single transaction. Errors are reported in an errors attribute.
+      operationId: batchCreateAssignmentOverrides
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json: # HTML uses form data, but JSON is better for arrays of objects
+            schema:
+              type: object
+              properties:
+                assignment_overrides:
+                  type: array
+                  items:
+                    # $ref: '#/components/schemas/AssignmentOverrideInputWithAssignmentId' # Need assignment_id here
+                    type: object
+                    properties:
+                      assignment_id:
+                        type: integer
+                        description: The ID of the assignment to create the override for.
+                      # Inline properties from AssignmentOverrideInput
+                      student_ids:
+                        type: array
+                        items:
+                          type: integer
+                        description: Target student IDs (for ad-hoc overrides).
+                      title:
+                        type: string
+                        description: Title (required for ad-hoc overrides).
+                      group_id:
+                        type: integer
+                        description: Target group ID (for group overrides).
+                      course_section_id:
+                        type: integer
+                        description: Target course section ID (for section overrides).
+                      due_at:
+                        type: string
+                        format: date-time
+                        description: Overridden due date/time (ISO 8601). Omit/null to remove override.
+                      unlock_at:
+                        type: string
+                        format: date-time
+                        description: Overridden unlock date/time (ISO 8601). Omit/null to remove override.
+                      lock_at:
+                        type: string
+                        format: date-time
+                        description: Overridden lock date/time (ISO 8601). Omit/null to remove override.
+                    required:
+                      - assignment_id # assignment_id is required for each item in the batch create
+                      # Other required fields (like title for ad-hoc) depend on the specific override type
+              required:
+                - assignment_overrides
+      responses:
+        '200': # HTML implies 200 OK response
+          description: Successfully created assignment overrides. Might contain errors for specific items.
+          content:
+            application/json:
+              schema:
+                type: array # Returns list of created overrides or error details
+                items:
+                  $ref: '#/components/schemas/AssignmentOverride' # Simplified, actual response might include errors
+        '400':
+          description: Invalid input data (global errors or errors on all items).
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course not found.
+      tags:
+       - Assignment Overrides
+      security:
+        - bearerAuth: []
+    put:
+      summary: Batch update overrides in a course
+      description: Updates a list of specified overrides for each assignment in a single transaction. Errors are reported in an errors attribute.
+      operationId: batchUpdateAssignmentOverrides
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json: # Assuming JSON input
+            schema:
+              type: object
+              properties:
+                assignment_overrides:
+                  type: array
+                  items:
+                    allOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: ID of the override to update.
+                          assignment_id:
+                            type: integer
+                            description: ID of the assignment the override belongs to.
+                        required:
+                          - id
+                          - assignment_id
+                      - $ref: '#/components/schemas/AssignmentOverrideInput' # Contains fields to update
+              required:
+                - assignment_overrides
+      responses:
+        '200': # HTML implies 200 OK response
+          description: Successfully updated assignment overrides. Might contain errors for specific items.
+          content:
+            application/json:
+              schema:
+                type: array # Returns list of updated overrides or error details
+                items:
+                  $ref: '#/components/schemas/AssignmentOverride' # Simplified, actual response might include errors
+        '400':
+          description: Invalid input data (global errors or errors on all items).
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Course not found.
+      tags:
+       - Assignment Overrides
+      security:
+        - bearerAuth: []
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      bearerFormat: JWT # Or API Key depending on Canvas auth method
+
+  parameters:
+    assignmentInclude:
+      name: include[]
+      in: query
+      description: Associations to include with the assignment.
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          enum: [submission, assignment_visibility, all_dates, overrides, observed_users, can_edit, score_statistics, ab_guid]
+      style: form
+      explode: false # Standard way to represent array query params
+    searchTerm:
+      name: search_term
+      in: query
+      description: Partial title of assignments to match.
+      required: false
+      schema:
+        type: string
+    overrideAssignmentDates:
+      name: override_assignment_dates
+      in: query
+      description: Apply assignment overrides. Defaults to true.
+      required: false
+      schema:
+        type: boolean
+        default: true
+    needsGradingCountBySection:
+      name: needs_grading_count_by_section
+      in: query
+      description: Split needs_grading_count by section. Defaults to false.
+      required: false
+      schema:
+        type: boolean
+        default: false
+    bucket:
+      name: bucket
+      in: query
+      description: Filter assignments by due date and submission status.
+      required: false
+      schema:
+        type: string
+        enum: [past, overdue, undated, ungraded, unsubmitted, upcoming, future]
+    assignmentIds:
+      name: assignment_ids[]
+      in: query
+      description: Return only specified assignment IDs.
+      required: false
+      schema:
+        type: array
+        items:
+          type: integer # Assignment IDs are typically integers
+      style: form
+      explode: false
+    orderBy:
+      name: order_by
+      in: query
+      description: Order of assignments. Defaults to position.
+      required: false
+      schema:
+        type: string
+        enum: [position, name, due_at]
+        default: position
+    postToSisParam:
+      name: post_to_sis
+      in: query
+      description: Filter assignments based on post_to_sis flag.
+      required: false
+      schema:
+        type: boolean
+    newQuizzesParam:
+      name: new_quizzes
+      in: query
+      description: Return only New Quizzes assignments.
+      required: false
+      schema:
+        type: boolean
+
   schemas:
     Assignment:
       type: object
-      description: An Assignment object
+      description: Represents a Canvas Assignment.
       properties:
         id:
           type: integer
-          description: The ID of the assignment
+          description: The ID of the assignment.
+          readOnly: true
         name:
           type: string
-          description: The name of the assignment
+          description: The name of the assignment.
         description:
           type: string
-          description: The assignment description, in an HTML fragment
+          nullable: true
+          description: The assignment description, in an HTML fragment.
         created_at:
           type: string
           format: date-time
-          description: Time at which this assignment was originally created
+          description: The time at which this assignment was originally created.
+          readOnly: true
         updated_at:
           type: string
           format: date-time
-          description: Time at which this assignment was last modified
+          description: The time at which this assignment was last modified.
+          readOnly: true
         due_at:
           type: string
           format: date-time
           nullable: true
-          description: The due date for the assignment
+          description: The due date for the assignment. Responds to overrides unless overridden.
         lock_at:
           type: string
           format: date-time
           nullable: true
-          description: The lock date for the assignment
+          description: The lock date. Responds to overrides unless overridden.
         unlock_at:
           type: string
           format: date-time
           nullable: true
-          description: The unlock date for the assignment
+          description: The unlock date. Responds to overrides unless overridden.
+        has_overrides:
+          type: boolean
+          description: Whether this assignment has overrides.
+          readOnly: true
+        all_dates:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/AssignmentDate'
+          description: (Optional) All dates associated with the assignment (requires 'include[]=all_dates'). Base dates and override dates.
+          readOnly: true
         course_id:
           type: integer
-          description: The ID of the course the assignment belongs to
+          description: The ID of the course the assignment belongs to.
+          readOnly: true
         html_url:
           type: string
           format: uri
-          description: URL to the assignment's web page
+          description: The URL to the assignment's web page.
+          readOnly: true
+        submissions_download_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL to download all submissions as a zip. May be null if not available.
+          readOnly: true
+        assignment_group_id:
+          type: integer
+          description: The ID of the assignment's group.
+        due_date_required:
+          type: boolean
+          description: If the assignment requires a due date based on account setting.
+          readOnly: true
+        allowed_extensions:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Allowed file extensions for 'online_upload'. Null if not applicable.
+        max_name_length:
+          type: integer
+          description: Maximum length allowed for the assignment's name.
+          readOnly: true
+        turnitin_enabled:
+          type: boolean
+          description: If Turnitin is enabled (requires plugin).
+        vericite_enabled:
+          type: boolean
+          description: If VeriCite is enabled (requires plugin).
+        turnitin_settings:
+          $ref: '#/components/schemas/TurnitinSettings'
+          nullable: true
+          description: Turnitin settings (requires plugin). Present only if turnitin_enabled is true.
+        grade_group_students_individually:
+          type: boolean
+          nullable: true
+          description: If students in a group assignment will be graded individually. Null if not a group assignment.
+        external_tool_tag_attributes:
+          $ref: '#/components/schemas/ExternalToolTagAttributes'
+          nullable: true
+          description: Settings for external tool submissions (if submission_types include 'external_tool').
+        peer_reviews:
+          type: boolean
+          description: If peer reviews are required.
+        automatic_peer_reviews:
+          type: boolean
+          description: If peer reviews are assigned automatically.
+        peer_review_count:
+          type: integer
+          nullable: true
+          description: Number of reviews each user is assigned (if automatic_peer_reviews).
+        peer_reviews_assign_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date peer reviews are assigned (if automatic_peer_reviews). Uses assignment due date if null/invalid.
+        intra_group_peer_reviews:
+          type: boolean
+          description: If members of the same group can review their own group's work.
+        group_category_id:
+          type: integer
+          nullable: true
+          description: The ID of the assignment group set (if group assignment).
+        needs_grading_count:
+          type: integer
+          description: Number of submissions needing grading (if grader). 0 if not a grader.
+          readOnly: true
+        needs_grading_count_by_section:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeedsGradingCount'
+          description: Needs grading count breakdown by section (requires 'needs_grading_count_by_section' flag and grader role).
+          readOnly: true
+        position:
+          type: integer
+          description: The sorting order of the assignment in the group.
+        post_to_sis:
+          type: boolean
+          nullable: true # Optional field
+          description: (Optional) If Sync Grades to SIS feature is enabled and this assignment is marked for sync.
+        integration_id:
+          type: string
+          nullable: true
+          description: (Optional) Third party unique identifier for Assignment.
+        integration_data:
+          type: object
+          additionalProperties: true
+          nullable: true
+          description: (Optional) Third party integration data.
         points_possible:
           type: number
-          description: The maximum points possible for the assignment
+          format: double
+          nullable: true
+          description: The maximum points possible.
+        submission_types:
+          type: array
+          items:
+            type: string
+            enum: [discussion_topic, online_quiz, on_paper, none, external_tool, online_text_entry, online_url, online_upload, media_recording, student_annotation]
+          description: Allowed submission types.
+        has_submitted_submissions:
+          type: boolean
+          description: If at least one student has submitted.
+          readOnly: true
         grading_type:
           type: string
-          description: The type of grading the assignment receives
+          enum: [pass_fail, percent, letter_grade, gpa_scale, points, not_graded]
+          description: Grading strategy.
+        grading_standard_id:
+          type: integer
+          nullable: true
+          description: ID of the grading standard (if letter_grade or gpa_scale).
+        published:
+          type: boolean
+          description: Whether the assignment is published.
+        unpublishable:
+          type: boolean
+          description: If the published state can be changed to false (false if submissions exist).
+          readOnly: true
+        only_visible_to_overrides:
+          type: boolean
+          description: Whether the assignment is only visible to overrides.
+        locked_for_user:
+          type: boolean
+          description: Whether the assignment is locked for the current user based on dates or module prerequisites.
+          readOnly: true
+        lock_info:
+          $ref: '#/components/schemas/LockInfo'
+          nullable: true
+          description: (Optional) Information about the lock. Present when locked_for_user is true.
+          readOnly: true
+        lock_explanation:
+          type: string
+          nullable: true
+          description: (Optional) Explanation of why this is locked for the user. Present when locked_for_user is true.
+          readOnly: true
+        quiz_id:
+          type: integer
+          nullable: true
+          description: (Optional) ID of the associated quiz (if submission_types is ['online_quiz']).
+          readOnly: true
+        anonymous_submissions:
+          type: boolean
+          nullable: true # Based on HTML description
+          description: (Optional) Allow anonymous submissions (quiz only). Usually a quiz setting, may be read-only here.
+          readOnly: true
+        discussion_topic:
+          type: object # Simplified, link to DiscussionTopic schema if available/needed
+          nullable: true
+          description: (Optional) Associated DiscussionTopic object (if submission_types is ['discussion_topic']).
+          readOnly: true
+        freeze_on_copy:
+          type: boolean
+          description: (Optional) Freeze assignment when copied (requires AssignmentFreezer plugin).
+        frozen:
+          type: boolean
+          description: (Optional) If assignment is frozen for the user (requires AssignmentFreezer plugin).
+          readOnly: true
+        frozen_attributes:
+          type: array
+          nullable: true
+          items:
+            type: string
+            enum: [title, description, lock_at, points_possible, grading_type, submission_types, assignment_group_id, allowed_extensions, group_category_id, notify_of_update, peer_reviews]
+          description: (Optional) List of frozen attributes (requires AssignmentFreezer plugin). Empty if none frozen.
+          readOnly: true
+        submission:
+          type: object # Simplified, link to Submission schema if available/needed
+          nullable: true
+          description: (Optional) Current user's submission (requires 'include[]=submission'). Absent if no submission.
+          readOnly: true
+        use_rubric_for_grading:
+          type: boolean
+          nullable: true
+          description: (Optional) If the rubric is used for grading (if rubric exists).
+        rubric_settings:
+          type: object
+          nullable: true
+          properties:
+             points_possible:
+               type: number
+               format: double
+          description: (Optional) Basic rubric attributes (if rubric exists).
+        rubric:
+          type: array
+          items:
+            $ref: '#/components/schemas/RubricCriteria'
+          nullable: true
+          description: (Optional) List of rubric criteria (if rubric exists).
+        assignment_visibility:
+          type: array
+          nullable: true
+          items:
+            type: integer
+          description: (Optional) Student IDs who can see this assignment (requires 'include[]=assignment_visibility').
+          readOnly: true
+        overrides:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/AssignmentOverride'
+          description: (Optional) List of override objects (requires 'include[]=overrides').
+          readOnly: true
+        omit_from_final_grade:
+          type: boolean
+          description: (Optional) Omit assignment from the student's final grade.
+        hide_in_gradebook:
+          type: boolean
+          description: (Optional) Hide assignment in gradebooks.
+        moderated_grading:
+          type: boolean
+          description: If the assignment is moderated.
+        grader_count:
+          type: integer
+          nullable: true
+          description: Number of provisional graders (if moderated).
+        final_grader_id:
+          type: integer
+          nullable: true
+          description: User ID of the final grader (if moderated).
+        grader_comments_visible_to_graders:
+          type: boolean
+          nullable: true
+          description: If provisional grader comments are visible to others (if moderated).
+        graders_anonymous_to_graders:
+          type: boolean
+          nullable: true
+          description: If provisional grader identities are hidden from others (if moderated).
+        grader_names_visible_to_final_grader:
+          type: boolean
+          nullable: true
+          description: If provisional grader names are visible to the final grader (if moderated).
+        anonymous_grading:
+          type: boolean
+          description: If the assignment is graded anonymously.
+        allowed_attempts:
+          type: integer
+          description: Number of submission attempts allowed (-1 for unlimited).
+        post_manually:
+          type: boolean
+          description: If manual posting is enabled (New Gradebook).
+        score_statistics:
+          $ref: '#/components/schemas/ScoreStatistic'
+          nullable: true
+          description: (Optional) Min, max, mean, quartiles, median score statistics (requires 'include[]=score_statistics' and 'submission'). Null if stats unavailable or less than 5 submissions.
+          readOnly: true
+        can_submit:
+          type: boolean
+          description: (Optional) If the current user can submit (requires 'include[]=can_submit'). Checks dates, status, attempts etc. Not available with observed_users.
+          readOnly: true
+        ab_guid:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: (Optional) Academic benchmark GUIDs associated with the assignment or rubric (requires 'include[]=ab_guid').
+          readOnly: true
+        annotatable_attachment_id:
+          type: integer
+          nullable: true
+          description: Attachment ID for student annotation submissions (if submission_types includes 'student_annotation').
+        anonymize_students:
+          type: boolean
+          description: (Optional) Anonymize student names in submissions.
+        require_lockdown_browser:
+          type: boolean
+          description: (Optional) Require Respondus LockDown Browser®.
+        important_dates:
+          type: boolean
+          description: (Optional) If the assignment has important dates (e.g., due, lock, unlock).
+          readOnly: true
+        muted:
+          type: boolean
+          deprecated: true
+          description: (Deprecated - use post_manually) If notifications are muted.
+        anonymous_peer_reviews:
+          type: boolean
+          description: If peer reviews are anonymous.
+        anonymous_instructor_annotations:
+          type: boolean
+          description: If instructor annotations are anonymous.
+        graded_submissions_exist:
+          type: boolean
+          description: If graded submissions exist.
+          readOnly: true
+        is_quiz_assignment:
+          type: boolean
+          description: If this is a quiz LTI assignment.
+          readOnly: true
+        in_closed_grading_period:
+          type: boolean
+          description: If the assignment is in a closed grading period.
+          readOnly: true
+        can_duplicate:
+          type: boolean
+          description: If the assignment can be duplicated by the current user.
+          readOnly: true
+        original_course_id:
+          type: integer
+          nullable: true
+          description: Original course ID if duplicated.
+          readOnly: true
+        original_assignment_id:
+          type: integer
+          nullable: true
+          description: Original assignment ID if duplicated.
+          readOnly: true
+        original_lti_resource_link_id:
+          type: integer
+          nullable: true
+          description: Original LTI resource link ID if duplicated.
+          readOnly: true
+        original_assignment_name:
+          type: string
+          nullable: true
+          description: Original assignment name if duplicated.
+          readOnly: true
+        original_quiz_id:
+          type: integer
+          nullable: true
+          description: Original quiz ID if duplicated.
+          readOnly: true
+        workflow_state:
+          type: string
+          enum: [published, unpublished]
+          description: The workflow state ('published' or 'unpublished'). Changed via 'published' flag.
+          readOnly: true # State changes via 'published' flag usually
+
       required:
         - id
         - name
+        # - description # Can be null/empty
         - created_at
         - updated_at
+        - has_overrides
         - course_id
         - html_url
-        - points_possible
+        - assignment_group_id
+        - due_date_required
+        - max_name_length
+        - turnitin_enabled
+        - vericite_enabled
+        - peer_reviews
+        - automatic_peer_reviews
+        # - needs_grading_count # Only present for graders
+        - position
+        # - points_possible # Null for not_graded
+        - submission_types
+        - has_submitted_submissions
         - grading_type
+        - published
+        - unpublishable
+        - only_visible_to_overrides
+        - locked_for_user
+        # - freeze_on_copy # Plugin dependent
+        # - frozen # Plugin dependent
+        - omit_from_final_grade # Defaults false if omitted? API Docs list as optional. Assume required in response.
+        - hide_in_gradebook # Defaults false if omitted? Assume required in response.
+        - moderated_grading
+        - anonymous_grading
+        - allowed_attempts
+        - post_manually # New Gradebook dependent
+        - anonymous_peer_reviews
+        - anonymous_instructor_annotations
+        - graded_submissions_exist
+        - is_quiz_assignment
+        - in_closed_grading_period
+        - can_duplicate
+        - workflow_state
+
+    AssignmentOverride:
+      type: object
+      description: Represents an override for an assignment, specifying different dates or availability for specific users, groups, or sections.
+      properties:
+        id:
+          type: integer
+          description: The ID of the assignment override.
+          readOnly: true
+        assignment_id:
+          type: integer
+          description: The ID of the assignment the override applies to.
+          readOnly: true
+        quiz_id: # Added based on HTML
+            type: integer
+            nullable: true
+            description: The ID of the quiz the override applies to (if applicable).
+            readOnly: true
+        context_module_id: # Added based on HTML
+            type: integer
+            nullable: true
+            description: The ID of the module the override applies to (if applicable).
+            readOnly: true
+        discussion_topic_id: # Added based on HTML
+            type: integer
+            nullable: true
+            description: The ID of the discussion the override applies to (if applicable).
+            readOnly: true
+        wiki_page_id: # Added based on HTML
+            type: integer
+            nullable: true
+            description: The ID of the page the override applies to (if applicable).
+            readOnly: true
+        attachment_id: # Added based on HTML
+            type: integer
+            nullable: true
+            description: The ID of the file the override applies to (if applicable).
+            readOnly: true
+        student_ids:
+          type: array
+          items:
+            type: integer
+          description: The IDs of the students targeted by an ad-hoc override. Null for section/group overrides.
+          nullable: true # Present only for adhoc overrides
+        group_id:
+          type: integer
+          nullable: true
+          description: The ID of the group targeted by the override (if a group assignment override).
+        course_section_id:
+          type: integer
+          nullable: true
+          description: The ID of the course section targeted by the override (if a section override).
+        title:
+          type: string
+          description: The title of the override (auto-generated for sections/groups, required for ad-hoc student overrides).
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The overridden due date. Null means no override.
+        all_day: # Added based on HTML
+            type: boolean
+            nullable: true
+            description: The overridden all_day flag (present if due_at is overridden).
+        all_day_date: # Added based on HTML
+            type: string
+            format: date # YYYY-MM-DD
+            nullable: true
+            description: The overridden all_day_date (present if due_at is overridden and all_day is true).
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The overridden unlock date. Null means no override.
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The overridden lock date. Null means no override.
+      required:
+        - id
+        - assignment_id
+        - title # Even if auto-generated, it seems present in the response
+
+    AssignmentOverrideInput:
+      type: object
+      description: Input fields for creating or updating an AssignmentOverride. One of student_ids, group_id, or course_section_id required on create.
+      properties:
+        student_ids:
+          type: array
+          items:
+            type: integer
+          description: Target student IDs (for ad-hoc overrides). Provide on create/update.
+        title:
+          type: string
+          description: Title (required for ad-hoc overrides on create/update). Ignored for section/group overrides.
+        group_id:
+          type: integer
+          description: Target group ID (for group overrides). Provide on create. Cannot be changed on update.
+        course_section_id:
+          type: integer
+          description: Target course section ID (for section overrides). Provide on create. Cannot be changed on update.
+        due_at:
+          type: string
+          format: date-time
+          description: Overridden due date/time (ISO 8601). Omit/null to remove override.
+        unlock_at:
+          type: string
+          format: date-time
+          description: Overridden unlock date/time (ISO 8601). Omit/null to remove override.
+        lock_at:
+          type: string
+          format: date-time
+          description: Overridden lock date/time (ISO 8601). Omit/null to remove override.
+      # Note: One of student_ids, group_id, or course_section_id must be provided on create.
+      # Title required if student_ids provided.
+
+    ExternalToolTagAttributes:
+      type: object
+      description: Attributes for an external tool tag associated with an assignment.
+      properties:
+        url:
+          type: string
+          format: uri
+          description: URL to the external tool.
+        new_tab:
+          type: boolean
+          description: Whether the tool opens in a new tab.
+        resource_link_id:
+          type: string
+          description: The identifier for this tool_tag.
+        # Potentially other LTI parameters, but these are explicitly mentioned in HTML
+      required:
+        - url
+        - resource_link_id
+        # new_tab defaults to false
+
+    ExternalToolTagAttributesInput:
+      # Same as ExternalToolTagAttributes for now, unless specific input differences are noted
+      type: object
+      description: Input attributes for an external tool tag.
+      properties:
+        url:
+          type: string
+          format: uri
+          description: URL to the external tool.
+        new_tab:
+          type: boolean
+          description: Whether the tool opens in a new tab.
+        resource_link_id:
+          type: string
+          description: The identifier for this tool_tag.
+      required:
+        - url
+        - resource_link_id
+
+    LockInfo:
+      type: object
+      description: Information about why an assignment might be locked for a user.
+      properties:
+        asset_string:
+          type: string
+          description: Asset string for the object causing the lock (e.g., "assignment_4").
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: (Optional) Time at which this was/will be unlocked by date.
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: (Optional) Time at which this was/will be locked by date.
+        context_module:
+          type: object # Structure undefined in docs, potentially Module details
+          nullable: true
+          description: (Optional) Context module causing the lock via prerequisites or availability dates.
+        manually_locked:
+          type: boolean
+          description: If the assignment was manually locked by an instructor (module item).
+      # Required fields not explicitly stated, but asset_string and manually_locked seem fundamental
+      required:
+        - asset_string
+        - manually_locked
+
+    TurnitinSettings:
+      type: object
+      description: Settings for Turnitin originality checking.
+      properties:
+        originality_report_visibility:
+          type: string
+          enum: [immediate, after_grading, after_due_date, never]
+        s_paper_check:
+          type: boolean
+          description: Check against student paper repository.
+        internet_check:
+          type: boolean
+          description: Check against internet sources.
+        journal_check:
+          type: boolean
+          description: Check against journals, periodicals, publications.
+        exclude_biblio:
+          type: boolean
+          description: Exclude bibliographic materials.
+        exclude_quoted:
+          type: boolean
+          description: Exclude quoted materials.
+        exclude_small_matches_type:
+          type: string
+          enum: [percent, words]
+          nullable: true
+        exclude_small_matches_value:
+          type: integer
+          nullable: true
+        # Required fields depend on plugin config/defaults. Assume none are strictly required by API spec itself.
+
+    TurnitinSettingsInput:
+       # Likely same as TurnitinSettings, used for POST/PUT
+       type: object
+       description: Input settings for Turnitin.
+       properties:
+         originality_report_visibility:
+           type: string
+           enum: [immediate, after_grading, after_due_date, never]
+         s_paper_check:
+           type: boolean
+         internet_check:
+           type: boolean
+         journal_check:
+           type: boolean
+         exclude_biblio:
+           type: boolean
+         exclude_quoted:
+           type: boolean
+         exclude_small_matches_type:
+           type: string
+           enum: [percent, words]
+           nullable: true
+         exclude_small_matches_value:
+           type: integer
+           nullable: true
+
+    NeedsGradingCount:
+      type: object
+      description: Count of submissions needing grading within a specific section.
+      properties:
+        section_id:
+          type: string # Docs show string, though might be int internally
+          description: The section ID.
+        needs_grading_count:
+          type: integer
+          description: Number of submissions that need grading in this section.
+      required:
+        - section_id
+        - needs_grading_count
+
+    ScoreStatistic:
+      type: object
+      description: Basic score statistics for an assignment. Included only if stats available (>=5 submissions, enabled by instructor) and 'include[]=score_statistics,submission'.
+      properties:
+        min:
+          type: number
+          format: double # Assume double for scores
+          nullable: true
+          description: Minimum score. Null if N/A.
+        max:
+          type: number
+          format: double
+          nullable: true
+          description: Maximum score. Null if N/A.
+        mean:
+          type: number
+          format: double
+          nullable: true
+          description: Mean score. Null if N/A.
+        upper_q: # Added based on HTML
+            type: number
+            format: double
+            nullable: true
+            description: Upper quartile score. Null if N/A.
+        median: # Added based on HTML
+            type: number
+            format: double
+            nullable: true
+            description: Median score. Null if N/A.
+        lower_q: # Added based on HTML
+            type: number
+            format: double
+            nullable: true
+            description: Lower quartile score. Null if N/A.
+      # All fields can be null
+
+    AssignmentDate:
+      type: object
+      description: Represents a due date structure, potentially from an override or base assignment dates. Included in 'all_dates'.
+      properties:
+        id:
+          type: integer
+          nullable: true # Null for base date
+          description: (Optional) ID of the assignment override this date represents. Missing/null for base dates.
+        base:
+          type: boolean
+          nullable: true # Null for override date
+          description: (Optional) True if this date represents the base due date (not an override). Missing/null for override dates.
+        title:
+          type: string
+          description: Title associated with this date set (e.g., override title or 'base').
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The due date/time for this specific date set.
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The unlock date/time for this specific date set.
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: The lock date/time for this specific date set.
+      required:
+        - title # Title seems always present
+
+    AssignmentDateInput:
+       # Similar to AssignmentDate, but used for input in bulk update
+       type: object
+       description: |
+         Input structure for assignment dates in bulk update.
+         Use 'base: true' for base dates, or 'id' for overrides.
+         Use 'id' for overrides.
+         Use 'due_at' for due date.
+         Use 'unlock_at' for unlock date.
+         Use 'lock_at' for lock date.
+       properties:
+         id:
+           type: integer
+           description: (Optional) ID of the assignment override to update. Use this OR base=true.
+         base:
+           type: boolean
+           description: (Optional) Set to true to update the base assignment dates. Use this OR id.
+         due_at:
+           type: string
+           format: date-time
+           nullable: true
+           description: The due date/time. Null to clear.
+         unlock_at:
+           type: string
+           format: date-time
+           nullable: true
+           description: The unlock date/time. Null to clear.
+         lock_at:
+           type: string
+           format: date-time
+           nullable: true
+           description: The lock date/time. Null to clear.
+       # 'title' is output only, not needed for input
+
+    RubricRating: # Added based on HTML
+      type: object
+      description: Represents a rating level within a rubric criterion.
+      properties:
+        points:
+          type: number
+          format: double
+        id:
+          type: string # Example shows string ID "rat1"
+        description:
+          type: string
+        long_description:
+          type: string
+          nullable: true # Explicitly set nullable based on usage
+      required:
+        - id
+        - description
+        - points
+
+    RubricCriteria: # Added based on HTML
+      type: object
+      description: Represents a criterion in an assignment rubric.
+      properties:
+        points:
+          type: number
+          format: double
+          description: Points possible for this criterion.
+        id:
+          type: string # Example shows string ID "crit1"
+          description: The ID of the rubric criterion.
+        learning_outcome_id:
+          type: string # Example shows string "1234"
+          nullable: true
+          description: (Optional) The ID of the learning outcome this criterion uses, if any.
+        vendor_guid:
+          type: string
+          nullable: true
+          description: (Optional) The 3rd party vendor's GUID for the outcome this criteria references, if any.
+        description:
+          type: string
+          description: The description of the criterion.
+        long_description:
+          type: string
+          nullable: true
+          description: More detailed description of the criterion.
+        criterion_use_range:
+          type: boolean
+          description: Whether the criterion uses a point range.
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/RubricRating'
+          nullable: true # HTML example shows null
+          description: List of rating levels for the criterion.
+        ignore_for_scoring:
+          type: boolean
+          description: Whether this criterion should be ignored when calculating the score.
+      required:
+        - id
+        - description
+        - points
+        - criterion_use_range
+        - ignore_for_scoring
+
+    BasicUser: # Added based on HTML for group members endpoint
+      type: object
+      description: Basic user information.
+      properties:
+        id:
+          type: integer # HTML example shows string "123456", but IDs are usually integers. Assume integer.
+          description: The user's ID.
+        name:
+          type: string
+          description: The user's name.
+      required:
+        - id
+        - name
+
+    Progress: # Placeholder schema for bulk update response
+      type: object
+      description: Represents the progress of a background job.
+      properties:
+        id:
+          type: integer
+          description: The ID of the progress object.
+        workflow_state:
+          type: string
+          enum: [queued, running, completed, failed]
+          description: The current state of the job.
+        message:
+          type: string
+          nullable: true
+          description: A message associated with the job's progress.
+        completion:
+          type: number
+          format: double # Percentage 0-100
+          description: Percentage completion of the job.
+        url:
+          type: string
+          format: uri
+          description: URL to query the status of the job.
+      required:
+        - id
+        - workflow_state
+        - completion
+        - url
+
+tags:
+  - name: Assignments
+    description: Operations related to course assignments.
+  - name: Assignment Overrides
+    description: Operations related to assignment overrides.
