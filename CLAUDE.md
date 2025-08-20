@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a Python SDK for the Canvas LMS API. The repository contains:
+This repository contains SDKs for the Canvas LMS API in multiple languages. The repository includes:
 - Scripts to scrape and convert Canvas LMS API documentation
 - Generated OpenAPI/Swagger specifications
-- Auto-generated Python SDK code using openapi-generator
-- Example usage scripts
+- Auto-generated Python SDK using openapi-generator
+- Auto-generated TypeScript SDK for Cloudflare Workers and Node.js
+- Example usage scripts for both SDKs
 
 ## Key Commands
 
@@ -51,9 +52,17 @@ openapi-generator generate -g python \
   --additional-properties=packageName=canvas_lms_sdk
 ```
 
+5. **Generate TypeScript SDK (for Cloudflare Workers):**
+```bash
+openapi-generator generate -g typescript-fetch \
+  -i docs/canvas-lms-api/swagger/openapi_merged.yaml \
+  -o ./generated_typescript_sdk \
+  --additional-properties=npmName=canvas-lms-sdk,supportsES6=true,npmVersion=1.0.0,withInterfaces=true,platform=browser
+```
+
 ### Testing
 
-Run tests for the generated SDK:
+#### Python SDK Testing
 ```bash
 cd generated_python_sdk
 
@@ -65,6 +74,19 @@ tox
 
 # With coverage
 pytest --cov=canvas_lms_sdk
+```
+
+#### TypeScript SDK Building
+```bash
+cd generated_typescript_sdk
+
+# Install dependencies
+npm install
+
+# Build the SDK
+npm run build
+
+# Note: There may be TypeScript warnings about duplicate exports, but these don't affect functionality
 ```
 
 ### Linting and Type Checking
@@ -89,8 +111,12 @@ echo 'CANVAS_API_URL="https://your-canvas-instance.instructure.com"' >> .env
 echo 'CANVAS_API_KEY="your_api_token_here"' >> .env
 echo 'CANVAS_USER_ID="self"' >> .env
 
-# Run example script
+# Run Python example
 python examples/list_assignments_for_course.py
+
+# Run JavaScript/TypeScript example
+npm install dotenv  # If not already installed
+node examples/list_active_courses.js
 ```
 
 ### Local Documentation Server
@@ -123,21 +149,57 @@ http-server -c-1
   - `canvas_lms_sdk/models/`: Data model classes
   - `test/`: Unit tests for all components
 
+- **`generated_typescript_sdk/`**: Auto-generated TypeScript SDK
+  - `src/apis/`: API endpoint classes
+  - `src/models/`: TypeScript interfaces and models
+  - `src/runtime.ts`: Core runtime utilities
+  - `dist/`: Compiled JavaScript and TypeScript declarations
+
 - **`examples/`**: Example usage scripts
+  - `list_assignments_for_course.py`: Python example for listing assignments
+  - `list_active_courses.js`: JavaScript example for listing active courses
 
 ### Key Workflows
 
-1. **Documentation Pipeline**: HTML scraping → AI conversion to OpenAPI → Merge specs → Generate SDK
-2. **SDK Generation**: Uses openapi-generator-cli to create Python client from OpenAPI specs
+1. **Documentation Pipeline**: HTML scraping → AI conversion to OpenAPI → Merge specs → Generate SDKs
+2. **SDK Generation**: Uses openapi-generator-cli to create client libraries from OpenAPI specs
+   - Python SDK: Uses `python` generator for standard Python client
+   - TypeScript SDK: Uses `typescript-fetch` generator for Cloudflare Workers compatibility
 3. **Script Execution**: Scripts use UV with inline dependencies for isolated execution
 
 ### Important Notes
 
 - Scripts in `scripts/` use UV shebang (`#!/usr/bin/env -S uv run --script`) for automatic dependency management
-- The generated SDK requires Python >= 3.9
+- Python SDK requires Python >= 3.9
+- TypeScript SDK uses Fetch API (perfect for Cloudflare Workers, no Node.js dependencies)
 - OpenAPI specs may need manual fixes before SDK generation due to inconsistencies in scraped documentation
 - When fixing specification issues, look for:
   - Incorrect parameter placements (e.g., `style` under `schema`)
   - Missing `items` definitions for arrays
   - Path parameters not defined in `parameters` section
   - Inline schemas that should be refactored to `components/schemas`
+  - TypeScript may show export warnings for duplicate interface names (non-blocking)
+
+### TypeScript SDK Usage in Cloudflare Workers
+
+```typescript
+import { CoursesApi, Configuration } from 'canvas-lms-sdk';
+
+export default {
+  async fetch(request: Request, env: Env) {
+    const config = new Configuration({
+      basePath: env.CANVAS_HOST,
+      headers: {
+        'Authorization': `Bearer ${env.CANVAS_TOKEN}`
+      }
+    });
+
+    const api = new CoursesApi(config);
+    const courses = await api.apiV1CoursesGet({
+      enrollmentState: 'active'
+    });
+    
+    return Response.json(courses);
+  }
+}
+```
