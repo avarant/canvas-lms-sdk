@@ -86,6 +86,31 @@ npx ts-node export_calendar_events.ts csv
 npx ts-node export_calendar_events.ts json
 ```
 
+### 📖 Course Content
+
+#### `get_course_syllabus.ts`
+Retrieves and displays syllabi from all enrolled courses.
+```bash
+# Display in console
+npx ts-node get_course_syllabus.ts
+
+# Export to Markdown file
+npx ts-node get_course_syllabus.ts markdown
+
+# Export to text file
+npx ts-node get_course_syllabus.ts text
+```
+
+#### `download_course_resources.ts`
+Lists and optionally downloads course files and resources.
+```bash
+# List available resources
+npx ts-node download_course_resources.ts <course_id>
+
+# Download all resources
+npx ts-node download_course_resources.ts <course_id> download
+```
+
 ## Running Examples
 
 ### TypeScript (Direct Execution)
