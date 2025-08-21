@@ -1,8 +1,9 @@
 const { CoursesApi, Configuration } = require('../generated_typescript_sdk/dist');
 const dotenv = require('dotenv');
+const path = require('path');
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from examples/.env
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 async function listActiveCourses() {
     // Get credentials from environment variables
@@ -17,12 +18,15 @@ async function listActiveCourses() {
         process.exit(1);
     }
 
-    const basePath = canvasHost.replace(/\/$/, ''); // Remove trailing slash
+    // The SDK already adds /api/v1 to paths, so we need the base URL only
+    let basePath = canvasHost.replace(/\/$/, ''); // Remove trailing slash
+    // If the URL includes /api/v1, remove it since the SDK adds it
+    basePath = basePath.replace(/\/api\/v1$/, '');
     console.log('Connecting to Canvas at:', basePath);
 
     // Configure the API client
     const configuration = new Configuration({
-        basePath: basePath, // The SDK should handle the /api/v1 part
+        basePath: basePath,
         headers: {
             'Authorization': `Bearer ${canvasToken}`
         }
@@ -35,15 +39,9 @@ async function listActiveCourses() {
         console.log('Fetching active courses...\n');
         
         // List courses for the current user
-        // Use the correct enum value for enrollment state
-        const ApiV1CoursesGetEnrollmentStateEnum = {
-            Active: "active",
-            InvitedOrPending: "invited_or_pending",
-            Completed: "completed"
-        };
-        
+        // enrollmentState can be a string value
         const courses = await coursesApi.apiV1CoursesGet({
-            enrollmentState: ApiV1CoursesGetEnrollmentStateEnum.Active
+            enrollmentState: 'active'
         });
 
         if (!courses || courses.length === 0) {

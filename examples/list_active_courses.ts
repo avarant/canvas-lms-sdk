@@ -1,8 +1,9 @@
 import { CoursesApi, Configuration } from '../generated_typescript_sdk/dist';
 import * as dotenv from 'dotenv';
+import * as path from 'path';
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from examples/.env
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 async function listActiveCourses() {
     // Get credentials from environment variables
@@ -17,11 +18,15 @@ async function listActiveCourses() {
         process.exit(1);
     }
 
-    console.log('Connecting to Canvas at:', canvasHost);
+    // The SDK already adds /api/v1 to paths, so we need the base URL only
+    let basePath = canvasHost.replace(/\/$/, ''); // Remove trailing slash
+    // If the URL includes /api/v1, remove it since the SDK adds it
+    basePath = basePath.replace(/\/api\/v1$/, '');
+    console.log('Connecting to Canvas at:', basePath);
 
     // Configure the API client
     const configuration = new Configuration({
-        basePath: canvasHost.replace(/\/$/, '') + '/api/v1', // Ensure correct API path
+        basePath: basePath,
         headers: {
             'Authorization': `Bearer ${canvasToken}`
         }
@@ -34,10 +39,9 @@ async function listActiveCourses() {
         console.log('Fetching active courses...\n');
         
         // List courses for the current user
-        // The method name might be different based on the generated code
-        // Common options: listYourCourses, getCourses, apiV1CoursesGet
+        // enrollmentState can be a string value
         const courses = await coursesApi.apiV1CoursesGet({
-            enrollmentState: 'active' // Only get active enrollments
+            enrollmentState: 'active'
         });
 
         if (!courses || courses.length === 0) {
