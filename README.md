@@ -2,7 +2,7 @@
 
 [View API Documentation](https://avarant.github.io/canvas-lms-sdk/)
 
-a python sdk for the Canvas LMS API
+A TypeScript SDK for the Canvas LMS API, compatible with Node.js and Cloudflare Workers.
 
 ## Scripts
 
@@ -88,9 +88,9 @@ After generating the individual Swagger YAML files using `./scripts/generate-swa
 
     This `index.html` is configured to load the `openapi_merged.yaml` file, displaying the complete combined API specification in the Swagger UI interface.
 
-## Generating the Python SDK
+## Generating the TypeScript SDK
 
-The Python SDK located in `generated_python_sdk/` is created using `openapi-generator-cli` based on the merged OpenAPI specification.
+The TypeScript SDK located in `generated_typescript_sdk/` is created using `openapi-generator-cli` based on the merged OpenAPI specification.
 
 ### Prerequisites
 
@@ -121,100 +121,158 @@ The Python SDK located in `generated_python_sdk/` is created using `openapi-gene
     *   Unexpected attributes (e.g., `description` under a media type object).
     *   Path parameters declared in the path string but not defined in the `parameters` section at the path or operation level.
     *   Inline schema definitions causing generator errors (refactoring to global `components/schemas` often helps).
+    *   TypeScript may show export warnings for duplicate interface names (non-blocking).
 
     If the generator fails (Step 3), examine the error output. You may need to use tools like `grep` to find the problematic definitions in the individual `doc_api_*.yaml` files, manually correct them, and then re-run the merge command (Step 1).
 
-3.  **Generate the Python SDK:**
+3.  **Generate the TypeScript SDK:**
     From the project root directory, run the generator command:
     ```bash
     # Ensure openapi_merged.yaml exists and is valid
-    openapi-generator generate -g python \
+    openapi-generator generate -g typescript-fetch \
       -i docs/canvas-lms-api/swagger/openapi_merged.yaml \
-      -o ./generated_python_sdk \
-      --additional-properties=packageName=canvas_lms_sdk
+      -o ./generated_typescript_sdk \
+      --additional-properties=npmName=canvas-lms-sdk,supportsES6=true,npmVersion=1.0.0,withInterfaces=true,platform=browser
     ```
-    *   `-g python`: Specifies the Python generator.
+    *   `-g typescript-fetch`: Specifies the TypeScript Fetch generator (works with Cloudflare Workers).
     *   `-i`: Path to the merged input specification.
     *   `-o`: Output directory for the generated SDK.
-    *   `--additional-properties`: Sets generator-specific options, like the Python package name.
+    *   `--additional-properties`: Sets generator-specific options.
 
     If this step fails due to specification errors, return to Step 2.
 
-4.  **Review and Use:**
-    The generated SDK will be in the `./generated_python_sdk` directory. Review the generated code and consult its `README.md` for instructions on installation and usage.
+4.  **Build the SDK:**
+    ```bash
+    cd generated_typescript_sdk
+    npm install
+    npm run build
+    ```
+    Note: You may see duplicate export warnings during build. These are expected due to auto-generated code and do not affect functionality.
+
+5.  **Review and Use:**
+    The generated SDK will be in the `./generated_typescript_sdk` directory. The compiled JavaScript will be in `./generated_typescript_sdk/dist`.
 
 ## Usage Examples
 
-Here's a basic example demonstrating how to use the generated Python SDK to list active courses for a user.
+Here's a basic example demonstrating how to use the generated TypeScript SDK to list active courses and fetch assignment due dates.
+
+### Setup
 
 1.  **Set up Environment Variables:**
     Create a `.env` file in the project root directory and add your Canvas host and API token:
     ```env
     CANVAS_HOST="https://your-canvas-instance.instructure.com"
     CANVAS_TOKEN="your_api_token_here"
+    CANVAS_COURSE_ID="your_course_id" # Optional, for assignment examples
     ```
 
-2.  **Write Python Script:**
-    Create a Python file (e.g., `list_courses.py`) with the following code:
+2.  **Install Dependencies:**
+    In the `examples/` directory:
+    ```bash
+    cd examples
+    npm install
+    ```
 
-    ```python
-    from dotenv import load_dotenv
-    load_dotenv() # Load environment variables from .env file
-    import os
-    import canvas_lms_sdk
-    from canvas_lms_sdk.rest import ApiException
-    from canvas_lms_sdk.api.courses_api import CoursesApi
-    from pprint import pprint
+### TypeScript/Node.js Example
 
-    # Fetch credentials from environment variables
-    CANVAS_HOST = os.getenv("CANVAS_HOST")
-    CANVAS_TOKEN = os.getenv("CANVAS_TOKEN")
+Create a TypeScript file (e.g., `list_courses.ts`) with the following code:
 
-    if not CANVAS_HOST or not CANVAS_TOKEN:
-        print("Error: CANVAS_HOST and CANVAS_TOKEN environment variables must be set.")
-        exit(1)
+```typescript
+import { CoursesApi, Configuration } from '../generated_typescript_sdk';
+import * as dotenv from 'dotenv';
 
-    # Configure API key authorization: api_key
-    configuration = canvas_lms_sdk.Configuration(
-        host = CANVAS_HOST,
-        api_key = {
-            'Authorization': 'Bearer ' + CANVAS_TOKEN
+// Load environment variables
+dotenv.config();
+
+async function listActiveCourses() {
+    const canvasHost = process.env.CANVAS_HOST;
+    const canvasToken = process.env.CANVAS_TOKEN;
+
+    if (!canvasHost || !canvasToken) {
+        console.error('Error: CANVAS_HOST and CANVAS_TOKEN must be set');
+        process.exit(1);
+    }
+
+    // Configure the API client
+    const configuration = new Configuration({
+        basePath: canvasHost.replace(/\/api\/v1$/, ''),
+        headers: {
+            'Authorization': `Bearer ${canvasToken}`
         }
-    )
+    });
 
-    # Enter a context with an instance of the API client
-    with canvas_lms_sdk.ApiClient(configuration) as api_client:
-        # Create an instance of the Courses API class
-        api_instance = CoursesApi(api_client)
+    const coursesApi = new CoursesApi(configuration);
 
-        try:
-            # List active courses for the current user
-            print("Attempting to list active courses...")
-            # The specific method call might vary based on the generated SDK version
-            # Check the documentation or generated code for available methods
-            api_response = api_instance.api_v1_courses_get() # Example call
-            print("\nActive Courses:")
-            pprint(api_response)
-        except ApiException as e:
-            print(f"Exception when calling CoursesApi: {e}\n")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+    try {
+        // List active courses
+        const courses = await coursesApi.listCoursesForUser({
+            userId: 'self',
+            enrollmentState: 'active'
+        });
 
-    print("\nScript finished.")
-    ```
+        console.log('Active Courses:');
+        courses.forEach(course => {
+            console.log(`- ${course.name} (ID: ${course.id})`);
+        });
+    } catch (error) {
+        console.error('Error fetching courses:', error);
+    }
+}
 
-3.  **Install Dependencies:**
-    Ensure you have the necessary libraries installed (including the generated SDK itself if installed as a package):
+listActiveCourses();
+```
+
+### Cloudflare Workers Example
+
+```typescript
+import { CoursesApi, Configuration } from 'canvas-lms-sdk';
+
+export default {
+    async fetch(request: Request, env: Env) {
+        const configuration = new Configuration({
+            basePath: env.CANVAS_HOST,
+            headers: {
+                'Authorization': `Bearer ${env.CANVAS_TOKEN}`
+            }
+        });
+
+        const coursesApi = new CoursesApi(configuration);
+        
+        try {
+            const courses = await coursesApi.listCoursesForUser({
+                userId: 'self',
+                enrollmentState: 'active'
+            });
+            
+            return Response.json(courses);
+        } catch (error) {
+            return Response.json({ error: 'Failed to fetch courses' }, { status: 500 });
+        }
+    }
+}
+```
+
+### Running the Examples
+
+1.  **TypeScript Example:**
     ```bash
-    # Example using pip and requirements.txt
-    pip install python-dotenv canvas-lms-sdk # Add other dependencies if needed
-    # Or install directly from the generated SDK source if not packaged:
-    # pip install -e ./generated_python_sdk
+    cd examples
+    npx ts-node list_active_courses.ts
+    # Or compile and run:
+    npx tsc
+    node dist/list_active_courses.js
     ```
 
-4.  **Run the Script:**
+2.  **Fetch Assignment Due Dates:**
     ```bash
-    python list_courses.py
+    node dist/fetch_assignment_due_dates.js <course_id>
+    # Or set CANVAS_COURSE_ID in .env and run without arguments
     ```
 
-This example demonstrates the basic workflow: loading credentials, configuring the client, instantiating an API endpoint class, making a call, and handling potential exceptions. Refer to the generated SDK documentation for details on specific API methods and models.
+The examples demonstrate the basic workflow: loading credentials, configuring the client, instantiating an API endpoint class, making calls, and handling responses. Refer to the generated SDK TypeScript definitions for details on specific API methods and models.
+
+## API Documentation
+
+The complete API documentation is available at: https://avarant.github.io/canvas-lms-sdk/
+
+This includes detailed information about all available endpoints, request/response models, and parameters.
