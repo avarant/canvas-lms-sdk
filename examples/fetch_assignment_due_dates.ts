@@ -76,10 +76,12 @@ async function fetchAssignmentDueDates(courseId?: string) {
         const now = new Date();
 
         assignments.forEach((assignment: any) => {
-            if (!assignment.due_at) {
+            // Handle both snake_case and camelCase from API
+            const dueDateValue = assignment.due_at || assignment.dueAt;
+            if (!dueDateValue) {
                 noDueDate.push(assignment);
             } else {
-                const dueDate = new Date(assignment.due_at);
+                const dueDate = new Date(dueDateValue);
                 if (dueDate > now) {
                     upcoming.push(assignment);
                 } else {
@@ -125,7 +127,8 @@ async function fetchAssignmentDueDates(courseId?: string) {
         
         if (upcoming.length > 0) {
             const nextDue = upcoming[0];
-            const dueDate = new Date(nextDue.due_at);
+            const dueDateValue = nextDue.due_at || nextDue.dueAt;
+            const dueDate = new Date(dueDateValue);
             const daysUntil = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
             console.log(`\n  ⚠️  Next assignment due: "${nextDue.name}"`);
             console.log(`     Due in ${daysUntil} day(s): ${formatDate(dueDate)}`);
@@ -159,7 +162,8 @@ async function fetchAssignmentDueDates(courseId?: string) {
 }
 
 function displayAssignment(assignment: any, index: number) {
-    const dueDate = new Date(assignment.due_at);
+    const dueDateValue = assignment.due_at || assignment.dueAt;
+    const dueDate = new Date(dueDateValue);
     const now = new Date();
     const daysUntil = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     

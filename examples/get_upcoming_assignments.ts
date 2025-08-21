@@ -68,10 +68,14 @@ async function getUpcomingAssignments() {
                     assignment.course_code = course.course_code;
                     assignment.course_id = course.id;
                     
+                    // Handle both snake_case and camelCase from API
+                    const dueDateValue = assignment.due_at || assignment.dueAt;
+                    
                     // Only include if it has a due date and is in the future
-                    if (assignment.due_at) {
-                        const dueDate = new Date(assignment.due_at);
+                    if (dueDateValue) {
+                        const dueDate = new Date(dueDateValue);
                         if (dueDate > now) {
+                            assignment.due_date = dueDate; // Store for later use
                             allAssignments.push(assignment);
                         }
                     }
@@ -89,8 +93,8 @@ async function getUpcomingAssignments() {
 
         // Sort by due date (earliest first)
         allAssignments.sort((a, b) => {
-            const dateA = new Date(a.due_at).getTime();
-            const dateB = new Date(b.due_at).getTime();
+            const dateA = a.due_date.getTime();
+            const dateB = b.due_date.getTime();
             return dateA - dateB;
         });
 
@@ -111,20 +115,20 @@ async function getUpcomingAssignments() {
         const nextWeek = new Date(today);
         nextWeek.setDate(nextWeek.getDate() + 14);
 
-        const assignmentsToday = allAssignments.filter(a => new Date(a.due_at) <= today);
+        const assignmentsToday = allAssignments.filter(a => a.due_date <= today);
         const assignmentsTomorrow = allAssignments.filter(a => {
-            const due = new Date(a.due_at);
+            const due = a.due_date;
             return due > today && due <= tomorrow;
         });
         const assignmentsThisWeek = allAssignments.filter(a => {
-            const due = new Date(a.due_at);
+            const due = a.due_date;
             return due > tomorrow && due <= thisWeek;
         });
         const assignmentsNextWeek = allAssignments.filter(a => {
-            const due = new Date(a.due_at);
+            const due = a.due_date;
             return due > thisWeek && due <= nextWeek;
         });
-        const assignmentsLater = allAssignments.filter(a => new Date(a.due_at) > nextWeek);
+        const assignmentsLater = allAssignments.filter(a => a.due_date > nextWeek);
 
         // Display assignments by time period
         if (assignmentsToday.length > 0) {
@@ -173,7 +177,7 @@ async function getUpcomingAssignments() {
 
         if (allAssignments.length > 0) {
             const nextAssignment = allAssignments[0];
-            const dueDate = new Date(nextAssignment.due_at);
+            const dueDate = nextAssignment.due_date || new Date(nextAssignment.due_at || nextAssignment.dueAt);
             const hoursUntil = Math.ceil((dueDate.getTime() - new Date().getTime()) / (1000 * 60 * 60));
             
             console.log(`\n⚠️  NEXT DUE: "${nextAssignment.name}" (${nextAssignment.course_code})`);
@@ -187,7 +191,7 @@ async function getUpcomingAssignments() {
 }
 
 function displayAssignment(assignment: any) {
-    const dueDate = new Date(assignment.due_at);
+    const dueDate = assignment.due_date || new Date(assignment.due_at || assignment.dueAt);
     const now = new Date();
     const hoursUntil = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60));
     const daysUntil = Math.ceil(hoursUntil / 24);

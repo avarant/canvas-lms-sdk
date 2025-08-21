@@ -85,8 +85,11 @@ async function trackMissingSubmissions() {
                         assignment.course_code = course.course_code;
                         assignment.course_id = course.id;
                         
-                        if (assignment.due_at) {
-                            const dueDate = new Date(assignment.due_at);
+                        // Handle both snake_case and camelCase from API
+                        const dueDateValue = assignment.due_at || assignment.dueAt;
+                        
+                        if (dueDateValue) {
+                            const dueDate = new Date(dueDateValue);
                             assignment.due_date_obj = dueDate;
                             
                             if (dueDate < now) {
@@ -220,8 +223,9 @@ function displayMissingAssignment(assignment: any, type: string) {
     console.log(`📝 ${assignment.name}`);
     console.log(`   Course: ${assignment.course_name} (${assignment.course_code})`);
     
-    if (assignment.due_at) {
-        const dueDate = new Date(assignment.due_at);
+    const dueDateValue = assignment.due_at || assignment.dueAt;
+    if (dueDateValue) {
+        const dueDate = new Date(dueDateValue);
         console.log(`   Due: ${formatDate(dueDate)}`);
         
         if (type === 'overdue') {
