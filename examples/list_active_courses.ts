@@ -1,9 +1,17 @@
-import { CoursesApi, Configuration } from '../generated_typescript_sdk/dist';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-// Load environment variables from examples/.env
-dotenv.config({ path: path.join(__dirname, '.env') });
+// Load environment variables from parent .env
+// When compiled, __dirname will be examples/dist, so we need to go up two levels
+const isCompiled = __dirname.endsWith('dist');
+const envPath = isCompiled ? path.join(__dirname, '../../.env') : path.join(__dirname, '../.env');
+dotenv.config({ path: envPath });
+
+// Dynamic import to handle different paths when running from TypeScript vs compiled JavaScript
+const sdkPath = isCompiled 
+    ? '../../generated_typescript_sdk/dist'
+    : '../generated_typescript_sdk/dist';
+const { CoursesApi, Configuration } = require(sdkPath);
 
 async function listActiveCourses() {
     // Get credentials from environment variables
