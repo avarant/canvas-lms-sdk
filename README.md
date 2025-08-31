@@ -1,4 +1,4 @@
-# canvas-lms-sdk
+# Unofficial TypeScript SDK for Canvas LMS
 
 [View API Documentation](https://avarant.github.io/canvas-lms-sdk/)
 
