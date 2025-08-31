@@ -29,8 +29,36 @@ export interface ApiV1CoursesCourseIdFrontPageGetRequest {
     courseId: number;
 }
 
+export interface ApiV1CoursesCourseIdPagesGetRequest {
+    courseId: number;
+    sort?: ApiV1CoursesCourseIdPagesGetSortEnum;
+    order?: ApiV1CoursesCourseIdPagesGetOrderEnum;
+    searchTerm?: string;
+    published?: boolean;
+    include?: Array<ApiV1CoursesCourseIdPagesGetIncludeEnum>;
+}
+
+export interface ApiV1CoursesCourseIdPagesUrlOrIdGetRequest {
+    courseId: number;
+    urlOrId: string;
+}
+
 export interface ApiV1GroupsGroupIdFrontPageGetRequest {
     groupId: number;
+}
+
+export interface ApiV1GroupsGroupIdPagesGetRequest {
+    groupId: number;
+    sort?: ApiV1GroupsGroupIdPagesGetSortEnum;
+    order?: ApiV1GroupsGroupIdPagesGetOrderEnum;
+    searchTerm?: string;
+    published?: boolean;
+    include?: Array<ApiV1GroupsGroupIdPagesGetIncludeEnum>;
+}
+
+export interface ApiV1GroupsGroupIdPagesUrlOrIdGetRequest {
+    groupId: number;
+    urlOrId: string;
 }
 
 /**
@@ -57,6 +85,44 @@ export interface PagesApiInterface {
     apiV1CoursesCourseIdFrontPageGet(requestParameters: ApiV1CoursesCourseIdFrontPageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Page>;
 
     /**
+     * A paginated list of the wiki pages associated with a course
+     * @summary List pages
+     * @param {number} courseId ID of the course
+     * @param {'title' | 'created_at' | 'updated_at'} [sort] Sort results by this field
+     * @param {'asc' | 'desc'} [order] The sorting order. Defaults to asc
+     * @param {string} [searchTerm] The partial title of the pages to match and return
+     * @param {boolean} [published] If true, include only published pages. If false, exclude published pages
+     * @param {Array<'body'>} [include] Include additional page information
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApiInterface
+     */
+    apiV1CoursesCourseIdPagesGetRaw(requestParameters: ApiV1CoursesCourseIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Page>>>;
+
+    /**
+     * A paginated list of the wiki pages associated with a course
+     * List pages
+     */
+    apiV1CoursesCourseIdPagesGet(requestParameters: ApiV1CoursesCourseIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Page>>;
+
+    /**
+     * Retrieve the content of a wiki page
+     * @summary Show page
+     * @param {number} courseId ID of the course
+     * @param {string} urlOrId URL or ID of the page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApiInterface
+     */
+    apiV1CoursesCourseIdPagesUrlOrIdGetRaw(requestParameters: ApiV1CoursesCourseIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Page>>;
+
+    /**
+     * Retrieve the content of a wiki page
+     * Show page
+     */
+    apiV1CoursesCourseIdPagesUrlOrIdGet(requestParameters: ApiV1CoursesCourseIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Page>;
+
+    /**
      * Retrieve the content of the front page for a group.
      * @summary Show front page
      * @param {number} groupId ID of the group
@@ -71,6 +137,44 @@ export interface PagesApiInterface {
      * Show front page
      */
     apiV1GroupsGroupIdFrontPageGet(requestParameters: ApiV1GroupsGroupIdFrontPageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Page>;
+
+    /**
+     * A paginated list of the wiki pages associated with a group
+     * @summary List pages
+     * @param {number} groupId ID of the group
+     * @param {'title' | 'created_at' | 'updated_at'} [sort] Sort results by this field
+     * @param {'asc' | 'desc'} [order] The sorting order. Defaults to asc
+     * @param {string} [searchTerm] The partial title of the pages to match and return
+     * @param {boolean} [published] If true, include only published pages. If false, exclude published pages
+     * @param {Array<'body'>} [include] Include additional page information
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApiInterface
+     */
+    apiV1GroupsGroupIdPagesGetRaw(requestParameters: ApiV1GroupsGroupIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Page>>>;
+
+    /**
+     * A paginated list of the wiki pages associated with a group
+     * List pages
+     */
+    apiV1GroupsGroupIdPagesGet(requestParameters: ApiV1GroupsGroupIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Page>>;
+
+    /**
+     * Retrieve the content of a wiki page
+     * @summary Show page
+     * @param {number} groupId ID of the group
+     * @param {string} urlOrId URL or ID of the page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PagesApiInterface
+     */
+    apiV1GroupsGroupIdPagesUrlOrIdGetRaw(requestParameters: ApiV1GroupsGroupIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Page>>;
+
+    /**
+     * Retrieve the content of a wiki page
+     * Show page
+     */
+    apiV1GroupsGroupIdPagesUrlOrIdGet(requestParameters: ApiV1GroupsGroupIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Page>;
 
 }
 
@@ -123,6 +227,119 @@ export class PagesApi extends runtime.BaseAPI implements PagesApiInterface {
     }
 
     /**
+     * A paginated list of the wiki pages associated with a course
+     * List pages
+     */
+    async apiV1CoursesCourseIdPagesGetRaw(requestParameters: ApiV1CoursesCourseIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Page>>> {
+        if (requestParameters['courseId'] == null) {
+            throw new runtime.RequiredError(
+                'courseId',
+                'Required parameter "courseId" was null or undefined when calling apiV1CoursesCourseIdPagesGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['sort'] != null) {
+            queryParameters['sort'] = requestParameters['sort'];
+        }
+
+        if (requestParameters['order'] != null) {
+            queryParameters['order'] = requestParameters['order'];
+        }
+
+        if (requestParameters['searchTerm'] != null) {
+            queryParameters['search_term'] = requestParameters['searchTerm'];
+        }
+
+        if (requestParameters['published'] != null) {
+            queryParameters['published'] = requestParameters['published'];
+        }
+
+        if (requestParameters['include'] != null) {
+            queryParameters['include'] = requestParameters['include'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/courses/{course_id}/pages`.replace(`{${"course_id"}}`, encodeURIComponent(String(requestParameters['courseId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(PageFromJSON));
+    }
+
+    /**
+     * A paginated list of the wiki pages associated with a course
+     * List pages
+     */
+    async apiV1CoursesCourseIdPagesGet(requestParameters: ApiV1CoursesCourseIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Page>> {
+        const response = await this.apiV1CoursesCourseIdPagesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve the content of a wiki page
+     * Show page
+     */
+    async apiV1CoursesCourseIdPagesUrlOrIdGetRaw(requestParameters: ApiV1CoursesCourseIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Page>> {
+        if (requestParameters['courseId'] == null) {
+            throw new runtime.RequiredError(
+                'courseId',
+                'Required parameter "courseId" was null or undefined when calling apiV1CoursesCourseIdPagesUrlOrIdGet().'
+            );
+        }
+
+        if (requestParameters['urlOrId'] == null) {
+            throw new runtime.RequiredError(
+                'urlOrId',
+                'Required parameter "urlOrId" was null or undefined when calling apiV1CoursesCourseIdPagesUrlOrIdGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/courses/{course_id}/pages/{url_or_id}`.replace(`{${"course_id"}}`, encodeURIComponent(String(requestParameters['courseId']))).replace(`{${"url_or_id"}}`, encodeURIComponent(String(requestParameters['urlOrId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PageFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieve the content of a wiki page
+     * Show page
+     */
+    async apiV1CoursesCourseIdPagesUrlOrIdGet(requestParameters: ApiV1CoursesCourseIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Page> {
+        const response = await this.apiV1CoursesCourseIdPagesUrlOrIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Retrieve the content of the front page for a group.
      * Show front page
      */
@@ -165,4 +382,166 @@ export class PagesApi extends runtime.BaseAPI implements PagesApiInterface {
         return await response.value();
     }
 
+    /**
+     * A paginated list of the wiki pages associated with a group
+     * List pages
+     */
+    async apiV1GroupsGroupIdPagesGetRaw(requestParameters: ApiV1GroupsGroupIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Page>>> {
+        if (requestParameters['groupId'] == null) {
+            throw new runtime.RequiredError(
+                'groupId',
+                'Required parameter "groupId" was null or undefined when calling apiV1GroupsGroupIdPagesGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['sort'] != null) {
+            queryParameters['sort'] = requestParameters['sort'];
+        }
+
+        if (requestParameters['order'] != null) {
+            queryParameters['order'] = requestParameters['order'];
+        }
+
+        if (requestParameters['searchTerm'] != null) {
+            queryParameters['search_term'] = requestParameters['searchTerm'];
+        }
+
+        if (requestParameters['published'] != null) {
+            queryParameters['published'] = requestParameters['published'];
+        }
+
+        if (requestParameters['include'] != null) {
+            queryParameters['include'] = requestParameters['include'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/groups/{group_id}/pages`.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters['groupId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(PageFromJSON));
+    }
+
+    /**
+     * A paginated list of the wiki pages associated with a group
+     * List pages
+     */
+    async apiV1GroupsGroupIdPagesGet(requestParameters: ApiV1GroupsGroupIdPagesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Page>> {
+        const response = await this.apiV1GroupsGroupIdPagesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve the content of a wiki page
+     * Show page
+     */
+    async apiV1GroupsGroupIdPagesUrlOrIdGetRaw(requestParameters: ApiV1GroupsGroupIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Page>> {
+        if (requestParameters['groupId'] == null) {
+            throw new runtime.RequiredError(
+                'groupId',
+                'Required parameter "groupId" was null or undefined when calling apiV1GroupsGroupIdPagesUrlOrIdGet().'
+            );
+        }
+
+        if (requestParameters['urlOrId'] == null) {
+            throw new runtime.RequiredError(
+                'urlOrId',
+                'Required parameter "urlOrId" was null or undefined when calling apiV1GroupsGroupIdPagesUrlOrIdGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/groups/{group_id}/pages/{url_or_id}`.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters['groupId']))).replace(`{${"url_or_id"}}`, encodeURIComponent(String(requestParameters['urlOrId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PageFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieve the content of a wiki page
+     * Show page
+     */
+    async apiV1GroupsGroupIdPagesUrlOrIdGet(requestParameters: ApiV1GroupsGroupIdPagesUrlOrIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Page> {
+        const response = await this.apiV1GroupsGroupIdPagesUrlOrIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }
+
+/**
+ * @export
+ */
+export const ApiV1CoursesCourseIdPagesGetSortEnum = {
+    Title: 'title',
+    CreatedAt: 'created_at',
+    UpdatedAt: 'updated_at'
+} as const;
+export type ApiV1CoursesCourseIdPagesGetSortEnum = typeof ApiV1CoursesCourseIdPagesGetSortEnum[keyof typeof ApiV1CoursesCourseIdPagesGetSortEnum];
+/**
+ * @export
+ */
+export const ApiV1CoursesCourseIdPagesGetOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type ApiV1CoursesCourseIdPagesGetOrderEnum = typeof ApiV1CoursesCourseIdPagesGetOrderEnum[keyof typeof ApiV1CoursesCourseIdPagesGetOrderEnum];
+/**
+ * @export
+ */
+export const ApiV1CoursesCourseIdPagesGetIncludeEnum = {
+    Body: 'body'
+} as const;
+export type ApiV1CoursesCourseIdPagesGetIncludeEnum = typeof ApiV1CoursesCourseIdPagesGetIncludeEnum[keyof typeof ApiV1CoursesCourseIdPagesGetIncludeEnum];
+/**
+ * @export
+ */
+export const ApiV1GroupsGroupIdPagesGetSortEnum = {
+    Title: 'title',
+    CreatedAt: 'created_at',
+    UpdatedAt: 'updated_at'
+} as const;
+export type ApiV1GroupsGroupIdPagesGetSortEnum = typeof ApiV1GroupsGroupIdPagesGetSortEnum[keyof typeof ApiV1GroupsGroupIdPagesGetSortEnum];
+/**
+ * @export
+ */
+export const ApiV1GroupsGroupIdPagesGetOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type ApiV1GroupsGroupIdPagesGetOrderEnum = typeof ApiV1GroupsGroupIdPagesGetOrderEnum[keyof typeof ApiV1GroupsGroupIdPagesGetOrderEnum];
+/**
+ * @export
+ */
+export const ApiV1GroupsGroupIdPagesGetIncludeEnum = {
+    Body: 'body'
+} as const;
+export type ApiV1GroupsGroupIdPagesGetIncludeEnum = typeof ApiV1GroupsGroupIdPagesGetIncludeEnum[keyof typeof ApiV1GroupsGroupIdPagesGetIncludeEnum];

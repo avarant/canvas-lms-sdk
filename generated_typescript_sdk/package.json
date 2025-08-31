@@ -12,16 +12,10 @@
   "module": "./dist/esm/index.js",
   "sideEffects": false,
   "scripts": {
-    "build": "node build.js",
-    "build:strict": "tsc && tsc -p tsconfig.esm.json",
+    "build": "tsc && tsc -p tsconfig.esm.json",
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "typescript": "^5.9.2"
-  },
-  "dependencies": {
-    "@types/node": "^24.3.0",
-    "dotenv": "^17.2.1",
-    "ts-node": "^10.9.2"
+    "typescript": "^4.0 || ^5.0"
   }
 }

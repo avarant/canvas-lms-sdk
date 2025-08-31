@@ -5,7 +5,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "dist",
-    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types"
     ]

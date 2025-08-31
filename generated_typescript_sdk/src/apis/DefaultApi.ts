@@ -25,6 +25,7 @@ import type {
   ApiV1CoursesCourseIdEnrollmentsIdAcceptPost200Response,
   ApiV1CoursesCourseIdEnrollmentsPostRequestEnrollment,
   ApiV1CoursesCourseIdExternalToolsGetDefaultResponse,
+  ApiV1CoursesCourseIdLtiResourceLinksPostRequest,
   ApiV1CoursesCourseIdQuizzesIdPutRequest,
   ApiV1CoursesCourseIdQuizzesIdReorderPostRequest,
   ApiV1CoursesCourseIdQuizzesIdValidateAccessCodePostRequest,

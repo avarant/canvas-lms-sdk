@@ -80,6 +80,204 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/v1/courses/{course_id}/pages:
+    get:
+      summary: List pages
+      description: A paginated list of the wiki pages associated with a course
+      tags:
+        - Pages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Sort results by this field
+          required: false
+          schema:
+            type: string
+            enum: [title, created_at, updated_at]
+        - name: order
+          in: query
+          description: The sorting order. Defaults to asc
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: search_term
+          in: query
+          description: The partial title of the pages to match and return
+          required: false
+          schema:
+            type: string
+        - name: published
+          in: query
+          description: If true, include only published pages. If false, exclude published pages
+          required: false
+          schema:
+            type: boolean
+        - name: include
+          in: query
+          description: Include additional page information
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [body]
+      responses:
+        '200':
+          description: An array of Page objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/groups/{group_id}/pages:
+    get:
+      summary: List pages
+      description: A paginated list of the wiki pages associated with a group
+      tags:
+        - Pages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Sort results by this field
+          required: false
+          schema:
+            type: string
+            enum: [title, created_at, updated_at]
+        - name: order
+          in: query
+          description: The sorting order. Defaults to asc
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: search_term
+          in: query
+          description: The partial title of the pages to match and return
+          required: false
+          schema:
+            type: string
+        - name: published
+          in: query
+          description: If true, include only published pages. If false, exclude published pages
+          required: false
+          schema:
+            type: boolean
+        - name: include
+          in: query
+          description: Include additional page information
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [body]
+      responses:
+        '200':
+          description: An array of Page objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/courses/{course_id}/pages/{url_or_id}:
+    get:
+      summary: Show page
+      description: Retrieve the content of a wiki page
+      tags:
+        - Pages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          description: ID of the course
+          required: true
+          schema:
+            type: integer
+        - name: url_or_id
+          in: path
+          description: URL or ID of the page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A Page object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/groups/{group_id}/pages/{url_or_id}:
+    get:
+      summary: Show page
+      description: Retrieve the content of a wiki page
+      tags:
+        - Pages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the group
+          required: true
+          schema:
+            type: integer
+        - name: url_or_id
+          in: path
+          description: URL or ID of the page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A Page object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   securitySchemes:
     bearerAuth:
