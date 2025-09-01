@@ -2,6 +2,8 @@
 
 This document describes how to release a new version of the Canvas LMS SDK.
 
+> **📚 For detailed npm publishing instructions, see [Publishing Guide](docs/PUBLISHING.md)**
+
 ## Versioning Strategy
 
 We follow [Semantic Versioning](https://semver.org/):

@@ -295,7 +295,8 @@ const allAssignments = await assignmentsApi.listAssignmentsForCourse({
 
 ## Development
 
-For information on contributing to the SDK or regenerating from updated Canvas API documentation, see [Development Documentation](docs/DEVELOPMENT.md).
+- **Contributing & Building**: See [Development Documentation](docs/DEVELOPMENT.md)
+- **Publishing to npm**: See [Publishing Guide](docs/PUBLISHING.md)
 
 ## API Documentation
 
