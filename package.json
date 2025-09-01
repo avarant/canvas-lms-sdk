@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "build": "cd generated_typescript_sdk && npm run build",
-    "prepare": "npm run build",
+    "prepare": "echo 'Skipping prepare for CI'",
     "test": "echo \"No tests configured yet\"",
     "lint": "cd generated_typescript_sdk && tsc --noEmit",
     "clean": "rm -rf generated_typescript_sdk/dist",
