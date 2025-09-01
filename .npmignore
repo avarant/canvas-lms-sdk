@@ -1,0 +1,48 @@
+# Source files
+scripts/
+docs/canvas-lms-api/
+examples/
+.github/
+
+# Development files
+.env
+.env.local
+*.log
+.DS_Store
+node_modules/
+.vscode/
+.idea/
+
+# Git files
+.git/
+.gitignore
+
+# Build files
+generated_typescript_sdk/src/
+generated_typescript_sdk/tsconfig*.json
+generated_typescript_sdk/.openapi-generator/
+generated_typescript_sdk/node_modules/
+
+# Documentation source
+docs/DEVELOPMENT.md
+docs/api/
+
+# Test files
+*.test.ts
+*.spec.ts
+__tests__/
+coverage/
+
+# Config files
+.eslintrc*
+.prettierrc*
+jest.config.*
+tsconfig.json
+openapi-merge.json
+
+# Keep only what's needed for the package
+!generated_typescript_sdk/dist/
+!generated_typescript_sdk/package.json
+!README.md
+!LICENSE
+!CHANGELOG.md

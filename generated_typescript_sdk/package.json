@@ -1,11 +1,11 @@
 {
-  "name": "canvas-lms-sdk",
-  "version": "1.0.0",
-  "description": "OpenAPI client for canvas-lms-sdk",
-  "author": "OpenAPI-Generator",
+  "name": "@avarant/canvas-lms-sdk",
+  "version": "0.1.0",
+  "description": "Unofficial TypeScript SDK for Canvas LMS API",
+  "author": "avarant",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+    "url": "https://github.com/avarant/canvas-lms-sdk.git"
   },
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",

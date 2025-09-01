@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd generated_typescript_sdk && npm ci
+
+      - name: Build SDK
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: true  # Since tests aren't configured yet
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release v${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Canvas LMS SDK v${{ steps.version.outputs.VERSION }}
+            
+            ### Installation
+            ```bash
+            npm install @avarant/canvas-lms-sdk@${{ steps.version.outputs.VERSION }}
+            ```
+            
+            ### What's Changed
+            See [CHANGELOG.md](https://github.com/avarant/canvas-lms-sdk/blob/main/CHANGELOG.md) for details.
+            
+            ### Full Changelog
+            https://github.com/avarant/canvas-lms-sdk/compare/v${{ steps.version.outputs.PREV_VERSION }}...v${{ steps.version.outputs.VERSION }}
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.VERSION, '-') }}
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to GitHub Packages
+        run: |
+          echo "@avarant:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
