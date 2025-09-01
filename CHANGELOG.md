@@ -1,3 +1,7 @@
+## [0.1.1](https://github.com/avarant/canvas-lms-sdk/compare/v0.1.0...v0.1.1) (2025-09-01)
+
+
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
